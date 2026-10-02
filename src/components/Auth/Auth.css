@@ -1,0 +1,113 @@
+.auth-wrapper {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--stormy-50, #F0F4F8);
+  padding: 2rem;
+  font-family: 'Outfit', sans-serif;
+  color: var(--stormy-800, #243B53);
+}
+
+.auth-card {
+  background: var(--white, #FFFFFF);
+  width: 100%;
+  max-width: 450px;
+  padding: 3rem 2.5rem;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(36, 59, 83, 0.08);
+  border: 1px solid var(--stormy-100, #D9E2EC);
+}
+
+.auth-title {
+  font-size: 2rem;
+  font-weight: 800;
+  text-align: center;
+  margin: 0 0 0.5rem;
+  color: var(--stormy-900, #102A43);
+}
+
+.auth-subtitle {
+  text-align: center;
+  color: var(--stormy-500, #627D98);
+  font-size: 0.95rem;
+  margin: 0 0 2rem;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-group label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--stormy-700, #334E68);
+}
+
+.form-group input {
+  padding: 0.85rem 1rem;
+  font-size: 1rem;
+  font-family: inherit;
+  border: 1px solid var(--stormy-200, #BCCCDC);
+  border-radius: 8px;
+  background-color: var(--stormy-50, #F0F4F8);
+  color: var(--stormy-800, #243B53);
+  transition: all 0.2s ease;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: var(--stormy-500, #627D98);
+  background-color: var(--white, #FFFFFF);
+  box-shadow: 0 0 0 3px rgba(98, 125, 152, 0.15);
+}
+
+.auth-submit-btn {
+  margin-top: 1rem;
+  padding: 1rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--white, #FFFFFF);
+  background: linear-gradient(135deg, var(--stormy-600, #486581), var(--stormy-800, #243B53));
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: inherit;
+}
+
+.auth-submit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(36, 59, 83, 0.2);
+}
+
+.auth-submit-btn:active {
+  transform: translateY(0);
+}
+
+.auth-footer {
+  text-align: center;
+  margin-top: 2rem;
+  font-size: 0.9rem;
+  color: var(--stormy-500, #627D98);
+}
+
+.auth-footer a {
+  color: var(--stormy-700, #334E68);
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.auth-footer a:hover {
+  color: var(--stormy-900, #102A43);
+  text-decoration: underline;
+}
