@@ -14,3 +14,5 @@ The React Compiler is not enabled on this template because of its impact on dev 
 ## Expanding the Oxlint configuration
 
 If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+# smart-card-prm-pbl
+Aplikasi Smart Business Card &amp; Professional Relationship Management (PRM) merupakan aplikasi berbasis web responsif (mobile-friendly) yang memungkinkan pengguna membuat, membagikan, menyimpan, dan mengelola kartu nama digital serta relasi profesional.
