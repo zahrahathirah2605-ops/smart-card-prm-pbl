@@ -1,4 +1,13 @@
-/* App level styles (if any) */
+:root {
+  --primary: #52677A;
+  --secondary: #A9BBC8;
+  --accent: #D6C7A1;
+  --neutral: #F5F7F8;
+  --text-strong: #26343D;
+  --text-weak: #667681;
+  --stroke: #D7DEE3;
+}
+
 .App {
   width: 100%;
   min-height: 100vh;

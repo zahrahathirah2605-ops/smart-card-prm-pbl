@@ -1,30 +1,12 @@
-/* Modern Stormy Morning Color Palette */
+/* Using central variables from App.css */
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
-
-:root {
-  --stormy-900: #102A43; /* Very dark */
-  --stormy-800: #243B53;
-  --stormy-700: #334E68;
-  --stormy-600: #486581;
-  --stormy-500: #627D98; /* Base primary */
-  --stormy-400: #829AB1;
-  --stormy-300: #9FB3C8;
-  --stormy-200: #BCCCDC;
-  --stormy-100: #D9E2EC;
-  --stormy-50:  #F0F4F8; /* Lightest */
-  
-  --white: #FFFFFF;
-  --white-alpha: rgba(255, 255, 255, 0.8);
-  --glass-bg: rgba(255, 255, 255, 0.6);
-  --glass-border: rgba(255, 255, 255, 0.4);
-}
 
 body {
   margin: 0;
   padding: 0;
-  background-color: var(--stormy-50);
+  background-color: var(--neutral);
   font-family: 'Outfit', sans-serif;
-  color: var(--stormy-800);
+  color: var(--text-strong);
   overflow-x: hidden;
 }
 
@@ -43,11 +25,8 @@ body {
   right: 0;
   z-index: 100;
   padding: 1.25rem 2rem;
-  background: var(--glass-bg);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--glass-border);
-  transition: all 0.3s ease;
+  background: var(--primary);
+  border-bottom: 1px solid var(--primary);
 }
 
 .navbar-container {
@@ -68,16 +47,14 @@ body {
 .logo-mark {
   width: 32px;
   height: 32px;
-  background: linear-gradient(135deg, var(--stormy-600), var(--stormy-800));
+  background: var(--neutral);
   border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(36, 59, 83, 0.2);
 }
 
 .logo-text {
   font-size: 1.5rem;
   font-weight: 800;
-  color: var(--stormy-900);
-  letter-spacing: -0.5px;
+  color: var(--neutral);
 }
 
 .navbar-links {
@@ -99,24 +76,26 @@ body {
 
 .masuk-btn {
   background: transparent;
-  color: var(--stormy-700);
+  color: var(--neutral);
+  border: 2px solid var(--neutral);
+  padding: 0.5rem 1.4rem;
 }
 
 .masuk-btn:hover {
-  color: var(--stormy-900);
-  background: rgba(188, 204, 220, 0.3);
+  background: var(--neutral);
+  color: var(--primary);
 }
 
 .daftar-btn {
-  background: var(--stormy-800);
-  color: var(--white);
-  box-shadow: 0 4px 12px rgba(36, 59, 83, 0.2);
+  background: var(--accent);
+  color: var(--text-strong);
+  border: 2px solid var(--accent);
 }
 
 .daftar-btn:hover {
-  background: var(--stormy-900);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(36, 59, 83, 0.3);
+  background: var(--text-strong);
+  color: white;
+  border-color: var(--text-strong);
 }
 
 /* Hero Section */
@@ -131,35 +110,6 @@ body {
   overflow: hidden;
 }
 
-/* Background Gradients & Glows */
-.hero-bg-glow {
-  position: absolute;
-  top: -10%;
-  left: -10%;
-  width: 50vw;
-  height: 50vw;
-  background: radial-gradient(circle, rgba(159,179,200,0.4) 0%, rgba(240,244,248,0) 70%);
-  border-radius: 50%;
-  z-index: 0;
-  animation: float 8s ease-in-out infinite alternate;
-}
-
-.hero-bg-glow.secondary {
-  top: auto;
-  bottom: -20%;
-  right: -10%;
-  left: auto;
-  width: 60vw;
-  height: 60vw;
-  background: radial-gradient(circle, rgba(98,125,152,0.15) 0%, rgba(240,244,248,0) 70%);
-  animation: float 10s ease-in-out infinite alternate-reverse;
-}
-
-@keyframes float {
-  0% { transform: translate(0, 0); }
-  100% { transform: translate(30px, 50px); }
-}
-
 .hero-content {
   position: relative;
   z-index: 10;
@@ -168,48 +118,34 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  animation: fadeInUp 1s ease-out;
-}
-
-@keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(30px); }
-  to { opacity: 1; transform: translateY(0); }
 }
 
 .badge {
   display: inline-block;
   padding: 0.5rem 1rem;
-  background: rgba(188, 204, 220, 0.4);
-  color: var(--stormy-700);
+  background: var(--secondary);
+  color: var(--text-strong);
   font-size: 0.875rem;
   font-weight: 700;
   border-radius: 999px;
   margin-bottom: 2rem;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
-  backdrop-filter: blur(4px);
-  border: 1px solid var(--stormy-200);
 }
 
 .hero-title {
   font-size: clamp(3rem, 6vw, 5rem);
   font-weight: 800;
   line-height: 1.1;
-  color: var(--stormy-900);
+  color: var(--text-strong);
   margin: 0 0 1.5rem;
-  letter-spacing: -1px;
 }
 
 .highlight-text {
-  background: linear-gradient(135deg, var(--stormy-500), var(--stormy-800));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--primary);
 }
 
 .hero-subtitle {
   font-size: clamp(1.1rem, 2vw, 1.25rem);
-  color: var(--stormy-600);
+  color: var(--text-weak);
   max-width: 600px;
   line-height: 1.6;
   margin: 0 0 3rem;
@@ -232,74 +168,29 @@ body {
   padding: 1.125rem 2.5rem;
   font-size: 1.125rem;
   font-weight: 600;
-  color: var(--white);
-  background: linear-gradient(135deg, var(--stormy-600), var(--stormy-800));
+  color: white;
+  background: var(--primary);
   border: none;
   border-radius: 999px;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 10px 25px rgba(36, 59, 83, 0.25);
-  position: relative;
-  overflow: hidden;
-}
-
-.primary-btn::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: linear-gradient(135deg, rgba(255,255,255,0.2), rgba(255,255,255,0));
-  opacity: 0;
-  transition: opacity 0.3s ease;
+  transition: all 0.3s;
 }
 
 .primary-btn:hover {
-  transform: translateY(-3px) scale(1.02);
-  box-shadow: 0 15px 35px rgba(36, 59, 83, 0.35);
-}
-
-.primary-btn:hover::before {
-  opacity: 1;
-}
-
-.primary-btn:active {
-  transform: translateY(0) scale(0.98);
+  background: var(--text-strong);
+  transform: translateY(-3px);
 }
 
 .camera-icon {
-  stroke: var(--white);
-  transition: transform 0.3s ease;
+  stroke: white;
 }
 
-.primary-btn:hover .camera-icon {
-  transform: scale(1.1);
-}
-
-/* Responsive */
 @media (max-width: 768px) {
   .navbar {
     padding: 1rem;
   }
   
-  .logo-text {
-    font-size: 1.25rem;
-  }
-  
-  .nav-btn {
-    padding: 0.5rem 1rem;
-    font-size: 0.9rem;
-  }
-  
   .hero-section {
     padding: 7rem 1rem 3rem;
-  }
-  
-  .hero-title {
-    font-size: 2.5rem;
-  }
-  
-  .primary-btn {
-    padding: 1rem 2rem;
-    font-size: 1rem;
-    width: 100%;
   }
 }
