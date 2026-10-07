@@ -1,0 +1,414 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
+
+/* ===== Page Layout ===== */
+.kartu-nama-page {
+  min-height: 100vh;
+  background-color: var(--neutral);
+  font-family: 'Outfit', sans-serif;
+  color: var(--text-strong);
+}
+
+/* ===== Navbar ===== */
+.kn-navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 3rem;
+  background: var(--primary);
+}
+
+.kn-logo {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--neutral);
+  cursor: pointer;
+  font-style: italic;
+}
+
+.kn-nav-links {
+  display: flex;
+  align-items: center;
+  gap: 2.5rem;
+}
+
+.kn-nav-links > a {
+  color: var(--neutral);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.95rem;
+  transition: color 0.3s ease;
+}
+
+.kn-nav-links > a:hover {
+  color: var(--accent);
+}
+
+.kn-nav-links > a.active {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+/* ===== PRM Dropdown ===== */
+.kn-prm-dropdown {
+  position: relative;
+}
+
+.kn-prm-link {
+  color: var(--neutral);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.kn-prm-link:hover {
+  color: var(--accent);
+}
+
+.kn-prm-menu {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  right: 0;
+  background: #ffffff;
+  border: 1px solid var(--stroke);
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  min-width: 170px;
+  display: flex;
+  flex-direction: column;
+  z-index: 60;
+  overflow: hidden;
+  animation: kn-fadeDown 0.2s ease;
+}
+
+@keyframes kn-fadeDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.kn-prm-item {
+  padding: 0.75rem 1.25rem;
+  background: none;
+  border: none;
+  width: 100%;
+  text-align: left;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--primary);
+  cursor: pointer;
+  transition: background 0.2s;
+  font-family: inherit;
+}
+
+.kn-prm-item:hover {
+  background: var(--neutral);
+}
+
+.kn-prm-item + .kn-prm-item {
+  border-top: 1px solid var(--stroke);
+}
+
+/* ===== Hamburger Menu ===== */
+.kn-menu-container {
+  position: relative;
+}
+
+.kn-menu-btn {
+  background: none;
+  border: none;
+  color: var(--neutral);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 0.5rem;
+  transition: color 0.3s;
+}
+
+.kn-menu-btn:hover {
+  color: var(--accent);
+}
+
+.kn-dropdown-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 0.5rem;
+  background: #ffffff;
+  border: 1px solid var(--stroke);
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  min-width: 170px;
+  display: flex;
+  flex-direction: column;
+  z-index: 50;
+  overflow: hidden;
+  animation: kn-fadeDown 0.2s ease;
+}
+
+.kn-dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  background: none;
+  border: none;
+  width: 100%;
+  text-align: left;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-strong);
+  cursor: pointer;
+  transition: background 0.2s;
+  font-family: inherit;
+}
+
+.kn-dropdown-item:hover {
+  background: var(--neutral);
+}
+
+.kn-dropdown-item.logout {
+  color: #e53e3e;
+}
+
+.kn-dropdown-item.logout:hover {
+  background: #fed7d7;
+}
+
+/* ===== Main Content ===== */
+.kn-main {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2.5rem 2rem;
+}
+
+.kn-content-grid {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 2.5rem;
+  align-items: start;
+}
+
+/* ===== Photo Section (Left) ===== */
+.kn-photo-section {
+  position: sticky;
+  top: 2rem;
+}
+
+.kn-photo-card {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 2rem 1.5rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+  border: 1px solid var(--stroke);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.kn-photo-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-strong);
+  margin-bottom: 0.25rem;
+  align-self: flex-start;
+}
+
+.kn-photo-desc {
+  font-size: 0.8rem;
+  color: var(--text-weak);
+  margin-bottom: 1.5rem;
+  align-self: flex-start;
+}
+
+.kn-photo-preview {
+  width: 160px;
+  height: 160px;
+  border-radius: 16px;
+  overflow: hidden;
+  cursor: pointer;
+  margin-bottom: 1.5rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.kn-photo-preview:hover {
+  transform: scale(1.03);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+}
+
+.kn-photo-placeholder {
+  width: 100%;
+  height: 100%;
+  background: #e9eef5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 16px;
+}
+
+.kn-photo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.kn-add-photo-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.2rem;
+  background: none;
+  border: none;
+  color: var(--primary);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: color 0.3s;
+}
+
+.kn-add-photo-btn:hover {
+  color: var(--accent);
+}
+
+/* ===== Form Section (Right) ===== */
+.kn-form-section {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 2.5rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+  border: 1px solid var(--stroke);
+}
+
+.kn-form-title {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: var(--primary);
+  margin-bottom: 0.25rem;
+}
+
+.kn-form-subtitle {
+  font-size: 0.9rem;
+  color: var(--text-weak);
+  margin-bottom: 2rem;
+}
+
+.kn-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.kn-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.kn-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.kn-label {
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--text-weak);
+}
+
+.kn-input {
+  width: 100%;
+  padding: 0.85rem 1rem;
+  background: var(--neutral);
+  border: 1px solid var(--stroke);
+  border-radius: 10px;
+  color: var(--text-strong);
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 500;
+  outline: none;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.kn-input::placeholder {
+  color: #94a3b8;
+  font-weight: 400;
+}
+
+.kn-input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(18, 65, 125, 0.1);
+}
+
+/* ===== Submit Button ===== */
+.kn-submit-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.kn-submit-btn {
+  padding: 0.9rem 3rem;
+  background: var(--accent);
+  color: #ffffff;
+  border: none;
+  border-radius: 999px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  box-shadow: 0 6px 20px rgba(255, 99, 71, 0.3);
+  transition: all 0.3s ease;
+}
+
+.kn-submit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(255, 99, 71, 0.4);
+}
+
+.kn-submit-btn:active {
+  transform: translateY(0);
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 900px) {
+  .kn-content-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .kn-photo-section {
+    position: static;
+  }
+
+  .kn-navbar {
+    padding: 1rem 1.5rem;
+  }
+
+  .kn-nav-links {
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .kn-form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .kn-form-section {
+    padding: 1.5rem;
+  }
+
+  .kn-main {
+    padding: 1.5rem 1rem;
+  }
+}

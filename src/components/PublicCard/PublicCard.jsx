@@ -1,97 +1,81 @@
-import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import React from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import './PublicCard.css';
 
 const PublicCard = () => {
+  const navigate = useNavigate();
   const { id } = useParams();
-  const [formData, setFormData] = useState({ name: '', email: '', date: '', message: '' });
-  const [submitted, setSubmitted] = useState(false);
-
-  // Mock employee data
-  const employee = {
-    name: "Jane Doe",
-    position: "Senior Marketing Manager",
-    company: "SmartCard Corp",
-    email: "jane.doe@smartcard.com",
-    phone: "+62 812-3456-7890",
-    website: "www.smartcard.com"
-  };
-
-  const handlePrint = () => {
-    window.print();
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Simulate form submission
-    setSubmitted(true);
-    setTimeout(() => {
-      setSubmitted(false);
-      setFormData({ name: '', email: '', date: '', message: '' });
-    }, 3000);
-  };
-
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
 
   return (
-    <div className="public-card-container">
-      <div className="glass-panel main-content">
-        <h2 className="title-text">Profil Bisnis</h2>
-        
-        {/* Business Card Section */}
-        <div className="card-preview">
-          <div className="card-header">
-            <div className="avatar">JD</div>
-            <div className="card-title">
-              <h3>{employee.name}</h3>
-              <p>{employee.position}</p>
-            </div>
-          </div>
-          <div className="card-body">
-            <p><strong>Perusahaan:</strong> {employee.company}</p>
-            <p><strong>Email:</strong> {employee.email}</p>
-            <p><strong>Telepon:</strong> {employee.phone}</p>
-            <p><strong>Website:</strong> {employee.website}</p>
-          </div>
+    <div className="public-card-page">
+      {/* Navbar */}
+      <header className="card-navbar">
+        <div className="navbar-content">
+          <div className="logo" onClick={() => navigate('/')}>Logo</div>
+          <button className="login-link" onClick={() => navigate('/login')}>Login</button>
         </div>
-        
-        <div className="action-buttons no-print">
-          <button className="primary-btn" onClick={handlePrint}>
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-            Simpan PDF
-          </button>
-        </div>
+      </header>
 
-        {/* Appointment Form */}
-        <div className="appointment-section no-print">
-          <h3 className="section-subtitle">Buat Janji Temu</h3>
-          {submitted ? (
-            <div className="success-message">
-              Permintaan janji temu berhasil dikirim!
+      {/* Main Content */}
+      <div className="card-main-content">
+        <h1 className="page-title">Kartu Nama Digital</h1>
+        <p className="page-subtitle">
+          Profil pengguna terdaftar setelah berhasil scan QR kartu nama digital.
+        </p>
+
+        <div className="card-grid">
+          {/* Left Column */}
+          <div className="left-column">
+            <div className="profile-image-card">
+              <div className="image-placeholder">
+                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#ccc" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                  <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                  <polyline points="21 15 16 10 5 21"></polyline>
+                </svg>
+              </div>
             </div>
-          ) : (
-            <form onSubmit={handleSubmit} className="appointment-form">
-              <div className="form-group">
-                <label>Nama Anda</label>
-                <input type="text" name="name" value={formData.name} onChange={handleChange} required placeholder="Masukkan nama" />
+
+            <div className="info-fields">
+              <input type="text" value="Nama Lengkap" readOnly className="info-input" />
+              <input type="text" value="Instansi/Perusahaan" readOnly className="info-input" />
+              <input type="text" value="Jabatan" readOnly className="info-input" />
+            </div>
+          </div>
+
+          {/* Right Column */}
+          <div className="right-column">
+            <div className="contact-list">
+              <div className="contact-item">
+                <span className="contact-icon">📞</span>
+                <input type="text" value="Telepon" readOnly className="contact-input" />
               </div>
-              <div className="form-group">
-                <label>Email Anda</label>
-                <input type="email" name="email" value={formData.email} onChange={handleChange} required placeholder="Masukkan email" />
+              <div className="contact-item">
+                <span className="contact-icon">✉️</span>
+                <input type="text" value="Email" readOnly className="contact-input" />
               </div>
-              <div className="form-group">
-                <label>Tanggal & Waktu</label>
-                <input type="datetime-local" name="date" value={formData.date} onChange={handleChange} required />
+              <div className="contact-item">
+                <span className="contact-icon">📸</span>
+                <input type="text" value="Instagram" readOnly className="contact-input" />
               </div>
-              <div className="form-group">
-                <label>Pesan / Keperluan</label>
-                <textarea name="message" value={formData.message} onChange={handleChange} rows="3" required placeholder="Tuliskan keperluan Anda..."></textarea>
+              <div className="contact-item">
+                <span className="contact-icon">💼</span>
+                <input type="text" value="LinkedIn" readOnly className="contact-input" />
               </div>
-              <button type="submit" className="submit-btn">Kirim Permintaan</button>
-            </form>
-          )}
+            </div>
+
+            <div className="portfolio-section">
+              <h3 className="portfolio-title">Portofolio jika ada</h3>
+              <div className="portfolio-placeholder">
+                Placeholder konten portofolio
+              </div>
+            </div>
+
+            <div className="action-buttons">
+              <button className="btn btn-primary" onClick={() => navigate(`/janji-temu/${id}`)}>Janji Temu</button>
+              <button className="btn btn-outline">Simpan Kontak</button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -99,3 +83,4 @@ const PublicCard = () => {
 };
 
 export default PublicCard;
+

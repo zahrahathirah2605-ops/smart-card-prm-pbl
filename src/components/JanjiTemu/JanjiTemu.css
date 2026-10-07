@@ -1,0 +1,590 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
+
+/* ===== Page Layout ===== */
+.jt-page {
+  min-height: 100vh;
+  background-color: var(--neutral);
+  font-family: 'Outfit', sans-serif;
+  color: var(--text-strong);
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===== Navbar ===== */
+.jt-navbar {
+  width: 100%;
+  background-color: var(--primary);
+  padding: 1rem 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.jt-navbar-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.jt-logo {
+  color: #ffffff;
+  font-size: 1.5rem;
+  font-weight: 800;
+  font-style: italic;
+  cursor: pointer;
+}
+
+.jt-login-link {
+  background: transparent;
+  border: none;
+  color: var(--accent);
+  font-size: 1.05rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: opacity 0.3s;
+}
+
+.jt-login-link:hover {
+  opacity: 0.8;
+  text-decoration: underline;
+}
+
+/* ===== Main ===== */
+.jt-main {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2rem 2rem 3rem;
+  flex: 1;
+  width: 100%;
+}
+
+/* ===== Back Link ===== */
+.jt-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: none;
+  border: none;
+  color: var(--text-weak);
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: inherit;
+  padding: 0;
+  margin-bottom: 1.5rem;
+  transition: color 0.3s;
+}
+
+.jt-back-link:hover {
+  color: var(--primary);
+}
+
+/* ===== Page Header ===== */
+.jt-page-header {
+  margin-bottom: 2rem;
+}
+
+.jt-title {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--text-strong);
+  margin: 0 0 0.5rem;
+}
+
+.jt-subtitle {
+  font-size: 0.9rem;
+  color: var(--text-weak);
+  margin: 0;
+  max-width: 600px;
+  line-height: 1.5;
+}
+
+/* ===== Content Grid ===== */
+.jt-content-grid {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 2.5rem;
+  align-items: start;
+}
+
+/* ===== Left: Info Panel ===== */
+.jt-info-panel {
+  position: sticky;
+  top: 2rem;
+}
+
+.jt-info-card {
+  background: var(--primary);
+  border-radius: 18px;
+  padding: 2rem 1.5rem;
+  color: #ffffff;
+  margin-bottom: 2rem;
+}
+
+.jt-info-icon-wrapper {
+  width: 48px;
+  height: 48px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+  color: #ffffff;
+}
+
+.jt-info-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem;
+}
+
+.jt-info-desc {
+  font-size: 0.82rem;
+  color: rgba(255, 255, 255, 0.75);
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* Steps */
+.jt-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.jt-step {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.jt-step-number {
+  width: 28px;
+  height: 28px;
+  min-width: 28px;
+  background: var(--primary);
+  color: #ffffff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.jt-step-content {
+  flex: 1;
+}
+
+.jt-step-title {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-strong);
+  margin: 0 0 0.2rem;
+}
+
+.jt-step-desc {
+  font-size: 0.78rem;
+  color: var(--text-weak);
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* Info Note */
+.jt-info-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  color: var(--text-weak);
+  line-height: 1.4;
+  padding-top: 1rem;
+  border-top: 1px solid var(--stroke);
+}
+
+.jt-info-note svg {
+  min-width: 14px;
+  margin-top: 1px;
+}
+
+/* ===== Right: Form Panel ===== */
+.jt-form-panel {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 2.5rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+  border: 1px solid var(--stroke);
+}
+
+.jt-form {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* Section */
+.jt-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.jt-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.jt-section-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text-strong);
+  margin: 0;
+}
+
+.jt-required-note {
+  font-size: 0.75rem;
+  color: var(--accent);
+  font-weight: 500;
+}
+
+.jt-section-desc {
+  font-size: 0.8rem;
+  color: var(--text-weak);
+  margin: -0.5rem 0 0;
+  line-height: 1.4;
+}
+
+/* Fields */
+.jt-field-full {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.jt-field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+}
+
+.jt-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.jt-label {
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--text-weak);
+}
+
+.jt-required {
+  color: var(--accent);
+}
+
+.jt-input {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  background: var(--neutral);
+  border: 1px solid var(--stroke);
+  border-radius: 10px;
+  color: var(--text-strong);
+  font-family: inherit;
+  font-size: 0.88rem;
+  font-weight: 400;
+  outline: none;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.jt-input::placeholder {
+  color: #94a3b8;
+}
+
+.jt-input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(18, 65, 125, 0.1);
+}
+
+/* Input with icon */
+.jt-input-icon-wrapper {
+  position: relative;
+}
+
+.jt-input-icon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.jt-input-with-icon {
+  padding-right: 2.5rem;
+}
+
+/* Textarea */
+.jt-textarea {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  background: var(--neutral);
+  border: 1px solid var(--stroke);
+  border-radius: 10px;
+  color: var(--text-strong);
+  font-family: inherit;
+  font-size: 0.88rem;
+  font-weight: 400;
+  outline: none;
+  resize: vertical;
+  min-height: 100px;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.jt-textarea::placeholder {
+  color: #94a3b8;
+}
+
+.jt-textarea:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(18, 65, 125, 0.1);
+}
+
+/* Timezone Note */
+.jt-timezone-note {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.72rem;
+  color: #94a3b8;
+  margin-top: -0.5rem;
+}
+
+/* ===== Email Notice ===== */
+.jt-email-notice {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  background: #fff7ed;
+  border: 1px solid #fed7aa;
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+}
+
+.jt-email-notice-icon {
+  min-width: 18px;
+  margin-top: 2px;
+}
+
+.jt-email-notice-text {
+  font-size: 0.82rem;
+  color: var(--text-strong);
+  line-height: 1.5;
+}
+
+.jt-email-notice-text strong {
+  font-weight: 700;
+}
+
+.jt-email-notice-text span {
+  font-weight: 400;
+  color: var(--text-weak);
+}
+
+/* ===== Terms Checkbox ===== */
+.jt-terms {
+  padding-top: 0.25rem;
+}
+
+.jt-checkbox-label {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  cursor: pointer;
+  position: relative;
+}
+
+.jt-checkbox {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.jt-checkbox-custom {
+  width: 20px;
+  height: 20px;
+  min-width: 20px;
+  border: 2px solid var(--stroke);
+  border-radius: 5px;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  margin-top: 1px;
+}
+
+.jt-checkbox:checked + .jt-checkbox-custom {
+  background: var(--primary);
+  border-color: var(--primary);
+}
+
+.jt-checkbox:checked + .jt-checkbox-custom::after {
+  content: '✓';
+  color: #ffffff;
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+
+.jt-checkbox-text {
+  font-size: 0.82rem;
+  color: var(--text-weak);
+  line-height: 1.4;
+}
+
+/* ===== Submit Button ===== */
+.jt-submit-wrapper {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.jt-submit-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.85rem 2.5rem;
+  background: var(--accent);
+  color: #ffffff;
+  border: none;
+  border-radius: 999px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  box-shadow: 0 6px 20px rgba(255, 99, 71, 0.3);
+  transition: all 0.3s ease;
+}
+
+.jt-submit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(255, 99, 71, 0.4);
+}
+
+.jt-submit-btn:active {
+  transform: translateY(0);
+}
+
+.jt-submit-disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* ===== Success Card ===== */
+.jt-success-card {
+  max-width: 500px;
+  margin: 3rem auto;
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 3rem 2.5rem;
+  text-align: center;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+  border: 1px solid var(--stroke);
+}
+
+.jt-success-icon {
+  margin-bottom: 1.5rem;
+}
+
+.jt-success-title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--text-strong);
+  margin: 0 0 0.75rem;
+}
+
+.jt-success-desc {
+  font-size: 0.9rem;
+  color: var(--text-weak);
+  margin: 0 0 2rem;
+  line-height: 1.6;
+}
+
+.jt-success-btn {
+  padding: 0.85rem 2rem;
+  background: var(--primary);
+  color: #ffffff;
+  border: none;
+  border-radius: 999px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.3s ease;
+}
+
+.jt-success-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(18, 65, 125, 0.3);
+}
+
+/* ===== Footer ===== */
+.jt-footer {
+  border-top: 1px solid var(--stroke);
+  padding: 1.5rem 2rem;
+  background: #ffffff;
+}
+
+.jt-footer-content {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.jt-footer-brand {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-weak);
+}
+
+.jt-footer-text {
+  font-size: 0.8rem;
+  color: #94a3b8;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 900px) {
+  .jt-content-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .jt-info-panel {
+    position: static;
+  }
+
+  .jt-main {
+    padding: 1.5rem 1rem 2rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .jt-field-row {
+    grid-template-columns: 1fr;
+  }
+
+  .jt-form-panel {
+    padding: 1.5rem;
+  }
+
+  .jt-footer-content {
+    flex-direction: column;
+    gap: 0.5rem;
+    text-align: center;
+  }
+}
