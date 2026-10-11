@@ -71,7 +71,7 @@ const KartuNama = () => {
               <div className="kn-prm-menu">
                 <button className="kn-prm-item" onClick={() => navigate('/prm/ajukan')}>Ajukan PRM</button>
                 <button className="kn-prm-item" onClick={() => navigate('/prm/kelola')}>Kelola PRM</button>
-                <button className="kn-prm-item" onClick={() => navigate('/prm/riwayat')}>Riwayat PRM</button>
+                <button className="kn-prm-item" onClick={() => navigate('/riwayat-prm')}>Riwayat PRM</button>
               </div>
             )}
           </div>
