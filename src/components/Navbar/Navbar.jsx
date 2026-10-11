@@ -68,7 +68,7 @@ const Navbar = ({ active = 'home' }) => {
               </button>
               <button
                 className="prm-item"
-                onClick={() => { setIsPrmOpen(false); navigate('/riwayat-prm'); }}
+                onClick={() => { setIsPrmOpen(false); navigate('/kelola-prm'); }}
               >
                 Kelola PRM
               </button>

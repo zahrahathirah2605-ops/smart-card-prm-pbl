@@ -8,6 +8,7 @@ import PublicCard from './components/PublicCard/PublicCard';
 import ScanQR from './components/ScanQR/ScanQR';
 import JanjiTemu from './components/JanjiTemu/JanjiTemu';
 import RiwayatPRM from './components/RiwayatPRM/RiwayatPRM';
+import KelolaPRM from './components/KelolaPRM/KelolaPRM';
 import './App.css';
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
         <Route path="/scan" element={<ScanQR />} />
         <Route path="/janji-temu/:id" element={<JanjiTemu />} />
         <Route path="/riwayat-prm" element={<RiwayatPRM />} />
+        <Route path="/kelola-prm" element={<KelolaPRM />} />
       </Routes>
     </Router>
   );
