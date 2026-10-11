@@ -1,0 +1,11 @@
+.bookmark-icon-wrapper {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.bookmark-icon-wrapper:hover {
+  transform: scale(1.1);
+}

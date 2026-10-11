@@ -113,7 +113,7 @@ const Navbar = ({ active = 'home' }) => {
               {/* 2. Kontak Relasi */}
               <button
                 className="dropdown-item"
-                onClick={() => { setIsDropdownOpen(false); navigate('/riwayat-prm'); }}
+                onClick={() => { setIsDropdownOpen(false); navigate('/kontak-relasi'); }}
               >
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>

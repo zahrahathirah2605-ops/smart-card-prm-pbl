@@ -9,6 +9,7 @@ import ScanQR from './components/ScanQR/ScanQR';
 import JanjiTemu from './components/JanjiTemu/JanjiTemu';
 import RiwayatPRM from './components/RiwayatPRM/RiwayatPRM';
 import KelolaPRM from './components/KelolaPRM/KelolaPRM';
+import KontakRelasi from './components/KontakRelasi/KontakRelasi';
 import './App.css';
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
         <Route path="/janji-temu/:id" element={<JanjiTemu />} />
         <Route path="/riwayat-prm" element={<RiwayatPRM />} />
         <Route path="/kelola-prm" element={<KelolaPRM />} />
+        <Route path="/kontak-relasi" element={<KontakRelasi />} />
       </Routes>
     </Router>
   );
