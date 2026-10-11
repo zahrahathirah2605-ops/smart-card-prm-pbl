@@ -1,0 +1,228 @@
+/* Standard Digital Business Card Design (3.5 : 2 aspect ratio) */
+.business-card-canvas {
+  width: 100%;
+  max-width: 640px;
+  aspect-ratio: 1.75 / 1;
+  background: linear-gradient(135deg, #0b1f3a 0%, #12417d 55%, #1e5ba8 100%);
+  border-radius: 18px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 16px 40px rgba(18, 65, 125, 0.28), 0 4px 12px rgba(0, 0, 0, 0.1);
+  color: #ffffff;
+  font-family: 'Outfit', sans-serif;
+  padding: 1.8rem;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+/* Background Geometric Shapes */
+.card-shape-circle {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(2px);
+}
+
+.card-shape-circle.top-right {
+  width: 260px;
+  height: 260px;
+  right: -70px;
+  top: -90px;
+  background: radial-gradient(circle, rgba(255, 99, 71, 0.35) 0%, rgba(255, 99, 71, 0) 70%);
+}
+
+.card-shape-circle.bottom-left {
+  width: 220px;
+  height: 220px;
+  left: -80px;
+  bottom: -90px;
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.25) 0%, rgba(56, 189, 248, 0) 70%);
+}
+
+.card-inner-grid {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+/* Left: Avatar */
+.card-left-identity {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.card-photo-wrapper {
+  width: 90px;
+  height: 90px;
+  border-radius: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-avatar-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.card-avatar-initials {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: 1px;
+}
+
+.card-brand-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.08);
+  padding: 0.25rem 0.6rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.brand-dot {
+  width: 6px;
+  height: 6px;
+  background: var(--accent, #FF6347);
+  border-radius: 50%;
+  box-shadow: 0 0 6px var(--accent, #FF6347);
+}
+
+/* Middle: Details */
+.card-details-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.card-owner-name {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin: 0;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  letter-spacing: -0.3px;
+}
+
+.card-owner-role {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #ff8e7b;
+  margin: 0.2rem 0 0;
+  line-height: 1.3;
+}
+
+.card-owner-org {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.75);
+  margin: 0.15rem 0 0;
+}
+
+.card-divider-line {
+  height: 1px;
+  width: 100%;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.05) 100%);
+  margin: 0.75rem 0;
+}
+
+.card-contacts-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.contact-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.9);
+  overflow: hidden;
+}
+
+.icon-badge {
+  font-size: 0.85rem;
+  opacity: 0.85;
+}
+
+.contact-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: 400;
+}
+
+/* Right: QR Code Frame */
+.card-qr-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  padding-left: 0.5rem;
+  border-left: 1px dashed rgba(255, 255, 255, 0.18);
+}
+
+.card-qr-frame {
+  background: #ffffff;
+  padding: 8px;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.qr-caption {
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+@media (max-width: 580px) {
+  .business-card-canvas {
+    aspect-ratio: auto;
+    padding: 1.25rem;
+  }
+  .card-inner-grid {
+    grid-template-columns: 1fr;
+    text-align: center;
+    gap: 1rem;
+  }
+  .card-left-identity {
+    margin: 0 auto;
+  }
+  .card-details-section {
+    align-items: center;
+  }
+  .card-qr-section {
+    border-left: none;
+    padding-left: 0;
+    border-top: 1px dashed rgba(255, 255, 255, 0.18);
+    padding-top: 0.8rem;
+  }
+}

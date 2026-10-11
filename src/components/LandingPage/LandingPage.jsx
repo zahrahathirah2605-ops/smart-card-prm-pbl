@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import logoImg from '../../assets/logo-poltek-putih.png';
 import './LandingPage.css';
 
 const LandingPage = () => {
@@ -10,12 +11,22 @@ const LandingPage = () => {
       {/* Navbar */}
       <header className="navbar">
         <div className="navbar-container">
-          <div className="logo-container">
-            <div className="logo-mark"></div>
-            <span className="logo-text">SmartCard</span>
+          <div className="logo-container" onClick={() => navigate('/')}>
+            <img
+              src={logoImg}
+              alt="Politeknik Negeri Batam"
+              style={{
+                height: '46px',
+                width: 'auto',
+                maxWidth: '260px',
+                objectFit: 'contain',
+                display: 'block',
+                cursor: 'pointer'
+              }}
+            />
           </div>
           <nav className="navbar-links">
-            <button className="nav-btn masuk-btn" onClick={() => navigate('/login')}>Masuk</button>
+            <button className="nav-btn masuk-btn" onClick={() => navigate('/login')}>Sign In</button>
           </nav>
         </div>
       </header>
@@ -27,23 +38,24 @@ const LandingPage = () => {
         <div className="hero-bg-glow secondary"></div>
 
         <div className="hero-content">
-          <div className="badge">Platform PRM & Business Card</div>
+          <div className="badge">PRM & Smart Digital Card Platform</div>
           <h1 className="hero-title">
-            Selamat datang di<br /> 
-            <span className="highlight-text">website kami</span>
+            Elevate your networking with<br /> 
+            <span className="highlight-text">Smart Business Cards</span>
           </h1>
           <p className="hero-subtitle">
-            Bangun relasi bisnis yang lebih kuat dengan smart business card modern. 
-            Kelola kontak dan jaringan Anda dalam satu platform cerdas.
+            Strengthen professional relationships with modern digital business cards. 
+            Seamlessly share contact credentials, download PDF cards, and manage PRM appointments in one platform.
           </p>
 
-          <div className="hero-actions">
-            <button className="scan-btn primary-btn" onClick={() => navigate('/scan')}>
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="camera-icon">
-                <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"></path>
-                <circle cx="12" cy="13" r="3"></circle>
+          <div className="landing-scan-section">
+            <p className="landing-scan-label">Scan Kartu disini</p>
+            <button className="scan-btn-main" onClick={() => navigate('/scan')}>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                <circle cx="12" cy="13" r="4"></circle>
               </svg>
-              Scan QR Code
+              Scan QR
             </button>
           </div>
         </div>

@@ -1,23 +1,29 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Navbar from '../Navbar/Navbar';
+import { getStoredAppointments } from '../../utils/cardStorage';
 import './RiwayatPRM.css';
 
 const RiwayatPRM = () => {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isPrmOpen, setIsPrmOpen] = useState(false);
+  const [riwayatData, setRiwayatData] = useState([]);
 
-  // Data dummy lengkap untuk riwayat PRM
-  const riwayatData = [
-    { id: '01', permintaan: 'Pengajuan janji temu konsultasi proyek', tujuan: 'Budi Santoso', date: '12 Oct 2026', status: 'Selesai', statusClass: 'status-selesai' },
-    { id: '02', permintaan: 'Pengajuan diskusi kolaborasi bisnis', tujuan: 'Siti Rahma', date: '10 Oct 2026', status: 'Selesai', statusClass: 'status-selesai' },
-    { id: '03', permintaan: 'Pengajuan pertemuan partnership', tujuan: 'Ahmad Fauzi', date: '08 Oct 2026', status: 'Dibatalkan', statusClass: 'status-dibatalkan' },
-    { id: '04', permintaan: 'Pengajuan interview media', tujuan: 'Dewi Lestari', date: '05 Oct 2026', status: 'Ditolak', statusClass: 'status-ditolak' },
-    { id: '05', permintaan: 'Pengajuan janji temu evaluasi', tujuan: 'Joko Widodo', date: '01 Oct 2026', status: 'Selesai', statusClass: 'status-selesai' },
-    { id: '06', permintaan: 'Pengajuan penjadwalan ulang meeting', tujuan: 'Rina Melati', date: '28 Sep 2026', status: 'Buat Pertemuan Ulang', statusClass: 'status-ulang' },
-    { id: '07', permintaan: 'Pengajuan presentasi produk baru', tujuan: 'Hendra Gunawan', date: '25 Sep 2026', status: 'Dibatalkan', statusClass: 'status-dibatalkan' },
+  // Default seed PRM history items in English
+  const initialDummyData = [
+    { id: '01', permintaan: 'Project consultation & technical scoping', tujuan: 'Budi Santoso (CTO)', date: 'Oct 12, 2026', status: 'Completed', statusClass: 'status-selesai' },
+    { id: '02', permintaan: 'Strategic business collaboration session', tujuan: 'Siti Rahma', date: 'Oct 10, 2026', status: 'Completed', statusClass: 'status-selesai' },
+    { id: '03', permintaan: 'Partnership agreement meeting', tujuan: 'Ahmad Fauzi', date: 'Oct 08, 2026', status: 'Cancelled', statusClass: 'status-dibatalkan' },
+    { id: '04', permintaan: 'Media coverage interview request', tujuan: 'Dewi Lestari', date: 'Oct 05, 2026', status: 'Declined', statusClass: 'status-ditolak' },
+    { id: '05', permintaan: 'Quarterly evaluation appointment', tujuan: 'Joko Widodo', date: 'Oct 01, 2026', status: 'Completed', statusClass: 'status-selesai' },
+    { id: '06', permintaan: 'Schedule follow-up conference', tujuan: 'Rina Melati', date: 'Sep 28, 2026', status: 'Rescheduled', statusClass: 'status-ulang' },
+    { id: '07', permintaan: 'New solution demo and product pitch', tujuan: 'Hendra Gunawan', date: 'Sep 25, 2026', status: 'Cancelled', statusClass: 'status-dibatalkan' },
   ];
+
+  useEffect(() => {
+    const userSubmitted = getStoredAppointments();
+    setRiwayatData([...userSubmitted, ...initialDummyData]);
+  }, []);
 
   const filteredData = riwayatData.filter(item => {
     return item.permintaan.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -25,75 +31,24 @@ const RiwayatPRM = () => {
            item.tujuan.toLowerCase().includes(searchTerm.toLowerCase());
   });
 
-  const handleLogout = () => {
-    navigate('/');
-  };
-
   return (
     <div className="riwayat-page-container">
-      {/* Navbar Konsisten seperti KartuNama */}
-      <nav className="kn-navbar">
-        <div className="kn-logo" onClick={() => navigate('/home')}>Logo</div>
-        <div className="kn-nav-links">
-          <a href="#" onClick={(e) => { e.preventDefault(); navigate('/home'); }}>Beranda</a>
-          <a href="#" onClick={(e) => { e.preventDefault(); navigate('/kartu-nama'); }}>Kartu Nama</a>
-          
-          <div className="kn-prm-dropdown">
-            <a
-              href="#"
-              className="kn-prm-link active"
-              onClick={(e) => { e.preventDefault(); setIsPrmOpen(!isPrmOpen); }}
-            >
-              PRM
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                <polyline points="6 9 12 15 18 9"></polyline>
-              </svg>
-            </a>
-            {isPrmOpen && (
-                <div className="kn-prm-menu">
-                <button className="kn-prm-item" onClick={() => { setIsPrmOpen(false); navigate('/prm/ajukan'); }}>Ajukan PRM</button>
-                <button className="kn-prm-item" onClick={() => { setIsPrmOpen(false); navigate('/prm/kelola'); }}>Kelola PRM</button>
-                <button className="kn-prm-item" onClick={() => { setIsPrmOpen(false); navigate('/riwayat-prm'); }}>Riwayat PRM</button>
-                </div>
-            )}
-          </div>
+      {/* Consistent Navbar */}
+      <Navbar active="prm" />
 
-          <div className="kn-menu-container">
-            <button className="kn-menu-btn" onClick={() => setIsMenuOpen(!isMenuOpen)}>
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <line x1="3" y1="12" x2="21" y2="12"></line>
-                <line x1="3" y1="6" x2="21" y2="6"></line>
-                <line x1="3" y1="18" x2="21" y2="18"></line>
-              </svg>
-            </button>
-            {isMenuOpen && (
-              <div className="kn-dropdown-menu">
-                <button className="kn-dropdown-item">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-                  Profile
-                </button>
-                <button className="kn-dropdown-item">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
-                  Kontak Relasi
-                </button>
-                <button className="kn-dropdown-item logout" onClick={handleLogout}>
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
-                  Keluar
-                </button>
-              </div>
-            )}
-          </div>
-        </div>
-      </nav>
-
-      {/* Konten Utama Halaman Riwayat PRM */}
+      {/* Main PRM Content */}
       <main className="prm-main-content">
-        <div className="prm-title-section">
-          <h1>Riwayat PRM</h1>
-          <p>Daftar riwayat permintaan PRM Anda</p>
+        <div className="prm-header-row">
+          <div>
+            <h1 className="prm-main-title">PRM Appointments History</h1>
+            <p className="prm-main-desc">Manage, track, and monitor partner relationship meeting requests.</p>
+          </div>
+          <button className="btn-prm-new" onClick={() => navigate('/scan')}>
+            📷 Scan New Card
+          </button>
         </div>
 
-        {/* Bar Pencarian Full Width */}
+        {/* Search Bar */}
         <div className="prm-filter-bar-full">
           <div className="prm-search-box-kelola">
             <span className="search-icon">
@@ -104,28 +59,23 @@ const RiwayatPRM = () => {
             </span>
             <input
               type="text"
-              placeholder="Cari riwayat PRM..."
+              placeholder="Search by topic, partner name, or reference ID..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
-            <button className="filter-icon-btn">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
-              </svg>
-            </button>
           </div>
         </div>
 
-        {/* Tabel Data */}
+        {/* PRM Records Table */}
         <div className="prm-table-wrapper">
           <table className="prm-table">
             <thead>
               <tr>
-                <th style={{ width: '12%' }}>No.</th>
-                <th style={{ width: '38%' }}>Permintaan</th>
-                <th style={{ width: '25%' }}>Tujuan pertemuan</th>
-                <th style={{ width: '10%' }}>Tanggal</th>
-                <th style={{ width: '15%' }}>Status</th>
+                <th style={{ width: '12%' }}>Ref No.</th>
+                <th style={{ width: '38%' }}>Meeting Objective</th>
+                <th style={{ width: '25%' }}>Meeting Host / Partner</th>
+                <th style={{ width: '12%' }}>Date</th>
+                <th style={{ width: '13%' }}>Status</th>
               </tr>
             </thead>
             <tbody>
@@ -133,7 +83,10 @@ const RiwayatPRM = () => {
                 filteredData.map((item, index) => (
                   <tr key={index}>
                     <td className="font-semibold text-gray-700">{item.id}</td>
-                    <td>{item.permintaan}</td>
+                    <td>
+                      <div style={{ fontWeight: 600, color: '#1e293b' }}>{item.permintaan}</div>
+                      {item.jam && <div style={{ fontSize: '0.75rem', color: '#64748b' }}>Time: {item.jam}</div>}
+                    </td>
                     <td>{item.tujuan}</td>
                     <td>{item.date}</td>
                     <td>
@@ -146,7 +99,7 @@ const RiwayatPRM = () => {
               ) : (
                 <tr>
                   <td colSpan="5" className="prm-empty-row">
-                    Tidak ada riwayat PRM yang ditemukan.
+                    No PRM appointment records match your criteria.
                   </td>
                 </tr>
               )}

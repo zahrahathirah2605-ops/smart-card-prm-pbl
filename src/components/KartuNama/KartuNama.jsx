@@ -1,13 +1,16 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Navbar from '../Navbar/Navbar';
+import DigitalCardBadge from './DigitalCardBadge';
+import { getUserCard, saveUserCard, exportCardToPDF } from '../../utils/cardStorage';
 import './KartuNama.css';
 
 const KartuNama = () => {
   const navigate = useNavigate();
   const fileInputRef = useRef(null);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isPrmOpen, setIsPrmOpen] = useState(false);
   const [photoPreview, setPhotoPreview] = useState(null);
+  const [saveSuccess, setSaveSuccess] = useState(false);
+  const [isExporting, setIsExporting] = useState(false);
   const [formData, setFormData] = useState({
     namaLengkap: '',
     instansi: '',
@@ -17,7 +20,28 @@ const KartuNama = () => {
     instagram: '',
     linkedin: '',
     portofolio: '',
+    bio: '',
   });
+
+  useEffect(() => {
+    const existing = getUserCard();
+    if (existing) {
+      setFormData({
+        namaLengkap: existing.namaLengkap || '',
+        instansi: existing.instansi || '',
+        jabatan: existing.jabatan || '',
+        telepon: existing.telepon || '',
+        email: existing.email || '',
+        instagram: existing.instagram || '',
+        linkedin: existing.linkedin || '',
+        portofolio: existing.portofolio || '',
+        bio: existing.bio || '',
+      });
+      if (existing.photoUrl) {
+        setPhotoPreview(existing.photoUrl);
+      }
+    }
+  }, []);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -40,78 +64,84 @@ const KartuNama = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Save card data logic here
-    navigate('/home');
+    saveUserCard({
+      ...formData,
+      photoUrl: photoPreview || ''
+    });
+    setSaveSuccess(true);
+    setTimeout(() => {
+      setSaveSuccess(false);
+    }, 3000);
   };
 
-  const handleLogout = () => {
-    navigate('/');
+  const currentPreviewCard = {
+    ...formData,
+    photoUrl: photoPreview || '',
+    id: 'aprillia-bunga'
+  };
+
+  const cardUrl = `${window.location.origin}/card/${currentPreviewCard.id}`;
+
+  const handleDownloadPDF = async () => {
+    setIsExporting(true);
+    try {
+      await exportCardToPDF('edit-card-preview-target', currentPreviewCard);
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setIsExporting(false);
+    }
   };
 
   return (
     <div className="kartu-nama-page">
-      {/* Navbar */}
-      <nav className="kn-navbar">
-        <div className="kn-logo" onClick={() => navigate('/home')}>Logo</div>
-        <div className="kn-nav-links">
-          <a href="#" onClick={(e) => { e.preventDefault(); navigate('/home'); }}>Beranda</a>
-          <a href="#" className="active">Kartu Nama</a>
-          <div className="kn-prm-dropdown">
-            <a
-              href="#"
-              className="kn-prm-link"
-              onClick={(e) => { e.preventDefault(); setIsPrmOpen(!isPrmOpen); }}
-            >
-              PRM
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                <polyline points="6 9 12 15 18 9"></polyline>
-              </svg>
-            </a>
-            {isPrmOpen && (
-              <div className="kn-prm-menu">
-                <button className="kn-prm-item" onClick={() => navigate('/prm/ajukan')}>Ajukan PRM</button>
-                <button className="kn-prm-item" onClick={() => navigate('/prm/kelola')}>Kelola PRM</button>
-                <button className="kn-prm-item" onClick={() => navigate('/riwayat-prm')}>Riwayat PRM</button>
-              </div>
-            )}
-          </div>
-
-          <div className="kn-menu-container">
-            <button className="kn-menu-btn" onClick={() => setIsMenuOpen(!isMenuOpen)}>
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <line x1="3" y1="12" x2="21" y2="12"></line>
-                <line x1="3" y1="6" x2="21" y2="6"></line>
-                <line x1="3" y1="18" x2="21" y2="18"></line>
-              </svg>
-            </button>
-            {isMenuOpen && (
-              <div className="kn-dropdown-menu">
-                <button className="kn-dropdown-item">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-                  Profile
-                </button>
-                <button className="kn-dropdown-item">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
-                  Kontak Relasi
-                </button>
-                <button className="kn-dropdown-item logout" onClick={handleLogout}>
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
-                  Keluar
-                </button>
-              </div>
-            )}
-          </div>
-        </div>
-      </nav>
+      {/* Unified Consistent Navbar */}
+      <Navbar active="card" />
 
       {/* Main Content */}
       <main className="kn-main">
+        {/* Real-time Digital Card Preview on Top */}
+        <div className="kn-top-preview-section">
+          <div className="preview-header-meta">
+            <div>
+              <h2 className="kn-section-title">Live Digital Card Preview</h2>
+              <p className="kn-section-subtitle">Real-time appearance as partners will see when scanning your QR code</p>
+            </div>
+            <div className="preview-top-actions">
+              <button
+                className="btn-download-pdf-top"
+                onClick={handleDownloadPDF}
+                disabled={isExporting}
+                title="Download this business card as standard PDF"
+              >
+                {isExporting ? '⏳ Exporting...' : '📄 Download Card (PDF)'}
+              </button>
+              <button
+                className="btn-public-preview"
+                onClick={() => navigate(`/card/${currentPreviewCard.id}`)}
+              >
+                Public Page ↗
+              </button>
+            </div>
+          </div>
+
+          <div className="live-card-wrapper">
+            <DigitalCardBadge
+              card={currentPreviewCard}
+              qrUrl={cardUrl}
+              elementId="edit-card-preview-target"
+            />
+          </div>
+        </div>
+
+        {/* Form and Photo Upload Editor */}
         <div className="kn-content-grid">
           {/* Left: Photo Upload */}
           <div className="kn-photo-section">
             <div className="kn-photo-card">
-              <h3 className="kn-photo-title">Foto Profil</h3>
-              <p className="kn-photo-desc">Tambahkan foto profil untuk kartu nama Anda</p>
+              <h3 className="kn-photo-title">Profile Photo</h3>
+              <p className="kn-photo-desc">Upload a high-resolution portrait for your business card</p>
+              
               <div className="kn-photo-preview" onClick={handlePhotoClick}>
                 {photoPreview ? (
                   <img src={photoPreview} alt="Preview" className="kn-photo-img" />
@@ -132,92 +162,97 @@ const KartuNama = () => {
                 accept="image/*"
                 style={{ display: 'none' }}
               />
-              <button className="kn-add-photo-btn" onClick={handlePhotoClick}>
+              <button type="button" className="kn-add-photo-btn" onClick={handlePhotoClick}>
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
                   <circle cx="8.5" cy="8.5" r="1.5"></circle>
                   <polyline points="21 15 16 10 5 21"></polyline>
                 </svg>
-                Tambahkan Foto
+                {photoPreview ? 'Change Photo' : 'Upload Photo'}
               </button>
             </div>
           </div>
 
           {/* Right: Form Fields */}
           <div className="kn-form-section">
-            <h2 className="kn-form-title">Kartu Nama Saya</h2>
-            <p className="kn-form-subtitle">Informasi profil pengguna terdaftar</p>
+            <h2 className="kn-form-title">Edit Card Credentials</h2>
+            <p className="kn-form-subtitle">Update your personal and organizational details</p>
 
             <form onSubmit={handleSubmit} className="kn-form">
               <div className="kn-form-row">
                 <div className="kn-form-group">
-                  <label className="kn-label">Nama Lengkap</label>
+                  <label className="kn-label">Full Name *</label>
                   <input
                     type="text"
                     name="namaLengkap"
                     className="kn-input"
-                    placeholder="Nama pengguna"
+                    placeholder="e.g. Aprillia Bunga Lestari"
                     value={formData.namaLengkap}
                     onChange={handleChange}
+                    required
                   />
                 </div>
                 <div className="kn-form-group">
-                  <label className="kn-label">Instansi/Perusahaan</label>
+                  <label className="kn-label">Organization / Company *</label>
                   <input
                     type="text"
                     name="instansi"
                     className="kn-input"
-                    placeholder="Instansi pengguna"
+                    placeholder="e.g. Politeknik Negeri Batam"
                     value={formData.instansi}
                     onChange={handleChange}
+                    required
                   />
                 </div>
               </div>
 
               <div className="kn-form-row">
                 <div className="kn-form-group">
-                  <label className="kn-label">Jabatan</label>
+                  <label className="kn-label">Position / Job Title *</label>
                   <input
                     type="text"
                     name="jabatan"
                     className="kn-input"
-                    placeholder="Jabatan pengguna"
+                    placeholder="e.g. Informatics Engineering Student"
                     value={formData.jabatan}
                     onChange={handleChange}
+                    required
                   />
                 </div>
                 <div className="kn-form-group">
-                  <label className="kn-label">Telepon</label>
+                  <label className="kn-label">Phone / WhatsApp *</label>
                   <input
                     type="text"
                     name="telepon"
                     className="kn-input"
-                    placeholder="Nomor telepon pengguna"
+                    placeholder="e.g. +62 812-3478-010"
                     value={formData.telepon}
                     onChange={handleChange}
+                    required
                   />
                 </div>
               </div>
 
               <div className="kn-form-row">
                 <div className="kn-form-group">
-                  <label className="kn-label">Email</label>
+                  <label className="kn-label">Email Address *</label>
                   <input
                     type="email"
                     name="email"
                     className="kn-input"
-                    placeholder="Email pengguna"
+                    placeholder="e.g. bungaa.123@gmail.com"
                     value={formData.email}
                     onChange={handleChange}
+                    required
                   />
                 </div>
                 <div className="kn-form-group">
-                  <label className="kn-label">Instagram</label>
+                  <label className="kn-label">Instagram Username</label>
                   <input
                     type="text"
                     name="instagram"
                     className="kn-input"
-                    placeholder="Profil Instagram"
+                    placeholder="e.g. aprilliabunga"
                     value={formData.instagram}
                     onChange={handleChange}
                   />
@@ -226,32 +261,50 @@ const KartuNama = () => {
 
               <div className="kn-form-row">
                 <div className="kn-form-group">
-                  <label className="kn-label">LinkedIn</label>
+                  <label className="kn-label">LinkedIn Handle / Profile</label>
                   <input
                     type="text"
                     name="linkedin"
                     className="kn-input"
-                    placeholder="Profil LinkedIn"
+                    placeholder="e.g. aprillia-bunga-lestari"
                     value={formData.linkedin}
                     onChange={handleChange}
                   />
                 </div>
                 <div className="kn-form-group">
-                  <label className="kn-label">Portofolio (opsional)</label>
+                  <label className="kn-label">Portfolio / Website URL</label>
                   <input
                     type="text"
                     name="portofolio"
                     className="kn-input"
-                    placeholder="Tautan portofolio"
+                    placeholder="e.g. https://github.com/aprilliabunga"
                     value={formData.portofolio}
                     onChange={handleChange}
                   />
                 </div>
               </div>
 
+              <div className="kn-form-group">
+                <label className="kn-label">Bio / Profile Summary</label>
+                <textarea
+                  name="bio"
+                  className="kn-input"
+                  style={{ minHeight: '80px', resize: 'vertical' }}
+                  placeholder="Short bio or description displayed on your card..."
+                  value={formData.bio}
+                  onChange={handleChange}
+                ></textarea>
+              </div>
+
+              {saveSuccess && (
+                <div className="save-success-banner">
+                  ✓ Business card updated successfully! Changes are live on your QR Code and Public Page.
+                </div>
+              )}
+
               <div className="kn-submit-wrapper">
                 <button type="submit" className="kn-submit-btn">
-                  Simpan Kartu Nama Anda
+                  💾 Save Card Changes
                 </button>
               </div>
             </form>

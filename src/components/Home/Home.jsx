@@ -1,129 +1,117 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Navbar from '../Navbar/Navbar';
+import DigitalCardBadge from '../KartuNama/DigitalCardBadge';
+import { getUserCard, exportCardToPDF } from '../../utils/cardStorage';
 import './Home.css';
 
 const Home = () => {
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [isPrmOpen, setIsPrmOpen] = useState(false);
+  const [card, setCard] = useState(() => getUserCard());
+  const [isExporting, setIsExporting] = useState(false);
   const navigate = useNavigate();
 
-  const toggleDropdown = () => {
-    setIsDropdownOpen(!isDropdownOpen);
-  };
+  useEffect(() => {
+    setCard(getUserCard());
+  }, []);
 
-  const handleLogout = () => {
-    navigate('/');
+  const cardUrl = `${window.location.origin}/card/${card.id || 'aprillia-bunga'}`;
+
+  const handleDownloadPDF = async () => {
+    setIsExporting(true);
+    try {
+      await exportCardToPDF('home-business-card', card);
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setIsExporting(false);
+    }
   };
 
   return (
     <div className="home-container">
-      <nav className="navbar-solid">
-        <div className="logo">Logo</div>
-        <div className="nav-links">
-          <a href="#" className="active">Beranda</a>
-          <a href="#" onClick={(e) => { e.preventDefault(); navigate('/kartu-nama'); }}>Kartu Nama</a>
-
-          {/* PRM Dropdown */}
-          <div className="prm-dropdown-container">
-            <a
-              href="#"
-              className="prm-link"
-              onClick={(e) => { e.preventDefault(); setIsPrmOpen(!isPrmOpen); }}
-            >
-              PRM
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                <polyline points="6 9 12 15 18 9"></polyline>
-              </svg>
-            </a>
-            {isPrmOpen && (
-              <div className="prm-menu">
-                <button className="prm-item" onClick={() => navigate('/prm/ajukan')}>Ajukan PRM</button>
-                <button className="prm-item" onClick={() => navigate('/prm/kelola')}>Kelola PRM</button>
-                <button className="prm-item" onClick={() => navigate('/riwayat-prm')}>Riwayat PRM</button>
-              </div>
-            )}
-          </div>
-
-          <div className="dropdown-container">
-            <button className="menu-icon-btn" onClick={toggleDropdown}>
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
-            </button>
-
-            {isDropdownOpen && (
-              <div className="dropdown-menu">
-                <button className="dropdown-item">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-                  Profile
-                </button>
-                <button className="dropdown-item">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
-                  Kontak Relasi
-                </button>
-                <button className="dropdown-item logout" onClick={handleLogout}>
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
-                  Keluar
-                </button>
-              </div>
-            )}
-          </div>
-        </div>
-      </nav>
+      {/* Navbar sesuai Beranda asli */}
+      <Navbar active="home" />
 
       <main className="main-content">
         <div className="dashboard-grid">
-          {/* Left: Business Card Preview */}
-          <div className="solid-card business-card">
-            <h2 className="bc-title">Kartu Nama Saya</h2>
-            <p className="bc-subtitle">Informasi profil pengguna terdaftar</p>
+          {/* Sisi Kiri: Kartu Nama Digital Standar Profesional */}
+          <div className="solid-card business-card-display">
+            <div className="bc-header-row">
+              <div>
+                <h2 className="bc-title">Kartu Nama Saya</h2>
+                <p className="bc-subtitle">Informasi profil pengguna terdaftar</p>
+              </div>
+              <button
+                className="btn-edit-card-link"
+                onClick={() => navigate('/kartu-nama')}
+              >
+                Edit Kartu
+              </button>
+            </div>
 
-            <div className="bc-fields">
-              <div className="bc-field">
-                <label className="bc-label">Nama Lengkap</label>
-                <div className="bc-value">Aprillia Bunga Lestari</div>
-              </div>
-              <div className="bc-field">
-                <label className="bc-label">Jurusan</label>
-                <div className="bc-value">Mahasiswa Teknik Informatika</div>
-              </div>
-              <div className="bc-field">
-                <label className="bc-label">Nomor Telepon</label>
-                <div className="bc-value">08123478010</div>
-              </div>
-              <div className="bc-field">
-                <label className="bc-label">Email</label>
-                <div className="bc-value">bungaa.123@gmail</div>
-              </div>
+            {/* Kartu Nama Digital Visual Standar */}
+            <div className="digital-card-showcase-box">
+              <DigitalCardBadge
+                card={card}
+                qrUrl={cardUrl}
+                elementId="home-business-card"
+              />
+            </div>
+
+            {/* Tombol Aksi Kartu */}
+            <div className="card-quick-actions">
+              <button
+                className="btn-pdf-download"
+                onClick={handleDownloadPDF}
+                disabled={isExporting}
+                title="Unduh kartu nama digital dalam format PDF"
+              >
+                {isExporting ? '⏳ Mengunduh PDF...' : '📄 Download Kartu (PDF)'}
+              </button>
+
+              <button
+                className="btn-preview-link"
+                onClick={() => navigate(`/card/${card.id}`)}
+              >
+                Pratinjau Kartu Digital ↗
+              </button>
             </div>
           </div>
 
-          {/* Right: QR Code */}
-          <div className="solid-card qr-card">
-            <h3 className="qr-title">QR Code</h3>
-            <p className="qr-subtitle">Gunakan QR ini untuk membagikan profil Anda</p>
-            <div className="qr-wrapper">
-              <svg className="qr-svg" viewBox="0 0 100 100" fill="currentColor">
-                <path d="M10,10 h20 v20 h-20 z M15,15 h10 v10 h-10 z" />
-                <path d="M70,10 h20 v20 h-20 z M75,15 h10 v10 h-10 z" />
-                <path d="M10,70 h20 v20 h-20 z M15,75 h10 v10 h-10 z" />
-                <rect x="40" y="10" width="10" height="10" />
-                <rect x="55" y="10" width="10" height="10" />
-                <rect x="40" y="25" width="25" height="10" />
-                <rect x="10" y="40" width="10" height="20" />
-                <rect x="25" y="40" width="40" height="10" />
-                <rect x="70" y="40" width="20" height="10" />
-                <rect x="50" y="55" width="15" height="15" />
-                <rect x="75" y="55" width="15" height="35" />
-                <rect x="40" y="75" width="30" height="15" />
-              </svg>
+          {/* Sisi Kanan: Detail Informasi Profil */}
+          <div className="solid-card profile-info-card">
+            <h3 className="pi-title">Detail Profil</h3>
+            <p className="pi-subtitle">Data akun yang ditampilkan pada smart business card</p>
+
+            <div className="pi-fields">
+              <div className="pi-field">
+                <label className="pi-label">Nama Lengkap</label>
+                <div className="pi-value">{card.namaLengkap || 'Aprillia Bunga Lestari'}</div>
+              </div>
+
+              <div className="pi-field">
+                <label className="pi-label">Jurusan / Instansi</label>
+                <div className="pi-value">{card.jabatan || 'Mahasiswa'} - {card.instansi || 'Politeknik Negeri Batam'}</div>
+              </div>
+
+              <div className="pi-field">
+                <label className="pi-label">Nomor Telepon</label>
+                <div className="pi-value">{card.telepon || '08123478010'}</div>
+              </div>
+
+              <div className="pi-field">
+                <label className="pi-label">Email</label>
+                <div className="pi-value">{card.email || 'bungaa.123@gmail.com'}</div>
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Scan Section */}
+        {/* Section Scan QR DI BAWAH BERANDA Sesuai Permintaan */}
         <div className="scan-section">
           <p className="scan-label">Scan Kartu disini</p>
           <button className="scan-btn-main" onClick={() => navigate('/scan')}>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
               <circle cx="12" cy="13" r="4"></circle>
             </svg>

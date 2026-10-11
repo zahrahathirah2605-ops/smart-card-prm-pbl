@@ -1,12 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import Navbar from '../Navbar/Navbar';
+import { getCardById, saveAppointment, isUserOwnCard } from '../../utils/cardStorage';
 import './JanjiTemu.css';
 
 const JanjiTemu = () => {
   const navigate = useNavigate();
   const { id } = useParams();
+  const [card, setCard] = useState(null);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [agreeTerms, setAgreeTerms] = useState(false);
+  const [submittedData, setSubmittedData] = useState(null);
   const [formData, setFormData] = useState({
     namaLengkap: '',
     perusahaan: '',
@@ -18,6 +22,13 @@ const JanjiTemu = () => {
     alasan: '',
   });
 
+  useEffect(() => {
+    const cardData = getCardById(id);
+    setCard(cardData);
+  }, [id]);
+
+  const isSelf = isUserOwnCard(id || card?.id);
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -25,38 +36,62 @@ const JanjiTemu = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!agreeTerms) return;
+
+    const saved = saveAppointment({
+      ...formData,
+      targetNama: card?.namaLengkap || 'Card Owner',
+      targetId: card?.id || id
+    });
+
+    setSubmittedData(saved);
     setIsSubmitted(true);
   };
 
   return (
     <div className="jt-page">
-      {/* Navbar */}
-      <header className="jt-navbar">
-        <div className="jt-navbar-content">
-          <div className="jt-logo" onClick={() => navigate('/')}>Logo</div>
-          <button className="jt-login-link" onClick={() => navigate('/login')}>Login</button>
-        </div>
-      </header>
+      {/* Unified Navbar */}
+      <Navbar active="prm" />
 
-      {/* Main */}
+      {/* Main Container */}
       <main className="jt-main">
-        {/* Back link */}
+        {/* Back Link */}
         <button className="jt-back-link" onClick={() => navigate(`/card/${id}`)}>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <polyline points="15 18 9 12 15 6"></polyline>
           </svg>
-          Kembali ke kartu nama
+          Back to Digital Business Card {card?.namaLengkap ? `(${card.namaLengkap})` : ''}
         </button>
+
+        {/* If user navigates to their own appointment page, inform them */}
+        {isSelf && (
+          <div style={{
+            background: '#eff6ff',
+            border: '1px solid #bfdbfe',
+            borderRadius: '12px',
+            padding: '1rem 1.25rem',
+            marginBottom: '1.5rem',
+            color: '#1e40af',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.75rem'
+          }}>
+            <span style={{ fontSize: '1.25rem' }}>ℹ️</span>
+            <div>
+              <strong>Notice:</strong> This appointment form is intended for external partners scanning your card.
+              You are currently previewing how others request appointments with you.
+            </div>
+          </div>
+        )}
 
         {/* Page Header */}
         <div className="jt-page-header">
-          <h1 className="jt-title">Ajukan Janji Temu</h1>
+          <h1 className="jt-title">Schedule an Appointment</h1>
           <p className="jt-subtitle">
-            Terhubung lebih lanjut dengan pemilik kartu nama. Isi data diri dan waktu pertemuan yang Anda inginkan.
+            Connect and propose a meeting with <strong>{card?.namaLengkap || 'the card owner'}</strong> ({card?.instansi || 'Organization'}). Fill out your contact details and desired meeting agenda below.
           </p>
         </div>
 
-        {/* Success message */}
+        {/* Success Confirmation Card */}
         {isSubmitted ? (
           <div className="jt-success-card">
             <div className="jt-success-icon">
@@ -65,14 +100,40 @@ const JanjiTemu = () => {
                 <polyline points="22 4 12 14.01 9 11.01"></polyline>
               </svg>
             </div>
-            <h2 className="jt-success-title">Pengajuan Terkirim!</h2>
+            <h2 className="jt-success-title">Appointment Request Submitted!</h2>
             <p className="jt-success-desc">
-              Pengajuan janji temu Anda telah berhasil dikirim. Pemilik kartu nama akan meninjau permintaan Anda. 
-              Hasil pengajuan akan diinformasikan melalui email.
+              Your meeting request for <strong>{card?.namaLengkap}</strong> has been successfully recorded in the PRM system.
+              A status notification will be sent to <strong>{formData.email}</strong>.
             </p>
-            <button className="jt-success-btn" onClick={() => navigate(`/card/${id}`)}>
-              Kembali ke Kartu Nama
-            </button>
+
+            {submittedData && (
+              <div className="submitted-summary-box">
+                <div className="summary-row">
+                  <span className="summary-label">Reference ID:</span>
+                  <span className="summary-val">{submittedData.id}</span>
+                </div>
+                <div className="summary-row">
+                  <span className="summary-label">Requested Schedule:</span>
+                  <span className="summary-val">{formData.tanggal} at {formData.jam}</span>
+                </div>
+                <div className="summary-row">
+                  <span className="summary-label">Discussion Agenda:</span>
+                  <span className="summary-val">{formData.alasan}</span>
+                </div>
+              </div>
+            )}
+
+            <div className="submitted-actions-row">
+              <button className="jt-success-btn" onClick={() => navigate('/riwayat-prm')}>
+                View PRM History
+              </button>
+              <button
+                className="jt-success-btn outline"
+                onClick={() => navigate(`/card/${id}`)}
+              >
+                Return to Card Profile
+              </button>
+            </div>
           </div>
         ) : (
           <div className="jt-content-grid">
@@ -87,9 +148,9 @@ const JanjiTemu = () => {
                     <line x1="3" y1="10" x2="21" y2="10"></line>
                   </svg>
                 </div>
-                <h3 className="jt-info-title">Awali pertemuan dengan mudah.</h3>
+                <h3 className="jt-info-title">Seamless meeting requests.</h3>
                 <p className="jt-info-desc">
-                  Ajukan waktu pertemuan langsung dari kartu nama digital, tanpa perlu masuk atau membuat akun.
+                  Propose meeting dates directly from this smart business card without requiring a login or account registration.
                 </p>
               </div>
 
@@ -98,22 +159,22 @@ const JanjiTemu = () => {
                 <div className="jt-step">
                   <div className="jt-step-number">1</div>
                   <div className="jt-step-content">
-                    <h4 className="jt-step-title">Isi Formulir</h4>
-                    <p className="jt-step-desc">Lengkapi data diri, jadwal, dan tujuan pertemuan Anda.</p>
+                    <h4 className="jt-step-title">Submit Details</h4>
+                    <p className="jt-step-desc">Fill in your identity, preferred schedule, and meeting objectives.</p>
                   </div>
                 </div>
                 <div className="jt-step">
                   <div className="jt-step-number">2</div>
                   <div className="jt-step-content">
-                    <h4 className="jt-step-title">Pengajuan ditinjau</h4>
-                    <p className="jt-step-desc">Pemilik kartu nama akan meninjau dan memproses permintaan Anda.</p>
+                    <h4 className="jt-step-title">Partner Review</h4>
+                    <p className="jt-step-desc">The card owner receives your request in their PRM system.</p>
                   </div>
                 </div>
                 <div className="jt-step">
                   <div className="jt-step-number">3</div>
                   <div className="jt-step-content">
-                    <h4 className="jt-step-title">Periksa email</h4>
-                    <p className="jt-step-desc">Hasil pengajuan janji temu akan diinformasikan melalui email.</p>
+                    <h4 className="jt-step-title">Email Notification</h4>
+                    <p className="jt-step-desc">Receive confirmation and meeting invites via your email address.</p>
                   </div>
                 </div>
               </div>
@@ -123,28 +184,28 @@ const JanjiTemu = () => {
                   <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
                   <polyline points="9 11 12 14 22 4"></polyline>
                 </svg>
-                <span>Jadwal yang Anda pilih merupakan saran dan janji temu yang terkonﬁrmasi.</span>
+                <span>Proposed times are suggestions subject to card owner approval.</span>
               </div>
             </div>
 
             {/* Right: Form */}
             <div className="jt-form-panel">
               <form onSubmit={handleSubmit} className="jt-form">
-                {/* Data Diri Section */}
+                {/* Personal Information */}
                 <div className="jt-section">
                   <div className="jt-section-header">
-                    <h3 className="jt-section-title">Data diri Anda</h3>
-                    <span className="jt-required-note">* Wajib diisi</span>
+                    <h3 className="jt-section-title">Your Contact Information</h3>
+                    <span className="jt-required-note">* Required</span>
                   </div>
-                  <p className="jt-section-desc">Cantumkan informasi/kontak yang aktif.</p>
+                  <p className="jt-section-desc">Provide active credentials so the host can reach back to you.</p>
 
                   <div className="jt-field-full">
-                    <label className="jt-label">Nama lengkap <span className="jt-required">*</span></label>
+                    <label className="jt-label">Full Name <span className="jt-required">*</span></label>
                     <input
                       type="text"
                       name="namaLengkap"
                       className="jt-input"
-                      placeholder="Masukkan nama lengkap Anda"
+                      placeholder="Enter your full name"
                       value={formData.namaLengkap}
                       onChange={handleChange}
                       required
@@ -153,24 +214,24 @@ const JanjiTemu = () => {
 
                   <div className="jt-field-row">
                     <div className="jt-field">
-                      <label className="jt-label">Perusahaan/Instansi <span className="jt-required">*</span></label>
+                      <label className="jt-label">Organization / Company <span className="jt-required">*</span></label>
                       <input
                         type="text"
                         name="perusahaan"
                         className="jt-input"
-                        placeholder="Nama perusahaan atau instansi"
+                        placeholder="Company or institution name"
                         value={formData.perusahaan}
                         onChange={handleChange}
                         required
                       />
                     </div>
                     <div className="jt-field">
-                      <label className="jt-label">Jabatan <span className="jt-required">*</span></label>
+                      <label className="jt-label">Job Title / Position <span className="jt-required">*</span></label>
                       <input
                         type="text"
                         name="jabatan"
                         className="jt-input"
-                        placeholder="Jabatan Anda"
+                        placeholder="Your current role"
                         value={formData.jabatan}
                         onChange={handleChange}
                         required
@@ -180,64 +241,55 @@ const JanjiTemu = () => {
 
                   <div className="jt-field-row">
                     <div className="jt-field">
-                      <label className="jt-label">Email <span className="jt-required">*</span></label>
-                      <div className="jt-input-icon-wrapper">
-                        <input
-                          type="email"
-                          name="email"
-                          className="jt-input"
-                          placeholder="nama@contoh.com"
-                          value={formData.email}
-                          onChange={handleChange}
-                          required
-                        />
-                      </div>
+                      <label className="jt-label">Email Address <span className="jt-required">*</span></label>
+                      <input
+                        type="email"
+                        name="email"
+                        className="jt-input"
+                        placeholder="name@company.com"
+                        value={formData.email}
+                        onChange={handleChange}
+                        required
+                      />
                     </div>
                     <div className="jt-field">
-                      <label className="jt-label">Nomor telepon <span className="jt-required">*</span></label>
-                      <div className="jt-input-icon-wrapper">
-                        <svg className="jt-input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                          <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
-                        </svg>
-                        <input
-                          type="tel"
-                          name="telepon"
-                          className="jt-input jt-input-with-icon"
-                          placeholder="081x xxxx xxxx"
-                          value={formData.telepon}
-                          onChange={handleChange}
-                          required
-                        />
-                      </div>
+                      <label className="jt-label">Phone / WhatsApp <span className="jt-required">*</span></label>
+                      <input
+                        type="tel"
+                        name="telepon"
+                        className="jt-input"
+                        placeholder="+62 812-xxxx-xxxx"
+                        value={formData.telepon}
+                        onChange={handleChange}
+                        required
+                      />
                     </div>
                   </div>
                 </div>
 
-                {/* Rencana Pertemuan Section */}
+                {/* Meeting Details */}
                 <div className="jt-section">
-                  <h3 className="jt-section-title">Rencana pertemuan</h3>
-                  <p className="jt-section-desc">Pilih jadwal dan cantumkan tujuan Anda bertemu.</p>
+                  <h3 className="jt-section-title">Meeting Schedule & Objectives</h3>
+                  <p className="jt-section-desc">Select desired date, time, and conversation topic.</p>
 
                   <div className="jt-field-row">
                     <div className="jt-field">
-                      <label className="jt-label">Tanggal temu <span className="jt-required">*</span></label>
+                      <label className="jt-label">Proposed Date <span className="jt-required">*</span></label>
                       <input
                         type="date"
                         name="tanggal"
                         className="jt-input"
-                        placeholder="Pilih tanggal"
                         value={formData.tanggal}
                         onChange={handleChange}
                         required
                       />
                     </div>
                     <div className="jt-field">
-                      <label className="jt-label">Jam <span className="jt-required">*</span></label>
+                      <label className="jt-label">Proposed Time <span className="jt-required">*</span></label>
                       <input
                         type="time"
                         name="jam"
                         className="jt-input"
-                        placeholder="Pilih jam"
                         value={formData.jam}
                         onChange={handleChange}
                         required
@@ -245,20 +297,12 @@ const JanjiTemu = () => {
                     </div>
                   </div>
 
-                  <div className="jt-timezone-note">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <circle cx="12" cy="12" r="10"></circle>
-                      <polyline points="12 6 12 12 16 14"></polyline>
-                    </svg>
-                    <span>Waktu pertemuan menggunakan WIB (UTC+7).</span>
-                  </div>
-
                   <div className="jt-field-full">
-                    <label className="jt-label">Alasan ingin bertemu <span className="jt-required">*</span></label>
+                    <label className="jt-label">Meeting Purpose / Discussion Agenda <span className="jt-required">*</span></label>
                     <textarea
                       name="alasan"
                       className="jt-textarea"
-                      placeholder="Jelaskan tujuan atau topik yang ingin Anda diskusikan..."
+                      placeholder="Explain what topics or opportunities you would like to discuss..."
                       rows="4"
                       value={formData.alasan}
                       onChange={handleChange}
@@ -267,21 +311,7 @@ const JanjiTemu = () => {
                   </div>
                 </div>
 
-                {/* Email Notice */}
-                <div className="jt-email-notice">
-                  <div className="jt-email-notice-icon">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-                      <polyline points="22,6 12,13 2,6"></polyline>
-                    </svg>
-                  </div>
-                  <div className="jt-email-notice-text">
-                    <strong>Hasil pengajuan akan diinformasikan melalui email.</strong>
-                    <span> Pastikan alamat email Anda benar agar tidak melewatkan balasan dari pemilik kartu nama.</span>
-                  </div>
-                </div>
-
-                {/* Terms Checkbox */}
+                {/* Privacy & Terms */}
                 <div className="jt-terms">
                   <label className="jt-checkbox-label">
                     <input
@@ -292,19 +322,19 @@ const JanjiTemu = () => {
                     />
                     <span className="jt-checkbox-custom"></span>
                     <span className="jt-checkbox-text">
-                      Data Anda hanya digunakan untuk keperluan pengajuan janji temu ini saja.
+                      I agree that my contact information will only be used for this PRM meeting coordination.
                     </span>
                   </label>
                 </div>
 
-                {/* Submit */}
+                {/* Submit Action */}
                 <div className="jt-submit-wrapper">
                   <button 
                     type="submit" 
                     className={`jt-submit-btn ${!agreeTerms ? 'jt-submit-disabled' : ''}`}
                     disabled={!agreeTerms}
                   >
-                    Kirim Pengajuan
+                    Submit Appointment Request
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                       <line x1="5" y1="12" x2="19" y2="12"></line>
                       <polyline points="12 5 19 12 12 19"></polyline>
@@ -316,14 +346,6 @@ const JanjiTemu = () => {
           </div>
         )}
       </main>
-
-      {/* Footer */}
-      <footer className="jt-footer">
-        <div className="jt-footer-content">
-          <span className="jt-footer-brand">Kartu Nama Digital</span>
-          <span className="jt-footer-text">Bangun relasi, mudah dan cepat.</span>
-        </div>
-      </footer>
     </div>
   );
 };

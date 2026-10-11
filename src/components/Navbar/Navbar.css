@@ -1,0 +1,215 @@
+/* Unified Navbar matching exact Beranda style */
+.navbar-solid {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 70px;
+  padding: 0 3rem;
+  background: var(--primary, #12417D);
+  border-bottom: 1px solid var(--primary, #12417D);
+  width: 100%;
+  box-sizing: border-box;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  font-family: 'Outfit', sans-serif;
+}
+
+.navbar-solid .logo {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  cursor: pointer;
+  user-select: none;
+}
+
+.navbar-solid .nav-links {
+  display: flex;
+  align-items: center;
+  gap: 2.5rem;
+}
+
+.navbar-solid .nav-links > a {
+  color: var(--neutral, #F8FAFC);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.95rem;
+  transition: color 0.3s ease;
+  cursor: pointer;
+}
+
+.navbar-solid .nav-links > a:hover,
+.navbar-solid .nav-links > a.active {
+  color: var(--accent, #FF6347);
+}
+
+.navbar-solid .nav-links > a.active {
+  font-weight: 700;
+}
+
+/* ===== PRM Dropdown ===== */
+.prm-dropdown-container {
+  position: relative;
+}
+
+.prm-link {
+  color: var(--neutral, #F8FAFC);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.prm-link:hover,
+.prm-link.active {
+  color: var(--accent, #FF6347);
+}
+
+.prm-menu {
+  position: absolute;
+  top: calc(100% + 0.6rem);
+  right: 0;
+  background: #ffffff;
+  border: 1px solid var(--stroke, #E2E8F0);
+  border-radius: 12px;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.12);
+  min-width: 180px;
+  display: flex;
+  flex-direction: column;
+  z-index: 120;
+  overflow: hidden;
+  animation: fadeNavDown 0.2s ease;
+}
+
+@keyframes fadeNavDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.prm-item {
+  padding: 0.8rem 1.25rem;
+  background: none;
+  border: none;
+  width: 100%;
+  text-align: left;
+  font-size: 0.92rem;
+  font-weight: 500;
+  color: var(--primary, #12417D);
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  font-family: inherit;
+}
+
+.prm-item:hover {
+  background: #f8fafc;
+  color: var(--accent, #FF6347);
+}
+
+.prm-item + .prm-item {
+  border-top: 1px solid #f1f5f9;
+}
+
+/* ===== Hamburger Dropdown (3 lines icon with circular background) ===== */
+.dropdown-container {
+  position: relative;
+}
+
+.menu-icon-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: #ff6347; /* Red-orange 3 lines icon matching screenshot */
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.menu-icon-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.05);
+}
+
+.menu-icon-btn svg {
+  stroke: #ff6347;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: calc(100% + 0.6rem);
+  right: 0;
+  background: #ffffff;
+  border: 1px solid var(--stroke, #E2E8F0);
+  border-radius: 18px;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.12);
+  min-width: 250px;
+  display: flex;
+  flex-direction: column;
+  z-index: 120;
+  overflow: hidden;
+  padding: 0.6rem 0.4rem;
+  animation: fadeNavDown 0.2s ease;
+}
+
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.85rem 1.2rem;
+  background: none;
+  border: none;
+  width: 100%;
+  text-align: left;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #12417d; /* Deep blue text matching screenshot */
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-family: inherit;
+  border-radius: 10px;
+}
+
+.dropdown-item svg {
+  stroke: #12417d;
+  flex-shrink: 0;
+}
+
+.dropdown-item:hover {
+  background: #f1f5f9;
+}
+
+.dropdown-item.logout {
+  color: #ff6347; /* Red orange logout text matching screenshot */
+  margin-top: 0.25rem;
+  border-top: 1px solid #f1f5f9;
+}
+
+.dropdown-item.logout svg {
+  stroke: #ff6347;
+}
+
+.dropdown-item.logout:hover {
+  background: #fff5f5;
+}
+
+@media (max-width: 768px) {
+  .navbar-solid {
+    padding: 1rem 1.5rem;
+  }
+  .navbar-solid .nav-links {
+    gap: 1.5rem;
+  }
+}
