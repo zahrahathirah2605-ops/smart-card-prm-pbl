@@ -14,6 +14,8 @@ import AdminHome from './components/Admin/AdminHome';
 import AdminPengguna from './components/Admin/AdminPengguna';
 import AdminAktivitas from './components/Admin/AdminAktivitas';
 
+import KelolaPRM from './components/KelolaPRM/KelolaPRM';
+import KontakRelasi from './components/KontakRelasi/KontakRelasi';
 import './App.css';
 
 function App() {
@@ -34,6 +36,8 @@ function App() {
         <Route path="/admin" element={<AdminHome />} />
         <Route path="/admin/pengguna" element={<AdminPengguna />} />
         <Route path="/admin/aktivitas" element={<AdminAktivitas />} />
+        <Route path="/kelola-prm" element={<KelolaPRM />} />
+        <Route path="/kontak-relasi" element={<KontakRelasi />} />
       </Routes>
     </Router>
   );

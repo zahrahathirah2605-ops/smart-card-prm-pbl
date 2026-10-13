@@ -1,0 +1,93 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
+
+/* Menggunakan variabel warna & font yang sama persis seperti RiwayatPRM */
+.kelola-page-container {
+  min-height: 100vh;
+  background-color: var(--neutral, #F8FAFC);
+  font-family: 'Outfit', sans-serif;
+  color: var(--text-strong, #0F172A);
+}
+
+/* Kelompok Tombol Aksi */
+.prm-action-btns {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+/* Tombol Accept (Oranye yang Disesuaikan) */
+.btn-accept {
+  background-color: #ff5733;
+  color: #ffffff;
+  border: none;
+  padding: 0.45rem 1.1rem;
+  border-radius: 10px; 
+  font-family: 'Outfit', sans-serif;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(255, 87, 51, 0.2);
+}
+
+.btn-accept:hover {
+  background-color: #e04824;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(255, 87, 51, 0.3);
+}
+
+/* Tombol Reject (Abu-abu Soft) */
+.btn-reject {
+  background-color: #ffffff;
+  color: #64748b;
+  border: 1px solid var(--stroke, #E2E8F0);
+  padding: 0.45rem 1.1rem;
+  border-radius: 10px;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-reject:hover {
+  background-color: #f8fafc;
+  border-color: #cbd5e1;
+  color: #334155;
+  transform: translateY(-1px);
+}
+
+/* Teks Status Setelah Diproses */
+.text-processed {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #94a3b8;
+  font-style: italic;
+}
+
+/* Styling Tombol Ikon Filter di Ujung Kanan Search Box */
+.filter-icon-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #64748b;
+  padding: 4px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.filter-icon-btn:hover {
+  background-color: #f1f5f9;
+  color: #0f172a;
+}
