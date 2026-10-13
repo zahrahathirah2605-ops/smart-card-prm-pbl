@@ -8,12 +8,19 @@ import PublicCard from './components/PublicCard/PublicCard';
 import ScanQR from './components/ScanQR/ScanQR';
 import JanjiTemu from './components/JanjiTemu/JanjiTemu';
 import RiwayatPRM from './components/RiwayatPRM/RiwayatPRM';
+
+// Admin Components
+import AdminHome from './components/Admin/AdminHome';
+import AdminPengguna from './components/Admin/AdminPengguna';
+import AdminAktivitas from './components/Admin/AdminAktivitas';
+
 import './App.css';
 
 function App() {
   return (
     <Router>
       <Routes>
+        {/* Public & User Routes */}
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/card/:id" element={<PublicCard />} />
@@ -22,6 +29,11 @@ function App() {
         <Route path="/scan" element={<ScanQR />} />
         <Route path="/janji-temu/:id" element={<JanjiTemu />} />
         <Route path="/riwayat-prm" element={<RiwayatPRM />} />
+
+        {/* Admin Routes */}
+        <Route path="/admin" element={<AdminHome />} />
+        <Route path="/admin/pengguna" element={<AdminPengguna />} />
+        <Route path="/admin/aktivitas" element={<AdminAktivitas />} />
       </Routes>
     </Router>
   );

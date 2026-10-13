@@ -1,0 +1,193 @@
+/* Admin Navbar Styles - Matching Exact Screenshot Design */
+.admin-navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 76px;
+  padding: 0 4rem;
+  background-color: #0d3b75; /* Exact rich navy blue from screenshot */
+  width: 100%;
+  box-sizing: border-box;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  font-family: 'Outfit', sans-serif;
+  box-shadow: 0 4px 14px rgba(13, 59, 117, 0.18);
+}
+
+/* Logo */
+.admin-nav-logo {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+}
+
+.admin-logo-text {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: -0.5px;
+}
+
+/* Right Nav Container */
+.admin-nav-right {
+  display: flex;
+  align-items: center;
+  gap: 2.8rem;
+}
+
+.admin-nav-links {
+  display: flex;
+  align-items: center;
+  gap: 2.5rem;
+}
+
+.admin-nav-link {
+  background: none;
+  border: none;
+  color: #ffffff;
+  font-size: 1.15rem;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 0.4rem 0.2rem;
+  position: relative;
+  font-family: inherit;
+  transition: all 0.2s ease;
+  letter-spacing: -0.2px;
+}
+
+.admin-nav-link:hover {
+  color: #fed7aa;
+  transform: translateY(-1px);
+}
+
+.admin-nav-link.active {
+  color: #ffffff;
+  font-weight: 800;
+}
+
+.admin-nav-link.active::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background-color: #ff6347;
+  border-radius: 2px;
+}
+
+/* Circular Hamburger Button */
+.admin-dropdown-container {
+  position: relative;
+}
+
+.admin-menu-circle-btn {
+  background: rgba(14, 52, 102, 0.85);
+  border: 1.5px solid rgba(255, 255, 255, 0.15);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  color: #ff6347;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.admin-menu-circle-btn svg line {
+  stroke: #ff6347;
+}
+
+.admin-menu-circle-btn:hover,
+.admin-menu-circle-btn.open {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: #ff6347;
+  transform: scale(1.05);
+}
+
+/* Dropdown Menu - Exactly as shown in mockup */
+.admin-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 0.9rem);
+  right: 0;
+  background-color: #fff6ee; /* Warm cream/peach background as in mockup */
+  border: 1px solid #fed7aa;
+  border-radius: 10px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+  min-width: 195px;
+  display: flex;
+  flex-direction: column;
+  z-index: 120;
+  overflow: hidden;
+  padding: 0.4rem 0;
+  animation: adminDropdownFade 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes adminDropdownFade {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.admin-dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 0.85rem 1.4rem;
+  background: none;
+  border: none;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.15s ease;
+  font-family: inherit;
+}
+
+.admin-dropdown-item:hover {
+  background-color: #ffeedb;
+}
+
+.dropdown-icon {
+  flex-shrink: 0;
+}
+
+.dropdown-label {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #0d3b75; /* Deep navy text as in mockup */
+  letter-spacing: -0.2px;
+}
+
+.admin-dropdown-divider {
+  height: 1px;
+  background-color: #fed7aa;
+  margin: 0.1rem 0;
+}
+
+@media (max-width: 768px) {
+  .admin-navbar {
+    padding: 0 1.5rem;
+    height: 68px;
+  }
+
+  .admin-nav-right {
+    gap: 1.5rem;
+  }
+
+  .admin-nav-links {
+    gap: 1.2rem;
+  }
+
+  .admin-nav-link {
+    font-size: 0.98rem;
+  }
+}
