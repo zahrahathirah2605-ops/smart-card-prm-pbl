@@ -23,9 +23,12 @@ const KartuNama = () => {
     bio: '',
   });
 
+  const [cardId, setCardId] = useState('aprillia-bunga');
+
   useEffect(() => {
     const existing = getUserCard();
     if (existing) {
+      setCardId(existing.id || 'aprillia-bunga');
       setFormData({
         namaLengkap: existing.namaLengkap || '',
         instansi: existing.instansi || '',
@@ -62,12 +65,21 @@ const KartuNama = () => {
     }
   };
 
+  // Dynamically derive card ID from name so new accounts have unique QR codes
+  const computedCardId = (formData.namaLengkap && formData.namaLengkap.trim())
+    ? (formData.namaLengkap.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || cardId)
+    : cardId;
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    saveUserCard({
+    const saved = saveUserCard({
       ...formData,
+      id: computedCardId,
       photoUrl: photoPreview || ''
     });
+    if (saved?.id) {
+      setCardId(saved.id);
+    }
     setSaveSuccess(true);
     setTimeout(() => {
       setSaveSuccess(false);
@@ -77,10 +89,10 @@ const KartuNama = () => {
   const currentPreviewCard = {
     ...formData,
     photoUrl: photoPreview || '',
-    id: 'aprillia-bunga'
+    id: computedCardId
   };
 
-  const cardUrl = `${window.location.origin}/card/${currentPreviewCard.id}`;
+  const cardUrl = `${window.location.origin}/card/${computedCardId}`;
 
   const handleDownloadPDF = async () => {
     setIsExporting(true);

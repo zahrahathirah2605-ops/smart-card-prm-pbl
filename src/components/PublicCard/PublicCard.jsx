@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Navbar from '../Navbar/Navbar';
+import PublicNavbar from '../Navbar/PublicNavbar';
+import Footer from '../Footer/Footer';
 import DigitalCardBadge from '../KartuNama/DigitalCardBadge';
-import { getCardById, downloadVCard, isUserOwnCard, exportCardToPDF } from '../../utils/cardStorage';
+import { getCardById, getUserCard, downloadVCard, isUserOwnCard, exportCardToPDF } from '../../utils/cardStorage';
 import './PublicCard.css';
 
 const PublicCard = () => {
@@ -25,8 +27,13 @@ const PublicCard = () => {
     );
   }
 
-  // Check whether the visitor is viewing their own card or someone else's scanned card
-  const isSelf = isUserOwnCard(id || card.id);
+  // STRICT CHECK: Visitor is ONLY considered "self" if:
+  // 1. User is actually logged in as 'user'
+  // 2. The ID matches their own user profile ID
+  // Anyone scanning a partner (e.g. budi-santoso) or an external card is NOT self
+  const loggedRole = localStorage.getItem('smart_card_logged_role');
+  const userProfile = getUserCard();
+  const isSelf = loggedRole === 'user' && (id === userProfile.id);
 
   const handleDownloadContact = () => {
     downloadVCard(card);
@@ -49,8 +56,8 @@ const PublicCard = () => {
 
   return (
     <div className="public-card-page">
-      {/* Consistent Navbar */}
-      <Navbar active="card" />
+      {/* If viewing own card as logged-in user, use User Navbar. Otherwise, always show clean PublicNavbar */}
+      {isSelf ? <Navbar active="card" /> : <PublicNavbar active="card" />}
 
       {/* Main Content */}
       <div className="card-main-content">
@@ -200,6 +207,9 @@ const PublicCard = () => {
           </div>
         </div>
       </div>
+
+      {/* Global Campus Footer */}
+      <Footer />
     </div>
   );
 };

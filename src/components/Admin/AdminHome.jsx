@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AdminNavbar from './AdminNavbar';
+import Footer from '../Footer/Footer';
 import { getAdminStatistics, getActivityLogs } from '../../utils/adminStorage';
 import './AdminHome.css';
 
@@ -167,6 +168,9 @@ const AdminHome = () => {
           </div>
         </section>
       </main>
+
+      {/* Footer */}
+      <Footer />
     </div>
   );
 };

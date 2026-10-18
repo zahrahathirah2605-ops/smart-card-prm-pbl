@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { isUserAccountActive, addActivityLog } from '../../utils/adminStorage';
+import { isUserAccountActive, addActivityLog, getAdminUsers } from '../../utils/adminStorage';
 import './Auth.css';
 
 const Login = () => {
@@ -66,62 +66,106 @@ const Login = () => {
       return;
     }
 
+    // Look up in admin registered users list
+    const registeredUsers = getAdminUsers();
+    const foundUser = registeredUsers.find(
+      (u) => u.email && u.email.trim().toLowerCase() === cleanEmail
+    );
+
+    if (foundUser) {
+      // Validate password: NIM/NIK is the primary password, with fallback to 'pbljaya'
+      const expectedPassword = (foundUser.nimNik && foundUser.nimNik !== '-') ? foundUser.nimNik.trim() : 'pbljaya';
+      const cleanInputPassword = password.trim();
+
+      if (cleanInputPassword === expectedPassword || cleanInputPassword === 'pbljaya') {
+        localStorage.setItem('smart_card_logged_role', 'user');
+
+        // Automatically populate / sync user card details so user doesn't need to re-enter
+        const userCardProfile = {
+          id: foundUser.cardId || foundUser.namaLengkap.toLowerCase().replace(/[^a-z0-9]/g, '-'),
+          namaLengkap: foundUser.namaLengkap,
+          nimNik: foundUser.nimNik || '',
+          instansi: foundUser.instansi || 'Politeknik Negeri Batam',
+          jabatan: foundUser.jabatan || 'Campus Member',
+          telepon: foundUser.telepon && foundUser.telepon !== '-' ? foundUser.telepon : '+62 812-3478-010',
+          email: foundUser.email,
+          instagram: '',
+          linkedin: '',
+          portofolio: '',
+          bio: `${foundUser.namaLengkap} is a member of ${foundUser.instansi || 'Politeknik Negeri Batam'}. Verified Smart Business Card profile.`,
+          photoUrl: ''
+        };
+        localStorage.setItem('smart_card_user_profile', JSON.stringify(userCardProfile));
+
+        // Update smart_card_all_cards as well
+        try {
+          const allCardsRaw = localStorage.getItem('smart_card_all_cards');
+          const allCards = allCardsRaw ? JSON.parse(allCardsRaw) : {};
+          allCards[userCardProfile.id] = userCardProfile;
+          localStorage.setItem('smart_card_all_cards', JSON.stringify(allCards));
+        } catch (err) {
+          console.warn('Error syncing card directory on login:', err);
+        }
+
+        addActivityLog({
+          aktor: foundUser.namaLengkap,
+          email: cleanEmail,
+          kategori: 'Autentikasi',
+          aksi: `Registered user login successful: ${foundUser.namaLengkap}`,
+          status: 'Sukses',
+          statusClass: 'log-success'
+        });
+
+        navigate('/home');
+        return;
+      } else {
+        setError(`Invalid password. For registered campus users, please enter your NIM or NIK as your password.`);
+        return;
+      }
+    }
+
+    // Fallback for demo credentials
     if (
-      (cleanEmail === 'smart.card@gmail.com' && password === 'pbljaya') ||
-      (cleanEmail === 'budi.santoso@inovasidigital.id' && password === 'pbljaya') ||
-      (cleanEmail === 'siti.rahma@polibatam.ac.id' && password === 'pbljaya')
+      (cleanEmail === 'smart.card@gmail.com' && (password === '3312401001' || password === 'pbljaya')) ||
+      (cleanEmail === 'budi.santoso@inovasidigital.id' && (password === '198506152010121002' || password === 'pbljaya')) ||
+      (cleanEmail === 'siti.rahma@polibatam.ac.id' && (password === '199008222015042001' || password === 'pbljaya'))
     ) {
       localStorage.setItem('smart_card_logged_role', 'user');
       addActivityLog({
         aktor: cleanEmail === 'smart.card@gmail.com' ? 'Aprillia Bunga Lestari' : cleanEmail,
         email: cleanEmail,
         kategori: 'Autentikasi',
-        aksi: 'Login pengguna terdaftar berhasil masuk ke dashboard PRM',
+        aksi: 'User demo login successful',
         status: 'Sukses',
         statusClass: 'log-success'
       });
       navigate('/home');
     } else {
-      setError('Kredensial tidak valid. Gunakan akun demo: smart.card@gmail.com / pbljaya');
+      setError('Credentials not found in system. Please verify that your account has been registered by the Administrator.');
     }
   };
 
   return (
     <div className="auth-wrapper">
       <div className="auth-card">
-        {/* Role Selector Tabs */}
-        <div className="auth-role-tabs">
-          <button
-            type="button"
-            className={`role-tab-btn ${role === 'user' ? 'active' : ''}`}
-            onClick={() => handleRoleChange('user')}
-          >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
-              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-              <circle cx="12" cy="7" r="4"></circle>
-            </svg>
-            Pengguna Terdaftar
-          </button>
-
-          <button
-            type="button"
-            className={`role-tab-btn ${role === 'admin' ? 'active' : ''}`}
-            onClick={() => handleRoleChange('admin')}
-          >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
-              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-            </svg>
-            Admin
-          </button>
+        {/* Header with Institution Identity */}
+        <div className="auth-brand-badge">
+          <img
+            src="/src/assets/logo-poltek-putih.png"
+            alt="Politeknik Negeri Batam"
+            className="auth-poltek-logo"
+          />
+          <div className="auth-brand-text">
+            <span>POLITEKNIK NEGERI BATAM</span>
+            <small>Smart Business Card & PRM</small>
+          </div>
         </div>
 
         <h2 className="auth-title">
-          {role === 'admin' ? 'Portal Administrator' : 'Selamat Datang'}
+          System Login
         </h2>
         <p className="auth-subtitle">
-          {role === 'admin'
-            ? 'Masuk untuk mengelola pengguna & pantau log aktivitas'
-            : 'Masuk ke akun SmartCard PRM internal Anda'}
+          Please select your account role and enter your credentials
         </p>
 
         {error && (
@@ -131,9 +175,25 @@ const Login = () => {
         )}
 
         <form className="auth-form" onSubmit={handleLogin}>
+          {/* Role Dropdown Selector */}
+          <div className="form-group">
+            <label htmlFor="role-select">Select Account Role</label>
+            <div className="select-wrapper">
+              <select
+                id="role-select"
+                className="auth-role-select"
+                value={role}
+                onChange={(e) => handleRoleChange(e.target.value)}
+              >
+                <option value="user">👤 Registered User (Students / Faculty / Staff)</option>
+                <option value="admin">🛡️ System Administrator</option>
+              </select>
+            </div>
+          </div>
+
           <div className="form-group">
             <label htmlFor="email">
-              {role === 'admin' ? 'Email Administrator' : 'Email Pengguna'}
+              {role === 'admin' ? 'Administrator Email' : 'User Email Address'}
             </label>
             <input
               type="email"
@@ -146,11 +206,13 @@ const Login = () => {
           </div>
 
           <div className="form-group">
-            <label htmlFor="password">Kata Sandi</label>
+            <label htmlFor="password">
+              {role === 'admin' ? 'Admin Password' : 'Password (NIM / NIK Number)'}
+            </label>
             <input
               type="password"
               id="password"
-              placeholder="••••••••"
+              placeholder={role === 'admin' ? '••••••••' : 'Enter your NIM or NIK'}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
@@ -160,23 +222,23 @@ const Login = () => {
           {/* Quick Demo Helper Hint */}
           <div className="demo-credentials-box">
             <div className="demo-hint-title">
-              💡 Akun Demo {role === 'admin' ? 'Admin' : 'Pengguna'}:
+              💡 Demo Credentials ({role === 'admin' ? 'Admin' : 'User'}):
             </div>
             <div className="demo-hint-code">
               {role === 'admin' ? (
                 <>
-                  Email: <strong>admin@gmail.com</strong> | Sandi: <strong>admin123</strong>
+                  Email: <strong>admin@gmail.com</strong> | Password: <strong>admin123</strong>
                 </>
               ) : (
                 <>
-                  Email: <strong>smart.card@gmail.com</strong> | Sandi: <strong>pbljaya</strong>
+                  Email: <strong>smart.card@gmail.com</strong> | Password (NIM): <strong>3312401001</strong> (or <strong>pbljaya</strong>)
                 </>
               )}
             </div>
           </div>
 
           <button type="submit" className={`auth-submit-btn ${role === 'admin' ? 'btn-admin-login' : ''}`}>
-            {role === 'admin' ? 'Masuk ke Halaman Admin →' : 'Masuk ke Dashboard Pengguna →'}
+            {role === 'admin' ? 'Login to Admin Dashboard →' : 'Login to User Portal →'}
           </button>
         </form>
 
@@ -186,7 +248,7 @@ const Login = () => {
             className="switch-link-btn"
             onClick={() => navigate('/')}
           >
-            ← Kembali ke Beranda Utama
+            ← Back to Homepage
           </button>
         </div>
       </div>

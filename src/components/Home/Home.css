@@ -3,14 +3,24 @@
 .home-container {
   min-height: 100vh;
   background-color: var(--neutral, #F8FAFC);
+  background-image: 
+    radial-gradient(circle at 10% 20%, rgba(18, 65, 125, 0.04) 0%, transparent 40%),
+    radial-gradient(circle at 90% 80%, rgba(255, 99, 71, 0.04) 0%, transparent 40%),
+    radial-gradient(rgba(18, 65, 125, 0.06) 1.2px, transparent 1.2px);
+  background-size: 100% 100%, 100% 100%, 30px 30px;
   font-family: 'Outfit', sans-serif;
   color: var(--text-strong, #0F172A);
+  display: flex;
+  flex-direction: column;
 }
 
 .main-content {
+  flex: 1;
   max-width: 1100px;
+  width: 100%;
   margin: 0 auto;
   padding: 3rem 2rem 5rem;
+  box-sizing: border-box;
 }
 
 /* Dashboard Grid */

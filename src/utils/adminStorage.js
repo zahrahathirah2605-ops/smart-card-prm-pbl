@@ -9,6 +9,7 @@ export const INITIAL_REGISTERED_USERS = [
     id: 'USR-001',
     namaLengkap: 'Aprillia Bunga Lestari',
     email: 'smart.card@gmail.com',
+    nimNik: '3312401001',
     instansi: 'Politeknik Negeri Batam',
     jabatan: 'Informatics Engineering Student',
     telepon: '+62 812-3478-010',
@@ -23,6 +24,7 @@ export const INITIAL_REGISTERED_USERS = [
     id: 'USR-002',
     namaLengkap: 'Budi Santoso, M.Kom',
     email: 'budi.santoso@inovasidigital.id',
+    nimNik: '198506152010121002',
     instansi: 'PT Inovasi Digital Nusantara',
     jabatan: 'Chief Technology Officer (CTO)',
     telepon: '+62 812-9876-5432',
@@ -37,6 +39,7 @@ export const INITIAL_REGISTERED_USERS = [
     id: 'USR-003',
     namaLengkap: 'Siti Rahma, S.T., M.Sc',
     email: 'siti.rahma@polibatam.ac.id',
+    nimNik: '199008222015042001',
     instansi: 'Politeknik Negeri Batam',
     jabatan: 'Dosen Pembimbing Teknik Informatika',
     telepon: '+62 813-7722-9011',
@@ -51,6 +54,7 @@ export const INITIAL_REGISTERED_USERS = [
     id: 'USR-004',
     namaLengkap: 'Ahmad Fauzi',
     email: 'ahmad.fauzi@techindo.com',
+    nimNik: '3312401099',
     instansi: 'TechIndo Solutions',
     jabatan: 'Business Development Specialist',
     telepon: '+62 821-5544-3322',
@@ -179,23 +183,58 @@ export const addAdminUser = (userData) => {
   try {
     const users = getAdminUsers();
     const newId = `USR-${String(users.length + 1).padStart(3, '0')}`;
+    const cleanName = (userData.namaLengkap && userData.namaLengkap.trim()) ? userData.namaLengkap.trim() : (userData.nimNik ? `User ${userData.nimNik}` : 'Pengguna Baru');
+    const cleanInstansi = (userData.instansi && userData.instansi.trim()) ? userData.instansi.trim() : 'Politeknik Negeri Batam';
+    const cleanJabatan = (userData.jabatan && userData.jabatan.trim()) ? userData.jabatan.trim() : 'Mahasiswa / Staf';
+    const cleanTelepon = (userData.telepon && userData.telepon.trim()) ? userData.telepon.trim() : '-';
+    const cleanEmail = userData.email ? userData.email.trim().toLowerCase() : '';
+    const cleanNimNik = userData.nimNik ? userData.nimNik.trim() : '';
+    const generatedCardId = cleanName.toLowerCase().trim()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '') || `user-${Date.now()}`;
+
     const newUser = {
       id: newId,
-      namaLengkap: userData.namaLengkap || 'Pengguna Baru',
-      email: userData.email,
-      instansi: userData.instansi || 'Politeknik Negeri Batam',
-      jabatan: userData.jabatan || 'Anggota Tim PRM',
-      telepon: userData.telepon || '-',
-      role: 'Pengguna Terdaftar',
+      namaLengkap: cleanName,
+      nimNik: cleanNimNik,
+      email: cleanEmail,
+      instansi: cleanInstansi,
+      jabatan: cleanJabatan,
+      telepon: cleanTelepon,
+      role: userData.role === 'Admin' ? 'Admin' : 'Pengguna Terdaftar',
       status: userData.status || 'Aktif',
       tanggalDibuat: new Date().toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' }),
-      cardId: userData.namaLengkap ? userData.namaLengkap.toLowerCase().replace(/[^a-z0-9]/g, '-') : `user-${Date.now()}`,
+      cardId: generatedCardId,
       totalKartu: 1,
       terakhirAktif: 'Belum pernah login'
     };
 
     const updatedUsers = [newUser, ...users];
     localStorage.setItem(STORAGE_KEY_ADMIN_USERS, JSON.stringify(updatedUsers));
+
+    // Also register user's business card into smart_card_all_cards
+    try {
+      const allCardsRaw = localStorage.getItem('smart_card_all_cards');
+      const allCards = allCardsRaw ? JSON.parse(allCardsRaw) : {};
+      const newCardEntry = {
+        id: generatedCardId,
+        namaLengkap: cleanName,
+        nimNik: cleanNimNik,
+        instansi: cleanInstansi,
+        jabatan: cleanJabatan,
+        telepon: cleanTelepon,
+        email: cleanEmail,
+        instagram: '',
+        linkedin: '',
+        portofolio: '',
+        bio: `${cleanName} merupakan civitas di ${cleanInstansi} sebagai ${cleanJabatan}.`,
+        photoUrl: ''
+      };
+      allCards[generatedCardId] = newCardEntry;
+      localStorage.setItem('smart_card_all_cards', JSON.stringify(allCards));
+    } catch (e) {
+      console.warn('Could not sync card to smart_card_all_cards:', e);
+    }
 
     // Append activity log automatically
     addActivityLog({
@@ -255,7 +294,7 @@ export const toggleUserStatus = (userId) => {
   }
 };
 
-// Update existing user
+// Update existing user (FR-13)
 export const updateAdminUser = (userId, updatedFields) => {
   initAdminStorage();
   try {
@@ -264,7 +303,17 @@ export const updateAdminUser = (userId, updatedFields) => {
 
     const updatedList = users.map((u) => {
       if (u.id === userId) {
-        updatedUser = { ...u, ...updatedFields };
+        const cleanName = updatedFields.namaLengkap ? updatedFields.namaLengkap.trim() : u.namaLengkap;
+        const newCardId = cleanName.toLowerCase().trim()
+          .replace(/[^a-z0-9]+/g, '-')
+          .replace(/^-+|-+$/g, '') || u.cardId || `user-${Date.now()}`;
+
+        updatedUser = {
+          ...u,
+          ...updatedFields,
+          namaLengkap: cleanName,
+          cardId: newCardId
+        };
         return updatedUser;
       }
       return u;
@@ -273,6 +322,43 @@ export const updateAdminUser = (userId, updatedFields) => {
     localStorage.setItem(STORAGE_KEY_ADMIN_USERS, JSON.stringify(updatedList));
 
     if (updatedUser) {
+      // Sync changes to smart_card_all_cards
+      try {
+        const allCardsRaw = localStorage.getItem('smart_card_all_cards');
+        const allCards = allCardsRaw ? JSON.parse(allCardsRaw) : {};
+        const oldCardId = updatedUser.cardId;
+        const existingCard = allCards[oldCardId] || {};
+
+        const updatedCard = {
+          ...existingCard,
+          id: updatedUser.cardId,
+          namaLengkap: updatedUser.namaLengkap,
+          nimNik: updatedUser.nimNik || '',
+          instansi: updatedUser.instansi,
+          jabatan: updatedUser.jabatan,
+          telepon: updatedUser.telepon,
+          email: updatedUser.email,
+          bio: existingCard.bio || `${updatedUser.namaLengkap} merupakan civitas di ${updatedUser.instansi} sebagai ${updatedUser.jabatan}.`
+        };
+
+        allCards[updatedUser.cardId] = updatedCard;
+        localStorage.setItem('smart_card_all_cards', JSON.stringify(allCards));
+
+        // If the current logged-in user profile in localStorage matches this user, sync it as well
+        const currentProfileRaw = localStorage.getItem('smart_card_user_profile');
+        if (currentProfileRaw) {
+          const currentProfile = JSON.parse(currentProfileRaw);
+          if (currentProfile.email === updatedUser.email || currentProfile.id === oldCardId || currentProfile.id === updatedUser.cardId) {
+            localStorage.setItem('smart_card_user_profile', JSON.stringify({
+              ...currentProfile,
+              ...updatedCard
+            }));
+          }
+        }
+      } catch (err) {
+        console.warn('Error syncing updated user card in directory:', err);
+      }
+
       addActivityLog({
         aktor: 'Admin Sistem',
         email: 'admin@gmail.com',

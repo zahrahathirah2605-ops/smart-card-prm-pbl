@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AdminNavbar from './AdminNavbar';
+import Footer from '../Footer/Footer';
 import {
   getAdminUsers,
   toggleUserStatus,
@@ -18,14 +19,15 @@ const AdminPengguna = () => {
   // State untuk berpindah tampilan antara Tabel dan Form Tambah Pengguna
   const [isAdding, setIsAdding] = useState(false);
 
-  // Form state untuk Tambah Pengguna sesuai wireframe
+  // Form state untuk Tambah Pengguna sesuai permintaan
   const [addFormData, setAddFormData] = useState({
+    namaLengkap: '',
     email: '',
     nimNik: '',
     role: 'Pengguna',
-    instansi: 'Politeknik Negeri Batam',
-    jabatan: '',
-    telepon: '',
+    instansi: 'Politeknik Negeri Batam', // Otomatis terisi politeknik negeri batam
+    jabatan: '', // Opsional
+    telepon: '', // Opsional
     status: 'Aktif'
   });
 
@@ -63,15 +65,18 @@ const AdminPengguna = () => {
   // Handle Submit Tambah Pengguna dari Halaman Form
   const handleAddSubmit = (e) => {
     e.preventDefault();
-    if (!addFormData.email || !addFormData.nimNik) {
-      showToast('Email pengguna dan NIM/NIK wajib diisi!', 'error');
+    if (!addFormData.email || !addFormData.namaLengkap || !addFormData.nimNik) {
+      showToast('Nama Lengkap, Email, dan NIM/NIK wajib diisi (NIM/NIK digunakan untuk login)!', 'error');
       return;
     }
 
     const payload = {
       ...addFormData,
-      namaLengkap: `User ${addFormData.nimNik}`,
-      jabatan: `ID/NIM: ${addFormData.nimNik}`
+      namaLengkap: addFormData.namaLengkap.trim(),
+      nimNik: addFormData.nimNik.trim(),
+      instansi: addFormData.instansi.trim() || 'Politeknik Negeri Batam',
+      jabatan: addFormData.jabatan.trim() || 'Civitas Akademika',
+      telepon: addFormData.telepon.trim() || '-'
     };
 
     const created = addAdminUser(payload);
@@ -79,6 +84,7 @@ const AdminPengguna = () => {
       loadUsers();
       setIsAdding(false); // Kembali ke halaman tabel
       setAddFormData({
+        namaLengkap: '',
         email: '',
         nimNik: '',
         role: 'Pengguna',
@@ -87,7 +93,7 @@ const AdminPengguna = () => {
         telepon: '',
         status: 'Aktif'
       });
-      showToast(`Akun ${created.email} berhasil ditambahkan!`, 'success');
+      showToast(`Akun ${created.namaLengkap} (${created.email}) berhasil ditambahkan dan siap digunakan untuk login!`, 'success');
     }
   };
 
@@ -176,14 +182,29 @@ const AdminPengguna = () => {
             <div style={{ background: '#ffffff', border: '1px solid #E2E8F0', borderRadius: '16px', padding: '2.5rem', boxShadow: '0 4px 20px rgba(0,0,0,0.03)', maxWidth: '850px' }}>
               <form onSubmit={handleAddSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
                 
+                {/* Nama Lengkap */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                  <label style={{ fontWeight: 600, fontSize: '0.9rem', color: '#1e293b' }}>
+                    Nama Lengkap <span style={{ color: '#ff5733' }}>*</span>
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="Contoh: Muhammad Rizky, S.T."
+                    value={addFormData.namaLengkap}
+                    onChange={(e) => setAddFormData({ ...addFormData, namaLengkap: e.target.value })}
+                    required
+                    style={{ padding: '0.85rem 1rem', borderRadius: '10px', border: '1px solid #cbd5e1', outline: 'none', fontSize: '0.95rem', fontFamily: 'inherit' }}
+                  />
+                </div>
+
                 {/* Email Pengguna */}
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                   <label style={{ fontWeight: 600, fontSize: '0.9rem', color: '#1e293b' }}>
-                    Email pengguna <span style={{ color: '#ff5733' }}>*</span>
+                    Email Pengguna (untuk Login) <span style={{ color: '#ff5733' }}>*</span>
                   </label>
                   <input
                     type="email"
-                    placeholder="Masukkan email pengguna"
+                    placeholder="Masukkan email pengguna (misal: rizky@polibatam.ac.id)"
                     value={addFormData.email}
                     onChange={(e) => setAddFormData({ ...addFormData, email: e.target.value })}
                     required
@@ -191,32 +212,77 @@ const AdminPengguna = () => {
                   />
                 </div>
 
-                {/* NIM / NIK */}
+                {/* NIM / NIK - WAJIB KARENA DIGUNAKAN SEBAGAI PASSWORD LOGIN */}
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                   <label style={{ fontWeight: 600, fontSize: '0.9rem', color: '#1e293b' }}>
-                    NIM/NIK <span style={{ color: '#ff5733' }}>*</span>
+                    NIM / NIK <span style={{ color: '#ff5733' }}>* (Digunakan sebagai Kata Sandi Login)</span>
                   </label>
                   <input
                     type="text"
-                    placeholder="Masukkan NIM atau NIK"
+                    placeholder="Masukkan NIM atau NIK (misal: 3312401050)"
                     value={addFormData.nimNik}
                     onChange={(e) => setAddFormData({ ...addFormData, nimNik: e.target.value })}
                     required
-                    style={{ padding: '0.85rem 1rem', borderRadius: '10px', border: '1px solid #cbd5e1', outline: 'none', fontSize: '0.95rem', fontFamily: 'inherit' }}
+                    style={{ padding: '0.85rem 1rem', borderRadius: '10px', border: '1.5px solid #0284c7', outline: 'none', fontSize: '0.95rem', fontFamily: 'inherit', background: '#f0f9ff' }}
                   />
+                  <span style={{ fontSize: '0.78rem', color: '#0369a1' }}>
+                    🔒 Pengguna akan menggunakan nomor NIM/NIK ini sebagai password saat login ke sistem.
+                  </span>
+                </div>
+
+                {/* Instansi (Otomatis Politeknik Negeri Batam) */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                  <label style={{ fontWeight: 600, fontSize: '0.9rem', color: '#1e293b' }}>
+                    Instansi Kampus <span style={{ color: '#64748b', fontSize: '0.8rem', fontWeight: 400 }}>(Otomatis terisi internal kampus)</span>
+                  </label>
+                  <input
+                    type="text"
+                    value={addFormData.instansi}
+                    onChange={(e) => setAddFormData({ ...addFormData, instansi: e.target.value })}
+                    style={{ padding: '0.85rem 1rem', borderRadius: '10px', border: '1px solid #cbd5e1', outline: 'none', fontSize: '0.95rem', fontFamily: 'inherit', background: '#f8fafc', color: '#0f172a', fontWeight: 600 }}
+                  />
+                </div>
+
+                {/* Jabatan / Posisi (Opsional) & Nomor Telepon (Opsional) */}
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem' }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                    <label style={{ fontWeight: 600, fontSize: '0.9rem', color: '#1e293b' }}>
+                      Jabatan / Jurusan <span style={{ color: '#64748b', fontSize: '0.8rem', fontWeight: 400 }}>(Opsional)</span>
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="Contoh: Dosen Informatika / Mahasiswa"
+                      value={addFormData.jabatan}
+                      onChange={(e) => setAddFormData({ ...addFormData, jabatan: e.target.value })}
+                      style={{ padding: '0.85rem 1rem', borderRadius: '10px', border: '1px solid #cbd5e1', outline: 'none', fontSize: '0.95rem', fontFamily: 'inherit' }}
+                    />
+                  </div>
+
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                    <label style={{ fontWeight: 600, fontSize: '0.9rem', color: '#1e293b' }}>
+                      Nomor Telepon / WhatsApp <span style={{ color: '#64748b', fontSize: '0.8rem', fontWeight: 400 }}>(Opsional)</span>
+                    </label>
+                    <input
+                      type="tel"
+                      placeholder="Contoh: +62 812-3456-7890"
+                      value={addFormData.telepon}
+                      onChange={(e) => setAddFormData({ ...addFormData, telepon: e.target.value })}
+                      style={{ padding: '0.85rem 1rem', borderRadius: '10px', border: '1px solid #cbd5e1', outline: 'none', fontSize: '0.95rem', fontFamily: 'inherit' }}
+                    />
+                  </div>
                 </div>
 
                 {/* Role */}
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                   <label style={{ fontWeight: 600, fontSize: '0.9rem', color: '#1e293b' }}>
-                    Role <span style={{ color: '#ff5733' }}>*</span>
+                    Role Hak Akses <span style={{ color: '#ff5733' }}>*</span>
                   </label>
                   <select
                     value={addFormData.role}
                     onChange={(e) => setAddFormData({ ...addFormData, role: e.target.value })}
                     style={{ padding: '0.85rem 1rem', borderRadius: '10px', border: '1px solid #cbd5e1', outline: 'none', fontSize: '0.95rem', fontFamily: 'inherit', background: '#fff', cursor: 'pointer' }}
                   >
-                    <option value="Pengguna">Pengguna</option>
+                    <option value="Pengguna">Pengguna Terdaftar</option>
                     <option value="Admin">Admin</option>
                   </select>
                 </div>
@@ -359,7 +425,14 @@ const AdminPengguna = () => {
                             </div>
                             <div>
                               <div className="user-full-name">{user.namaLengkap}</div>
-                              <div className="user-role-tag">{user.role}</div>
+                              <div style={{ display: 'flex', gap: '0.4rem', alignItems: 'center', marginTop: '0.2rem', flexWrap: 'wrap' }}>
+                                <span className="user-role-tag">{user.role}</span>
+                                {user.nimNik && (
+                                  <span style={{ fontSize: '0.75rem', background: '#f1f5f9', color: '#0d3b75', padding: '0.1rem 0.4rem', borderRadius: '4px', fontWeight: 700, fontFamily: 'monospace' }}>
+                                    NIM: {user.nimNik}
+                                  </span>
+                                )}
+                              </div>
                             </div>
                           </div>
                         </td>
@@ -405,6 +478,21 @@ const AdminPengguna = () => {
                                   Aktifkan
                                 </>
                               )}
+                            </button>
+
+                            {/* View Card & QR Link */}
+                            <button
+                              className="btn-action-icon view-card"
+                              onClick={() => navigate(`/card/${user.cardId || user.namaLengkap.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '')}`)}
+                              title="Buka Kartu Nama Digital & QR Pengguna"
+                              style={{ color: '#0d3b75' }}
+                            >
+                              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
+                                <rect x="3" y="3" width="7" height="7"></rect>
+                                <rect x="14" y="3" width="7" height="7"></rect>
+                                <rect x="14" y="14" width="7" height="7"></rect>
+                                <rect x="3" y="14" width="7" height="7"></rect>
+                              </svg>
                             </button>
 
                             {/* Edit Button */}
@@ -474,6 +562,20 @@ const AdminPengguna = () => {
                   />
                 </div>
 
+                <div className="form-group-modal">
+                  <label>NIM / NIK (Kata Sandi Login)</label>
+                  <input
+                    type="text"
+                    value={editingUser.nimNik || ''}
+                    onChange={(e) => setEditingUser({ ...editingUser, nimNik: e.target.value })}
+                    placeholder="Contoh: 3312401001 atau NIK"
+                    required
+                  />
+                  <small style={{ fontSize: '0.78rem', color: '#64748b', marginTop: '0.2rem' }}>
+                    NIM/NIK ini wajib dan digunakan sebagai password login akun pengguna.
+                  </small>
+                </div>
+
                 <div className="modal-row-grid">
                   <div className="form-group-modal">
                     <label>Instansi</label>
@@ -532,6 +634,9 @@ const AdminPengguna = () => {
           </div>
         )}
       </main>
+
+      {/* Footer */}
+      <Footer />
     </div>
   );
 };

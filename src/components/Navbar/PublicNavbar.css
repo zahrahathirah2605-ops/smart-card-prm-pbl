@@ -1,0 +1,124 @@
+.public-navbar {
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  box-sizing: border-box;
+  z-index: 100;
+  height: 76px;
+  background: var(--primary, #12417D);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 4px 18px rgba(18, 65, 125, 0.2);
+  font-family: 'Outfit', sans-serif;
+}
+
+.public-navbar-container {
+  max-width: 1200px;
+  height: 100%;
+  margin: 0 auto;
+  padding: 0 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.public-nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  cursor: pointer;
+  user-select: none;
+  text-decoration: none;
+}
+
+.public-nav-logo-img {
+  height: 52px;
+  width: auto;
+  max-width: 220px;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.15));
+  transition: transform 0.25s ease;
+}
+
+.public-nav-brand:hover .public-nav-logo-img {
+  transform: scale(1.03);
+}
+
+.public-nav-brand-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.brand-poltek-title {
+  color: #ffffff;
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  line-height: 1.2;
+}
+
+.brand-poltek-sub {
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+}
+
+.public-nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+}
+
+.public-nav-btn {
+  font-family: 'Outfit', sans-serif;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.55rem 1.25rem;
+  font-size: 0.92rem;
+  font-weight: 600;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  border: none;
+}
+
+.public-nav-scan {
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.public-nav-scan:hover {
+  background: rgba(255, 255, 255, 0.22);
+  transform: translateY(-1px);
+}
+
+.public-nav-login {
+  background: var(--accent, #FF6347);
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(255, 99, 71, 0.35);
+}
+
+.public-nav-login:hover {
+  background: #ff5233;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(255, 99, 71, 0.45);
+}
+
+@media (max-width: 640px) {
+  .public-navbar-container {
+    padding: 0 1rem;
+  }
+  .brand-poltek-sub {
+    display: none;
+  }
+  .brand-poltek-title {
+    font-size: 0.9rem;
+  }
+  .public-nav-logo-img {
+    height: 42px;
+  }
+}

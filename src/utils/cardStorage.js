@@ -63,10 +63,21 @@ export const saveUserCard = (cardData) => {
   initCardStorage();
   try {
     const existing = getUserCard();
+    let resolvedId = cardData.id || existing.id;
+    if (cardData.namaLengkap && cardData.namaLengkap.trim()) {
+      const generatedSlug = cardData.namaLengkap.toLowerCase().trim()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-+|-+$/g, '');
+      if (generatedSlug) {
+        resolvedId = generatedSlug;
+      }
+    }
+    if (!resolvedId) resolvedId = 'aprillia-bunga';
+
     const updated = {
       ...existing,
       ...cardData,
-      id: cardData.id || existing.id || 'aprillia-bunga'
+      id: resolvedId
     };
     localStorage.setItem(STORAGE_KEY_USER_CARD, JSON.stringify(updated));
 
@@ -105,6 +116,34 @@ export const getCardById = (id) => {
   if (userCard.id === id || !id || id === 'default') {
     return userCard;
   }
+
+  // Lookup in admin registered users
+  try {
+    const rawAdminUsers = localStorage.getItem('smart_card_admin_registered_users');
+    if (rawAdminUsers) {
+      const adminUsers = JSON.parse(rawAdminUsers);
+      const match = adminUsers.find(u => u.cardId === id || u.id === id);
+      if (match) {
+        return {
+          id: match.cardId || id,
+          namaLengkap: match.namaLengkap,
+          nimNik: match.nimNik || '',
+          instansi: match.instansi || 'Politeknik Negeri Batam',
+          jabatan: match.jabatan || 'Civitas Akademika',
+          telepon: match.telepon || '-',
+          email: match.email || '',
+          instagram: '',
+          linkedin: '',
+          portofolio: '',
+          bio: `${match.namaLengkap} merupakan civitas di ${match.instansi || 'Politeknik Negeri Batam'} sebagai ${match.jabatan || 'Civitas Akademika'}.`,
+          photoUrl: ''
+        };
+      }
+    }
+  } catch (err) {
+    console.warn('Error matching admin user for card:', err);
+  }
+
   return {
     ...DEFAULT_CARD,
     id: id || 'aprillia-bunga'

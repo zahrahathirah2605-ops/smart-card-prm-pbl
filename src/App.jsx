@@ -17,6 +17,7 @@ import AdminTambahPengguna from './components/Admin/AdminTambahPengguna';
 
 import KelolaPRM from './components/KelolaPRM/KelolaPRM';
 import KontakRelasi from './components/KontakRelasi/KontakRelasi';
+import Profile from './components/Profile/Profile';
 import './App.css';
 
 function App() {
@@ -28,6 +29,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/card/:id" element={<PublicCard />} />
         <Route path="/home" element={<Home />} />
+        <Route path="/profile" element={<Profile />} />
         <Route path="/kartu-nama" element={<KartuNama />} />
         <Route path="/scan" element={<ScanQR />} />
         <Route path="/janji-temu/:id" element={<JanjiTemu />} />

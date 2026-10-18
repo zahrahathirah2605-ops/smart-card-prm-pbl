@@ -19,15 +19,36 @@
 .admin-nav-logo {
   display: flex;
   align-items: center;
+  gap: 0.9rem;
   cursor: pointer;
   user-select: none;
 }
 
-.admin-logo-text {
-  font-size: 2rem;
-  font-weight: 800;
+.admin-logo-img {
+  height: 52px;
+  width: auto;
+  max-width: 220px;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+.admin-brand-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-brand-title {
   color: #ffffff;
-  letter-spacing: -0.5px;
+  font-size: 1.02rem;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  line-height: 1.2;
+}
+
+.admin-brand-sub {
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 0.72rem;
+  font-weight: 500;
 }
 
 /* Right Nav Container */
@@ -58,7 +79,7 @@
 }
 
 .admin-nav-link:hover {
-  color: #fed7aa;
+  color: rgba(255, 255, 255, 0.85);
   transform: translateY(-1px);
 }
 
@@ -74,7 +95,7 @@
   left: 0;
   width: 100%;
   height: 3px;
-  background-color: #ff6347;
+  background-color: #F97316;
   border-radius: 2px;
 }
 
@@ -84,8 +105,8 @@
 }
 
 .admin-menu-circle-btn {
-  background: rgba(14, 52, 102, 0.85);
-  border: 1.5px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.12);
+  border: 1.5px solid rgba(255, 255, 255, 0.25);
   width: 44px;
   height: 44px;
   border-radius: 50%;
@@ -94,30 +115,30 @@
   justify-content: center;
   cursor: pointer;
   transition: all 0.25s ease;
-  color: #ff6347;
-  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2);
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
 .admin-menu-circle-btn svg line {
-  stroke: #ff6347;
+  stroke: #ffffff;
 }
 
 .admin-menu-circle-btn:hover,
 .admin-menu-circle-btn.open {
-  background: rgba(255, 255, 255, 0.15);
-  border-color: #ff6347;
+  background: rgba(255, 255, 255, 0.25);
+  border-color: #ffffff;
   transform: scale(1.05);
 }
 
-/* Dropdown Menu - Exactly as shown in mockup */
+/* Dropdown Menu - Clean white & crisp modern theme */
 .admin-dropdown-menu {
   position: absolute;
   top: calc(100% + 0.9rem);
   right: 0;
-  background-color: #fff6ee; /* Warm cream/peach background as in mockup */
-  border: 1px solid #fed7aa;
-  border-radius: 10px;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
   min-width: 195px;
   display: flex;
   flex-direction: column;
@@ -153,7 +174,7 @@
 }
 
 .admin-dropdown-item:hover {
-  background-color: #ffeedb;
+  background-color: #f1f5f9;
 }
 
 .dropdown-icon {
@@ -161,16 +182,15 @@
 }
 
 .dropdown-label {
-  font-size: 1.05rem;
-  font-weight: 700;
-  color: #0d3b75; /* Deep navy text as in mockup */
-  letter-spacing: -0.2px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #0f172a;
 }
 
 .admin-dropdown-divider {
   height: 1px;
-  background-color: #fed7aa;
-  margin: 0.1rem 0;
+  background-color: #f1f5f9;
+  margin: 0.2rem 0;
 }
 
 @media (max-width: 768px) {

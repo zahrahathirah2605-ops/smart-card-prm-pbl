@@ -20,9 +20,28 @@ const DigitalCardBadge = ({ card, qrUrl, elementId = 'printable-card' }) => {
       <div className="card-shape-circle top-right"></div>
       <div className="card-shape-circle bottom-left"></div>
 
+      {/* Card Header Brand: Logo Poltek & Tulisan Politeknik Negeri Batam */}
+      <div className="card-top-poltek-header">
+        <div className="card-top-poltek-brand">
+          <img
+            src="/src/assets/logo-poltek-putih.png"
+            alt="Politeknik Negeri Batam"
+            className="card-poltek-logo-img"
+          />
+          <div className="card-poltek-text-block">
+            <span className="card-poltek-univ-name">POLITEKNIK NEGERI BATAM</span>
+            <span className="card-poltek-univ-tag">Official Smart Business Card</span>
+          </div>
+        </div>
+        <div className="card-brand-tag">
+          <span className="brand-dot"></span>
+          SMART CARD
+        </div>
+      </div>
+
       {/* Main Content Layout */}
       <div className="card-inner-grid">
-        {/* Left Column: Avatar & Brand Accent */}
+        {/* Left Column: Avatar */}
         <div className="card-left-identity">
           <div className="card-photo-wrapper">
             {card?.photoUrl ? (
@@ -32,10 +51,6 @@ const DigitalCardBadge = ({ card, qrUrl, elementId = 'printable-card' }) => {
                 {getInitials(card?.namaLengkap)}
               </div>
             )}
-          </div>
-          <div className="card-brand-tag">
-            <span className="brand-dot"></span>
-            SMART CARD
           </div>
         </div>
 

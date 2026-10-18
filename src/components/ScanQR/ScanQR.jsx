@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Scanner } from '@yudiel/react-qr-scanner';
-import Navbar from '../Navbar/Navbar';
+import PublicNavbar from '../Navbar/PublicNavbar';
+import Footer from '../Footer/Footer';
 import { getUserCard } from '../../utils/cardStorage';
 import './ScanQR.css';
 
@@ -75,8 +76,8 @@ const ScanQR = () => {
 
   return (
     <div className="scan-qr-container">
-      {/* Unified Navbar */}
-      <Navbar active="prm" />
+      {/* Public Navbar without redundant Scan button since visitor is already on the scan page */}
+      <PublicNavbar hideScanAction={true} />
 
       {/* Main Content */}
       <div className="scan-main-content">
@@ -167,7 +168,7 @@ const ScanQR = () => {
               </button>
 
               <button
-                onClick={() => handleTestScan(currentCard.id || 'aprillia-bunga')}
+                onClick={() => handleTestScan(currentCard.id || (currentCard.namaLengkap ? currentCard.namaLengkap.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') : 'aprillia-bunga'))}
                 style={{
                   padding: '0.6rem 1rem',
                   borderRadius: '10px',
@@ -179,12 +180,15 @@ const ScanQR = () => {
                   cursor: 'pointer'
                 }}
               >
-                Scan: My Own Card ({currentCard.namaLengkap.split(' ')[0]})
+                Scan: {currentCard.namaLengkap || 'My Digital Card'}
               </button>
             </div>
           </div>
         </div>
       </div>
+
+      {/* Global Campus Footer */}
+      <Footer />
     </div>
   );
 };

@@ -18,15 +18,12 @@ const Navbar = ({ active = 'home' }) => {
         <img
           src={logoImg}
           alt="Politeknik Negeri Batam"
-          style={{
-            height: '46px',
-            width: 'auto',
-            maxWidth: '260px',
-            objectFit: 'contain',
-            display: 'block',
-            cursor: 'pointer'
-          }}
+          className="navbar-brand-logo"
         />
+        <div className="navbar-brand-text">
+          <span className="navbar-poltek-title">POLITEKNIK NEGERI BATAM</span>
+          <span className="navbar-poltek-sub">Smart Card & PRM</span>
+        </div>
       </div>
 
       <div className="nav-links">
@@ -35,7 +32,7 @@ const Navbar = ({ active = 'home' }) => {
           className={active === 'home' ? 'active' : ''}
           onClick={(e) => { e.preventDefault(); navigate('/home'); }}
         >
-          Beranda
+          Home
         </a>
 
         <a
@@ -43,7 +40,7 @@ const Navbar = ({ active = 'home' }) => {
           className={active === 'card' ? 'active' : ''}
           onClick={(e) => { e.preventDefault(); navigate('/kartu-nama'); }}
         >
-          Kartu Nama
+          Business Card
         </a>
 
         {/* PRM Dropdown */}
@@ -64,19 +61,19 @@ const Navbar = ({ active = 'home' }) => {
                 className="prm-item"
                 onClick={() => { setIsPrmOpen(false); navigate('/janji-temu/default'); }}
               >
-                Ajukan PRM
+                Request PRM
               </button>
               <button
                 className="prm-item"
                 onClick={() => { setIsPrmOpen(false); navigate('/kelola-prm'); }}
               >
-                Kelola PRM
+                Manage PRM
               </button>
               <button
                 className="prm-item"
                 onClick={() => { setIsPrmOpen(false); navigate('/riwayat-prm'); }}
               >
-                Riwayat PRM
+                PRM History
               </button>
             </div>
           )}
@@ -87,7 +84,7 @@ const Navbar = ({ active = 'home' }) => {
           <button
             className="menu-icon-btn"
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-            title="Menu Akun"
+            title="Account Menu"
           >
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
               <line x1="3" y1="12" x2="21" y2="12"></line>
@@ -98,16 +95,16 @@ const Navbar = ({ active = 'home' }) => {
 
           {isDropdownOpen && (
             <div className="dropdown-menu">
-              {/* 1. Profile */}
+              {/* 1. Profile (Dedicated Profile Page) */}
               <button
                 className="dropdown-item"
-                onClick={() => { setIsDropdownOpen(false); navigate('/kartu-nama'); }}
+                onClick={() => { setIsDropdownOpen(false); navigate('/profile'); }}
               >
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                   <circle cx="12" cy="7" r="4"></circle>
                 </svg>
-                <span>Profile</span>
+                <span>My Profile</span>
               </button>
 
               {/* 2. Kontak Relasi */}
@@ -118,7 +115,7 @@ const Navbar = ({ active = 'home' }) => {
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
                 </svg>
-                <span>Kontak Relasi</span>
+                <span>Relationship Contacts</span>
               </button>
 
               {/* 3. Tambah Kontak Eksternal */}
@@ -130,17 +127,17 @@ const Navbar = ({ active = 'home' }) => {
                   <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
                   <polyline points="22,6 12,13 2,6"></polyline>
                 </svg>
-                <span>Tambah Kontak Eksternal</span>
+                <span>Scan External Card</span>
               </button>
 
-              {/* 4. Keluar */}
+              {/* 4. Logout */}
               <button className="dropdown-item logout" onClick={handleLogout}>
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
                   <polyline points="16 17 21 12 16 7"></polyline>
                   <line x1="21" y1="12" x2="9" y2="12"></line>
                 </svg>
-                <span>Keluar</span>
+                <span>Logout</span>
               </button>
             </div>
           )}

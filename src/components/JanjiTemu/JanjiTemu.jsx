@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Navbar from '../Navbar/Navbar';
+import PublicNavbar from '../Navbar/PublicNavbar';
+import Footer from '../Footer/Footer';
 import { getCardById, saveAppointment, isUserOwnCard } from '../../utils/cardStorage';
 import './JanjiTemu.css';
 
@@ -49,8 +51,8 @@ const JanjiTemu = () => {
 
   return (
     <div className="jt-page">
-      {/* Unified Navbar */}
-      <Navbar active="prm" />
+      {/* If self previewing use Navbar, if external visitor use PublicNavbar */}
+      {isSelf ? <Navbar active="prm" /> : <PublicNavbar active="prm" />}
 
       {/* Main Container */}
       <main className="jt-main">
@@ -346,6 +348,9 @@ const JanjiTemu = () => {
           </div>
         )}
       </main>
+
+      {/* Global Campus Footer */}
+      <Footer />
     </div>
   );
 };

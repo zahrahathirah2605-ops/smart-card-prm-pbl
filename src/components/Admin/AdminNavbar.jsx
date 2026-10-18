@@ -24,7 +24,15 @@ const AdminNavbar = ({ active = 'beranda' }) => {
       <nav className="admin-navbar">
         {/* Left: Logo */}
         <div className="admin-nav-logo" onClick={() => navigate('/admin')}>
-          <span className="admin-logo-text">Logo</span>
+          <img
+            src="/src/assets/logo-poltek-putih.png"
+            alt="Politeknik Negeri Batam"
+            className="admin-logo-img"
+          />
+          <div className="admin-brand-text">
+            <span className="admin-brand-title">POLITEKNIK NEGERI BATAM</span>
+            <span className="admin-brand-sub">Internal Administrator Portal</span>
+          </div>
         </div>
 
         {/* Right: Navigation Links & Hamburger Dropdown */}
@@ -34,21 +42,21 @@ const AdminNavbar = ({ active = 'beranda' }) => {
               className={`admin-nav-link ${active === 'beranda' || location.pathname === '/admin' ? 'active' : ''}`}
               onClick={() => navigate('/admin')}
             >
-              Beranda
+              Dashboard
             </button>
 
             <button
               className={`admin-nav-link ${active === 'pengguna' || location.pathname === '/admin/pengguna' ? 'active' : ''}`}
               onClick={() => navigate('/admin/pengguna')}
             >
-              Pengguna
+              Users
             </button>
 
             <button
               className={`admin-nav-link ${active === 'aktivitas' || location.pathname === '/admin/aktivitas' ? 'active' : ''}`}
               onClick={() => navigate('/admin/aktivitas')}
             >
-              Aktivitas
+              Activities
             </button>
           </div>
 
@@ -81,7 +89,7 @@ const AdminNavbar = ({ active = 'beranda' }) => {
                     height="20"
                     viewBox="0 0 24 24"
                     fill="none"
-                    stroke="#FF6347"
+                    stroke="#12417D"
                     strokeWidth="2.2"
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -94,7 +102,7 @@ const AdminNavbar = ({ active = 'beranda' }) => {
 
                 <div className="admin-dropdown-divider" />
 
-                {/* 2. Keluar */}
+                {/* 2. Logout */}
                 <button
                   className="admin-dropdown-item"
                   onClick={handleLogout}
@@ -105,7 +113,7 @@ const AdminNavbar = ({ active = 'beranda' }) => {
                     height="20"
                     viewBox="0 0 24 24"
                     fill="none"
-                    stroke="#FF6347"
+                    stroke="#dc2626"
                     strokeWidth="2.2"
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -114,7 +122,7 @@ const AdminNavbar = ({ active = 'beranda' }) => {
                     <polyline points="16 17 21 12 16 7"></polyline>
                     <line x1="21" y1="12" x2="9" y2="12"></line>
                   </svg>
-                  <span className="dropdown-label">Keluar</span>
+                  <span className="dropdown-label" style={{ color: '#dc2626' }}>Logout</span>
                 </button>
               </div>
             )}
