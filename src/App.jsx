@@ -13,6 +13,7 @@ import RiwayatPRM from './components/RiwayatPRM/RiwayatPRM';
 import AdminHome from './components/Admin/AdminHome';
 import AdminPengguna from './components/Admin/AdminPengguna';
 import AdminAktivitas from './components/Admin/AdminAktivitas';
+import AdminTambahPengguna from './components/Admin/AdminTambahPengguna';
 
 import KelolaPRM from './components/KelolaPRM/KelolaPRM';
 import KontakRelasi from './components/KontakRelasi/KontakRelasi';
@@ -36,6 +37,7 @@ function App() {
         <Route path="/admin" element={<AdminHome />} />
         <Route path="/admin/pengguna" element={<AdminPengguna />} />
         <Route path="/admin/aktivitas" element={<AdminAktivitas />} />
+        <Route path="/admin/tambah-pengguna" element={<AdminTambahPengguna />} />
         <Route path="/kelola-prm" element={<KelolaPRM />} />
         <Route path="/kontak-relasi" element={<KontakRelasi />} />
       </Routes>
