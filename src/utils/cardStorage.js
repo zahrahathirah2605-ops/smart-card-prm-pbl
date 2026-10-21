@@ -256,3 +256,47 @@ export const getStoredAppointments = () => {
     return [];
   }
 };
+
+// Update appointment status with decision reason and email log
+export const updateAppointmentStatus = (id, status, alasanRespon = '', catatanTambahan = '') => {
+  initCardStorage();
+  try {
+    const list = getStoredAppointments();
+    let updatedItem = null;
+    const statusClass = status === 'Accepted' || status === 'Disetujui' 
+      ? 'status-selesai' 
+      : status === 'Declined' || status === 'Ditolak' 
+        ? 'status-ditolak' 
+        : 'status-ulang';
+
+    const updatedList = list.map(item => {
+      if (item.id === id) {
+        const notifEmail = {
+          sentTo: item.emailPemohon || 'external@partner.com',
+          status: status,
+          alasan: alasanRespon,
+          catatan: catatanTambahan,
+          sentAt: new Date().toISOString()
+        };
+
+        updatedItem = {
+          ...item,
+          status,
+          statusClass,
+          alasanRespon,
+          catatanTambahan,
+          emailNotifikasi: notifEmail,
+          updatedAt: new Date().toISOString()
+        };
+        return updatedItem;
+      }
+      return item;
+    });
+
+    localStorage.setItem(STORAGE_KEY_APPOINTMENTS, JSON.stringify(updatedList));
+    return updatedItem;
+  } catch (e) {
+    console.error('Error updating appointment status:', e);
+    return null;
+  }
+};

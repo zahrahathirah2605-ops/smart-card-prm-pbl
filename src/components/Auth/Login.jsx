@@ -74,8 +74,10 @@ const Login = () => {
     );
 
     if (foundUser) {
-      // Validate password: NIM/NIK is the primary password, with fallback to 'pbljaya'
-      const expectedPassword = (foundUser.nimNik && foundUser.nimNik !== '-') ? foundUser.nimNik.trim() : 'pbljaya';
+      // Validate password: customPassword if user already changed it, otherwise NIM/NIK or 'pbljaya'
+      const expectedPassword = foundUser.customPassword 
+        ? foundUser.customPassword.trim() 
+        : (foundUser.nimNik && foundUser.nimNik !== '-') ? foundUser.nimNik.trim() : 'pbljaya';
       const cleanInputPassword = password.trim();
 
       if (cleanInputPassword === expectedPassword || cleanInputPassword === 'pbljaya') {

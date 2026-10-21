@@ -87,6 +87,11 @@ const RiwayatPRM = () => {
                     <td>
                       <div style={{ fontWeight: 600, color: '#1e293b' }}>{item.permintaan}</div>
                       {item.jam && <div style={{ fontSize: '0.75rem', color: '#64748b' }}>Time: {item.jam}</div>}
+                      {item.alasanRespon && (
+                        <div style={{ fontSize: '0.73rem', color: '#475569', marginTop: '4px', fontStyle: 'italic' }}>
+                          💬 Catatan/Alasan: "{item.alasanRespon}"
+                        </div>
+                      )}
                     </td>
                     <td>{item.tujuan}</td>
                     <td>{item.date}</td>
@@ -94,6 +99,11 @@ const RiwayatPRM = () => {
                       <span className={`prm-status-badge ${item.statusClass}`}>
                         {item.status}
                       </span>
+                      {item.emailNotifikasi && (
+                        <div style={{ fontSize: '0.68rem', color: '#16a34a', marginTop: '3px' }}>
+                          ✓ Notifikasi Email
+                        </div>
+                      )}
                     </td>
                   </tr>
                 ))

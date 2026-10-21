@@ -91,3 +91,331 @@
   background-color: #f1f5f9;
   color: #0f172a;
 }
+
+/* Banner Alert Notifikasi Email */
+.prm-email-alert-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  border-radius: 12px;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  animation: slideDown 0.3s ease-out;
+}
+
+.prm-email-alert-banner.success {
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  color: #166534;
+}
+
+.prm-email-alert-banner.warning {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #991b1b;
+}
+
+.prm-email-alert-icon {
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.prm-email-alert-text strong {
+  display: block;
+  font-size: 0.95rem;
+  margin-bottom: 0.25rem;
+}
+
+.prm-email-alert-text p {
+  margin: 0;
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+
+.prm-email-alert-quote {
+  margin-top: 0.5rem;
+  padding: 0.35rem 0.75rem;
+  background: rgba(255,255,255,0.7);
+  border-left: 3px solid currentColor;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-style: italic;
+}
+
+.prm-alert-close {
+  background: transparent;
+  border: none;
+  font-size: 1.1rem;
+  color: inherit;
+  cursor: pointer;
+  margin-left: auto;
+  opacity: 0.7;
+}
+
+.prm-alert-close:hover {
+  opacity: 1;
+}
+
+/* Modal Overlay & Container */
+.prm-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.prm-modal-container {
+  background: #ffffff;
+  border-radius: 16px;
+  max-width: 620px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 40px -15px rgba(0,0,0,0.25);
+  display: flex;
+  flex-direction: column;
+}
+
+.prm-modal-header {
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.prm-modal-title-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.prm-modal-badge {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 0.25rem 0.6rem;
+  border-radius: 999px;
+  letter-spacing: 0.04em;
+}
+
+.prm-modal-badge.accept {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.prm-modal-badge.reject {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.prm-modal-heading {
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.prm-modal-close-btn {
+  background: transparent;
+  border: none;
+  font-size: 1.25rem;
+  cursor: pointer;
+  color: #64748b;
+  padding: 0.25rem;
+  line-height: 1;
+}
+
+.prm-modal-close-btn:hover {
+  color: #0f172a;
+}
+
+.prm-modal-body {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+}
+
+.prm-recipient-card {
+  display: flex;
+  gap: 0.85rem;
+  padding: 0.85rem 1rem;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  align-items: center;
+}
+
+.prm-recipient-icon {
+  font-size: 1.4rem;
+}
+
+.prm-recipient-name {
+  font-size: 0.88rem;
+  color: #1e293b;
+}
+
+.prm-recipient-email {
+  font-size: 0.8rem;
+  color: #0284c7;
+  margin-top: 1px;
+}
+
+.prm-recipient-email code {
+  background: #e0f2fe;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.prm-recipient-sub {
+  font-size: 0.75rem;
+  color: #64748b;
+  margin-top: 3px;
+}
+
+.prm-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.prm-input-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #334155;
+}
+
+.prm-required {
+  color: #ef4444;
+  font-size: 0.75rem;
+}
+
+.prm-textarea, .prm-text-input {
+  width: 100%;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 0.65rem 0.85rem;
+  font-family: inherit;
+  font-size: 0.85rem;
+  color: #1e293b;
+  box-sizing: border-box;
+  transition: border-color 0.2s;
+}
+
+.prm-textarea:focus, .prm-text-input:focus {
+  outline: none;
+  border-color: #ff5733;
+}
+
+.prm-input-hint {
+  font-size: 0.75rem;
+  color: #64748b;
+}
+
+/* Email Preview Box */
+.prm-email-preview-box {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 0.85rem 1rem;
+}
+
+.prm-preview-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #475569;
+  margin-bottom: 0.5rem;
+}
+
+.prm-preview-to {
+  color: #0284c7;
+}
+
+.prm-preview-content {
+  font-size: 0.8rem;
+  color: #334155;
+  line-height: 1.45;
+}
+
+.prm-preview-reason-quote {
+  background: #ffffff;
+  border: 1px dashed #cbd5e1;
+  border-radius: 6px;
+  padding: 0.5rem 0.75rem;
+  margin: 0.5rem 0;
+  font-size: 0.78rem;
+  color: #1e293b;
+}
+
+.prm-modal-footer {
+  padding: 1rem 1.5rem;
+  border-top: 1px solid #e2e8f0;
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  background: #fafafa;
+  border-bottom-left-radius: 16px;
+  border-bottom-right-radius: 16px;
+}
+
+.prm-modal-cancel-btn {
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  color: #64748b;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.prm-modal-cancel-btn:hover {
+  background: #f1f5f9;
+}
+
+.prm-modal-submit-btn {
+  border: none;
+  color: #ffffff;
+  padding: 0.5rem 1.25rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.prm-modal-submit-btn.accept {
+  background: #ff5733;
+}
+
+.prm-modal-submit-btn.accept:hover {
+  background: #e04824;
+}
+
+.prm-modal-submit-btn.reject {
+  background: #dc2626;
+}
+
+.prm-modal-submit-btn.reject:hover {
+  background: #b91c1c;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}

@@ -502,3 +502,53 @@ export const getAdminStatistics = () => {
     totalInteraksiPRM: 7
   };
 };
+
+// Change registered user password (FR-PRM-Password)
+export const changeUserPassword = (userEmail, oldPassword, newPassword) => {
+  initAdminStorage();
+  try {
+    const users = getAdminUsers();
+    const cleanEmail = (userEmail || '').trim().toLowerCase();
+    const userIndex = users.findIndex(u => u.email && u.email.trim().toLowerCase() === cleanEmail);
+
+    if (userIndex === -1) {
+      return { success: false, message: 'Akun pengguna tidak ditemukan dalam database.' };
+    }
+
+    const targetUser = users[userIndex];
+    // Current valid password: customPassword if set, otherwise nimNik or 'pbljaya'
+    const expectedPassword = targetUser.customPassword || targetUser.nimNik || 'pbljaya';
+
+    if (oldPassword.trim() !== expectedPassword.trim() && oldPassword.trim() !== 'pbljaya') {
+      return { success: false, message: 'Kata sandi lama yang Anda masukkan tidak sesuai.' };
+    }
+
+    if (!newPassword || newPassword.trim().length < 6) {
+      return { success: false, message: 'Kata sandi baru minimal harus 6 karakter.' };
+    }
+
+    users[userIndex] = {
+      ...targetUser,
+      customPassword: newPassword.trim(),
+      passwordChangedAt: new Date().toISOString()
+    };
+
+    localStorage.setItem(STORAGE_KEY_ADMIN_USERS, JSON.stringify(users));
+
+    // Append security activity log
+    addActivityLog({
+      aktor: targetUser.namaLengkap,
+      email: cleanEmail,
+      kategori: 'Keamanan Akun',
+      aksi: `Pengguna berhasil memperbarui kata sandi mandiri (${cleanEmail})`,
+      status: 'Sukses',
+      statusClass: 'log-success',
+      perangkat: 'Profile Security'
+    });
+
+    return { success: true, message: 'Kata sandi berhasil diperbarui! Silakan gunakan kata sandi baru untuk login selanjutnya.' };
+  } catch (err) {
+    console.error('Error changing user password:', err);
+    return { success: false, message: 'Terjadi kesalahan sistem saat memperbarui kata sandi.' };
+  }
+};

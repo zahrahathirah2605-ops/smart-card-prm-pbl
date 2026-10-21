@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Navbar from '../Navbar/Navbar';
 import Footer from '../Footer/Footer';
 import { getUserCard, saveUserCard } from '../../utils/cardStorage';
+import { changeUserPassword } from '../../utils/adminStorage';
 import './Profile.css';
 
 const Profile = () => {
@@ -20,6 +21,16 @@ const Profile = () => {
     linkedin: '',
     bio: ''
   });
+
+  // State untuk Ubah Kata Sandi
+  const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
+  const [passwordData, setPasswordData] = useState({
+    oldPassword: '',
+    newPassword: '',
+    confirmPassword: ''
+  });
+  const [passwordMsg, setPasswordMsg] = useState({ type: '', text: '' });
+  const [isChangingPass, setIsChangingPass] = useState(false);
 
   useEffect(() => {
     const current = getUserCard();
@@ -50,6 +61,42 @@ const Profile = () => {
     setIsEditing(false);
     setSaveSuccess(true);
     setTimeout(() => setSaveSuccess(false), 3000);
+  };
+
+  const handlePasswordSubmit = (e) => {
+    e.preventDefault();
+    setPasswordMsg({ type: '', text: '' });
+
+    if (!passwordData.oldPassword) {
+      setPasswordMsg({ type: 'error', text: 'Masukkan kata sandi lama (NIM/NIK default atau password saat ini).' });
+      return;
+    }
+
+    if (passwordData.newPassword.length < 6) {
+      setPasswordMsg({ type: 'error', text: 'Kata sandi baru minimal harus 6 karakter.' });
+      return;
+    }
+
+    if (passwordData.newPassword !== passwordData.confirmPassword) {
+      setPasswordMsg({ type: 'error', text: 'Konfirmasi kata sandi baru tidak cocok.' });
+      return;
+    }
+
+    setIsChangingPass(true);
+    setTimeout(() => {
+      const result = changeUserPassword(profile.email, passwordData.oldPassword, passwordData.newPassword);
+      setIsChangingPass(false);
+      if (result.success) {
+        setPasswordMsg({ type: 'success', text: result.message });
+        setPasswordData({ oldPassword: '', newPassword: '', confirmPassword: '' });
+        setTimeout(() => {
+          setIsPasswordModalOpen(false);
+          setPasswordMsg({ type: '', text: '' });
+        }, 2500);
+      } else {
+        setPasswordMsg({ type: 'error', text: result.message });
+      }
+    }, 500);
   };
 
   return (
@@ -240,8 +287,133 @@ const Profile = () => {
                 </button>
               </div>
             </div>
+
+            {/* Security / Change Password Card */}
+            <div className="profile-section-card">
+              <h3 className="sidebar-card-title">🔐 Keamanan Akun</h3>
+              <p className="sidebar-card-desc">
+                Saat pertama kali didaftarkan oleh admin, kata sandi Anda adalah NIM/NIK. Anda dapat mengganti kata sandi mandiri di sini.
+              </p>
+              <button
+                type="button"
+                className="btn-full-action"
+                style={{ background: '#0284c7', borderColor: '#0284c7', color: '#fff' }}
+                onClick={() => {
+                  setPasswordMsg({ type: '', text: '' });
+                  setIsPasswordModalOpen(true);
+                }}
+              >
+                🔑 Ubah Kata Sandi
+              </button>
+            </div>
           </div>
         </div>
+
+        {/* Modal Ubah Kata Sandi */}
+        {isPasswordModalOpen && (
+          <div className="prm-modal-overlay" onClick={() => !isChangingPass && setIsPasswordModalOpen(false)}>
+            <div className="prm-modal-container" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '480px' }}>
+              <div className="prm-modal-header">
+                <div className="prm-modal-title-row">
+                  <span className="prm-modal-badge accept">Keamanan</span>
+                  <h3 className="prm-modal-heading">Ubah Kata Sandi Akun</h3>
+                </div>
+                <button
+                  className="prm-modal-close-btn"
+                  onClick={() => setIsPasswordModalOpen(false)}
+                  disabled={isChangingPass}
+                >
+                  ✕
+                </button>
+              </div>
+
+              <form onSubmit={handlePasswordSubmit}>
+                <div className="prm-modal-body">
+                  <p style={{ fontSize: '0.85rem', color: '#64748b', margin: 0 }}>
+                    Akun: <strong>{profile.email}</strong> ({profile.namaLengkap})
+                  </p>
+
+                  {passwordMsg.text && (
+                    <div style={{
+                      padding: '0.75rem 1rem',
+                      borderRadius: '8px',
+                      fontSize: '0.85rem',
+                      background: passwordMsg.type === 'success' ? '#f0fdf4' : '#fef2f2',
+                      color: passwordMsg.type === 'success' ? '#166534' : '#991b1b',
+                      border: `1px solid ${passwordMsg.type === 'success' ? '#bbf7d0' : '#fecaca'}`
+                    }}>
+                      {passwordMsg.type === 'success' ? '✓ ' : '⚠️ '}
+                      {passwordMsg.text}
+                    </div>
+                  )}
+
+                  <div className="prm-input-group">
+                    <label className="prm-input-label">
+                      Kata Sandi Lama <span className="prm-required">* (NIM/NIK atau password saat ini)</span>
+                    </label>
+                    <input
+                      type="password"
+                      className="prm-text-input"
+                      placeholder="Masukkan NIM/NIK atau kata sandi lama"
+                      value={passwordData.oldPassword}
+                      onChange={(e) => setPasswordData({ ...passwordData, oldPassword: e.target.value })}
+                      disabled={isChangingPass}
+                      required
+                    />
+                  </div>
+
+                  <div className="prm-input-group">
+                    <label className="prm-input-label">
+                      Kata Sandi Baru <span className="prm-required">* (Minimal 6 karakter)</span>
+                    </label>
+                    <input
+                      type="password"
+                      className="prm-text-input"
+                      placeholder="Buat kata sandi baru yang aman"
+                      value={passwordData.newPassword}
+                      onChange={(e) => setPasswordData({ ...passwordData, newPassword: e.target.value })}
+                      disabled={isChangingPass}
+                      required
+                    />
+                  </div>
+
+                  <div className="prm-input-group">
+                    <label className="prm-input-label">
+                      Konfirmasi Kata Sandi Baru <span className="prm-required">*</span>
+                    </label>
+                    <input
+                      type="password"
+                      className="prm-text-input"
+                      placeholder="Ulangi kata sandi baru"
+                      value={passwordData.confirmPassword}
+                      onChange={(e) => setPasswordData({ ...passwordData, confirmPassword: e.target.value })}
+                      disabled={isChangingPass}
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div className="prm-modal-footer">
+                  <button
+                    type="button"
+                    className="prm-modal-cancel-btn"
+                    onClick={() => setIsPasswordModalOpen(false)}
+                    disabled={isChangingPass}
+                  >
+                    Batal
+                  </button>
+                  <button
+                    type="submit"
+                    className="prm-modal-submit-btn accept"
+                    disabled={isChangingPass}
+                  >
+                    {isChangingPass ? 'Menyimpan...' : 'Simpan Kata Sandi Baru'}
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
       </main>
 
       <Footer />
