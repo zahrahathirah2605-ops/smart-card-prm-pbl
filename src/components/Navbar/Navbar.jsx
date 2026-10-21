@@ -32,7 +32,7 @@ const Navbar = ({ active = 'home' }) => {
           className={active === 'home' ? 'active' : ''}
           onClick={(e) => { e.preventDefault(); navigate('/home'); }}
         >
-          Home
+          Beranda
         </a>
 
         <a
@@ -40,7 +40,7 @@ const Navbar = ({ active = 'home' }) => {
           className={active === 'card' ? 'active' : ''}
           onClick={(e) => { e.preventDefault(); navigate('/kartu-nama'); }}
         >
-          Business Card
+          Kartu Nama
         </a>
 
         {/* PRM Dropdown */}
@@ -59,9 +59,9 @@ const Navbar = ({ active = 'home' }) => {
             <div className="prm-menu">
               <button
                 className="prm-item"
-                onClick={() => { setIsPrmOpen(false); navigate('/janji-temu/default'); }}
+                onClick={() => { setIsPrmOpen(false); navigate('/jadwal-prm'); }}
               >
-                Request PRM
+                Jadwal Pertemuan
               </button>
               <button
                 className="prm-item"

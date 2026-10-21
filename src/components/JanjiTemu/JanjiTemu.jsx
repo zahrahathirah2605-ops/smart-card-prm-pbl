@@ -51,8 +51,8 @@ const JanjiTemu = () => {
 
   return (
     <div className="jt-page">
-      {/* If self previewing use Navbar, if external visitor use PublicNavbar */}
-      {isSelf ? <Navbar active="prm" /> : <PublicNavbar active="prm" />}
+      {/* If self previewing use Navbar, if external visitor use PublicNavbar without scan action */}
+      {isSelf ? <Navbar active="prm" /> : <PublicNavbar active="prm" hideScanAction={true} />}
 
       {/* Main Container */}
       <main className="jt-main">

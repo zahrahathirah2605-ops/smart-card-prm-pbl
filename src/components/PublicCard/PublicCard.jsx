@@ -57,7 +57,7 @@ const PublicCard = () => {
   return (
     <div className="public-card-page">
       {/* If viewing own card as logged-in user, use User Navbar. Otherwise, always show clean PublicNavbar */}
-      {isSelf ? <Navbar active="card" /> : <PublicNavbar active="card" />}
+      {isSelf ? <Navbar active="card" /> : <PublicNavbar active="card" hideScanAction={true} />}
 
       {/* Main Content */}
       <div className="card-main-content">

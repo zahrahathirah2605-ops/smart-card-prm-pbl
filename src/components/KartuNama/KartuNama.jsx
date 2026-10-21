@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../Navbar/Navbar';
+import Footer from '../Footer/Footer';
 import DigitalCardBadge from './DigitalCardBadge';
 import { getUserCard, saveUserCard, exportCardToPDF } from '../../utils/cardStorage';
 import './KartuNama.css';
@@ -316,13 +317,16 @@ const KartuNama = () => {
 
               <div className="kn-submit-wrapper">
                 <button type="submit" className="kn-submit-btn">
-                  💾 Save Card Changes
+                   💾 Save Card Changes
                 </button>
               </div>
             </form>
           </div>
         </div>
       </main>
+
+      {/* Global Campus Footer */}
+      <Footer />
     </div>
   );
 };

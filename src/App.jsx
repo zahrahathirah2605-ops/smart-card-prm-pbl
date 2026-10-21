@@ -7,6 +7,7 @@ import KartuNama from './components/KartuNama/KartuNama';
 import PublicCard from './components/PublicCard/PublicCard';
 import ScanQR from './components/ScanQR/ScanQR';
 import JanjiTemu from './components/JanjiTemu/JanjiTemu';
+import JadwalPertemuan from './components/JanjiTemu/JadwalPertemuan';
 import RiwayatPRM from './components/RiwayatPRM/RiwayatPRM';
 
 // Admin Components
@@ -33,6 +34,7 @@ function App() {
         <Route path="/kartu-nama" element={<KartuNama />} />
         <Route path="/scan" element={<ScanQR />} />
         <Route path="/janji-temu/:id" element={<JanjiTemu />} />
+        <Route path="/jadwal-prm" element={<JadwalPertemuan />} />
         <Route path="/riwayat-prm" element={<RiwayatPRM />} />
 
         {/* Admin Routes */}

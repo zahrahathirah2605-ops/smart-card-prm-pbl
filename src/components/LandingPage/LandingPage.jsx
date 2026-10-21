@@ -9,8 +9,8 @@ const LandingPage = () => {
 
   return (
     <div className="landing-wrapper">
-      {/* Public Navbar (no internal routes) */}
-      <PublicNavbar />
+      {/* Public Navbar (no duplicate scan action since hero has prominent scan box) */}
+      <PublicNavbar hideScanAction={true} />
 
       {/* Hero Section */}
       <section className="hero-section">

@@ -107,7 +107,29 @@ const Home = () => {
               </div>
             </div>
 
-            <div style={{ marginTop: '1.5rem', paddingTop: '1.25rem', borderTop: '1px solid #f1f5f9' }}>
+            <div style={{ marginTop: '1.5rem', paddingTop: '1.25rem', borderTop: '1px solid #f1f5f9', display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
+              <button
+                type="button"
+                onClick={() => navigate('/jadwal-prm')}
+                style={{
+                  width: '100%',
+                  padding: '0.75rem',
+                  borderRadius: '10px',
+                  border: 'none',
+                  background: 'var(--primary, #12417D)',
+                  color: '#ffffff',
+                  fontWeight: 700,
+                  fontSize: '0.88rem',
+                  cursor: 'pointer',
+                  fontFamily: 'inherit',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '0.5rem'
+                }}
+              >
+                📅 Lihat Kalender Jadwal PRM →
+              </button>
               <button
                 type="button"
                 onClick={() => navigate('/profile')}

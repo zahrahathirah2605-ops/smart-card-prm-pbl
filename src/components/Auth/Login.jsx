@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Footer from '../Footer/Footer';
 import { isUserAccountActive, addActivityLog, getAdminUsers } from '../../utils/adminStorage';
 import './Auth.css';
 
@@ -146,112 +147,117 @@ const Login = () => {
   };
 
   return (
-    <div className="auth-wrapper">
-      <div className="auth-card">
-        {/* Header with Institution Identity */}
-        <div className="auth-brand-badge">
-          <img
-            src="/src/assets/logo-poltek-putih.png"
-            alt="Politeknik Negeri Batam"
-            className="auth-poltek-logo"
-          />
-          <div className="auth-brand-text">
-            <span>POLITEKNIK NEGERI BATAM</span>
-            <small>Smart Business Card & PRM</small>
-          </div>
-        </div>
-
-        <h2 className="auth-title">
-          System Login
-        </h2>
-        <p className="auth-subtitle">
-          Please select your account role and enter your credentials
-        </p>
-
-        {error && (
-          <div className="auth-error-box">
-            {error}
-          </div>
-        )}
-
-        <form className="auth-form" onSubmit={handleLogin}>
-          {/* Role Dropdown Selector */}
-          <div className="form-group">
-            <label htmlFor="role-select">Select Account Role</label>
-            <div className="select-wrapper">
-              <select
-                id="role-select"
-                className="auth-role-select"
-                value={role}
-                onChange={(e) => handleRoleChange(e.target.value)}
-              >
-                <option value="user">👤 Registered User (Students / Faculty / Staff)</option>
-                <option value="admin">🛡️ System Administrator</option>
-              </select>
-            </div>
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="email">
-              {role === 'admin' ? 'Administrator Email' : 'User Email Address'}
-            </label>
-            <input
-              type="email"
-              id="email"
-              placeholder={role === 'admin' ? 'admin@gmail.com' : 'smart.card@gmail.com'}
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
+    <div className="login-page-container">
+      <div className="auth-wrapper">
+        <div className="auth-card">
+          {/* Header with Institution Identity */}
+          <div className="auth-brand-badge">
+            <img
+              src="/src/assets/logo-poltek-putih.png"
+              alt="Politeknik Negeri Batam"
+              className="auth-poltek-logo"
             />
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="password">
-              {role === 'admin' ? 'Admin Password' : 'Password (NIM / NIK Number)'}
-            </label>
-            <input
-              type="password"
-              id="password"
-              placeholder={role === 'admin' ? '••••••••' : 'Enter your NIM or NIK'}
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </div>
-
-          {/* Quick Demo Helper Hint */}
-          <div className="demo-credentials-box">
-            <div className="demo-hint-title">
-              💡 Demo Credentials ({role === 'admin' ? 'Admin' : 'User'}):
-            </div>
-            <div className="demo-hint-code">
-              {role === 'admin' ? (
-                <>
-                  Email: <strong>admin@gmail.com</strong> | Password: <strong>admin123</strong>
-                </>
-              ) : (
-                <>
-                  Email: <strong>smart.card@gmail.com</strong> | Password (NIM): <strong>3312401001</strong> (or <strong>pbljaya</strong>)
-                </>
-              )}
+            <div className="auth-brand-text">
+              <span>POLITEKNIK NEGERI BATAM</span>
+              <small>Smart Business Card & PRM</small>
             </div>
           </div>
 
-          <button type="submit" className={`auth-submit-btn ${role === 'admin' ? 'btn-admin-login' : ''}`}>
-            {role === 'admin' ? 'Login to Admin Dashboard →' : 'Login to User Portal →'}
-          </button>
-        </form>
+          <h2 className="auth-title">
+            System Login
+          </h2>
+          <p className="auth-subtitle">
+            Please select your account role and enter your credentials
+          </p>
 
-        <div className="auth-bottom-switch">
-          <button
-            type="button"
-            className="switch-link-btn"
-            onClick={() => navigate('/')}
-          >
-            ← Back to Homepage
-          </button>
+          {error && (
+            <div className="auth-error-box">
+              {error}
+            </div>
+          )}
+
+          <form className="auth-form" onSubmit={handleLogin}>
+            {/* Role Dropdown Selector */}
+            <div className="form-group">
+              <label htmlFor="role-select">Select Account Role</label>
+              <div className="select-wrapper">
+                <select
+                  id="role-select"
+                  className="auth-role-select"
+                  value={role}
+                  onChange={(e) => handleRoleChange(e.target.value)}
+                >
+                  <option value="user">👤 Registered User (Students / Faculty / Staff)</option>
+                  <option value="admin">🛡️ System Administrator</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="email">
+                {role === 'admin' ? 'Administrator Email' : 'User Email Address'}
+              </label>
+              <input
+                type="email"
+                id="email"
+                placeholder={role === 'admin' ? 'admin@gmail.com' : 'smart.card@gmail.com'}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="password">
+                {role === 'admin' ? 'Admin Password' : 'Password (NIM / NIK Number)'}
+              </label>
+              <input
+                type="password"
+                id="password"
+                placeholder={role === 'admin' ? '••••••••' : 'Enter your NIM or NIK'}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </div>
+
+            {/* Quick Demo Helper Hint */}
+            <div className="demo-credentials-box">
+              <div className="demo-hint-title">
+                💡 Demo Credentials ({role === 'admin' ? 'Admin' : 'User'}):
+              </div>
+              <div className="demo-hint-code">
+                {role === 'admin' ? (
+                  <>
+                    Email: <strong>admin@gmail.com</strong> | Password: <strong>admin123</strong>
+                  </>
+                ) : (
+                  <>
+                    Email: <strong>smart.card@gmail.com</strong> | Password (NIM): <strong>3312401001</strong> (or <strong>pbljaya</strong>)
+                  </>
+                )}
+              </div>
+            </div>
+
+            <button type="submit" className={`auth-submit-btn ${role === 'admin' ? 'btn-admin-login' : ''}`}>
+              {role === 'admin' ? 'Login to Admin Dashboard →' : 'Login to User Portal →'}
+            </button>
+          </form>
+
+          <div className="auth-bottom-switch">
+            <button
+              type="button"
+              className="switch-link-btn"
+              onClick={() => navigate('/')}
+            >
+              ← Back to Homepage
+            </button>
+          </div>
         </div>
       </div>
+
+      {/* Global Campus Footer */}
+      <Footer />
     </div>
   );
 };

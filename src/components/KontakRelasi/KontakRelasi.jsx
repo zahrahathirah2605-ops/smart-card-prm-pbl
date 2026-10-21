@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../Navbar/Navbar';
+import Footer from '../Footer/Footer';
 import './KontakRelasi.css';
 
 const KontakRelasi = () => {
@@ -105,6 +106,9 @@ const KontakRelasi = () => {
           </table>
         </div>
       </main>
+
+      {/* Global Campus Footer */}
+      <Footer />
     </div>
   );
 };

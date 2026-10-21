@@ -1,10 +1,17 @@
-.auth-wrapper {
+.login-page-container {
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #f1f5f9;
+}
+
+.auth-wrapper {
+  flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #f1f5f9;
-  padding: 2rem;
+  width: 100%;
+  padding: 3rem 1.5rem;
   font-family: 'Outfit', sans-serif;
   color: var(--text-strong);
 }
@@ -17,6 +24,7 @@
   border-radius: 20px;
   box-shadow: 0 16px 36px rgba(13, 59, 117, 0.08);
   border: 1px solid #e2e8f0;
+  margin: 0 auto;
 }
 
 /* Brand Badge on Top of Login Form */

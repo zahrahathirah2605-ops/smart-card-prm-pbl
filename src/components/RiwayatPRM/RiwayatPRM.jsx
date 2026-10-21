@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../Navbar/Navbar';
+import Footer from '../Footer/Footer';
 import { getStoredAppointments } from '../../utils/cardStorage';
 import './RiwayatPRM.css';
 
@@ -107,6 +108,9 @@ const RiwayatPRM = () => {
           </table>
         </div>
       </main>
+
+      {/* Global Campus Footer */}
+      <Footer />
     </div>
   );
 };
