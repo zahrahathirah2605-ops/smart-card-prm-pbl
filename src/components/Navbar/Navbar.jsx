@@ -9,6 +9,7 @@ const Navbar = ({ active = 'home' }) => {
   const [isPrmOpen, setIsPrmOpen] = useState(false);
 
   const handleLogout = () => {
+    localStorage.removeItem('smart_card_logged_role');
     navigate('/');
   };
 

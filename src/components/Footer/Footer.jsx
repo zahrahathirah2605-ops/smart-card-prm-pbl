@@ -57,10 +57,6 @@ const Footer = () => {
           <p className="footer-copyright">
             © {new Date().getFullYear()} Politeknik Negeri Batam. All Rights Reserved. Smart Business Card PRM System.
           </p>
-          <div className="footer-badge">
-            <span className="dot-live"></span>
-            <span>Campus Internal Network</span>
-          </div>
         </div>
       </div>
     </footer>

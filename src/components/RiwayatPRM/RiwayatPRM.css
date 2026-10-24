@@ -157,3 +157,178 @@
   color: #94a3b8;
   font-size: 0.95rem;
 }
+
+/* Clickable Table Rows */
+.prm-clickable-row {
+  cursor: pointer;
+  transition: background-color 0.15s ease, transform 0.1s ease;
+}
+
+.prm-clickable-row:hover {
+  background-color: #f1f5f9 !important;
+}
+
+.prm-ref-badge {
+  display: inline-block;
+  background: #f1f5f9;
+  color: #1e293b;
+  font-weight: 700;
+  padding: 0.25rem 0.6rem;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  border: 1px solid #e2e8f0;
+}
+
+.prm-row-title {
+  font-weight: 600;
+  color: #0f172a;
+  font-size: 0.92rem;
+  line-height: 1.4;
+}
+
+.prm-row-time {
+  font-size: 0.76rem;
+  color: #64748b;
+  margin-top: 3px;
+}
+
+.prm-row-note {
+  font-size: 0.74rem;
+  color: #475569;
+  margin-top: 4px;
+  font-style: italic;
+  background: #f8fafc;
+  padding: 3px 6px;
+  border-radius: 4px;
+  border-left: 2px solid #cbd5e1;
+}
+
+.prm-partner-name {
+  font-weight: 600;
+  color: #1e293b;
+  font-size: 0.9rem;
+}
+
+.prm-partner-org {
+  font-size: 0.76rem;
+  color: #64748b;
+  margin-top: 2px;
+}
+
+.prm-partner-email {
+  font-size: 0.74rem;
+  color: #0284c7;
+  margin-top: 2px;
+}
+
+.prm-date-cell {
+  font-size: 0.84rem;
+  color: #334155;
+  font-weight: 500;
+}
+
+.prm-email-notif-label {
+  font-size: 0.68rem;
+  color: #16a34a;
+  margin-top: 3px;
+  font-weight: 600;
+}
+
+/* Action: Simpan ke Kontak Relasi Buttons */
+.btn-save-contact-action {
+  padding: 0.4rem 0.75rem;
+  border-radius: 8px;
+  border: 1px solid #ff5733;
+  background: #fff5f2;
+  color: #ff5733;
+  font-size: 0.76rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  font-family: inherit;
+}
+
+.btn-save-contact-action:hover:not(:disabled) {
+  background: #ff5733;
+  color: #ffffff;
+  box-shadow: 0 2px 6px rgba(255, 87, 51, 0.25);
+}
+
+.btn-save-contact-action.already-saved {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+  color: #64748b;
+  cursor: default;
+}
+
+.btn-save-contact-modal {
+  padding: 0.55rem 1.25rem;
+  border-radius: 10px;
+  border: none;
+  background: #ff5733;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 0.88rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+
+.btn-save-contact-modal:hover:not(:disabled) {
+  background: #e04422;
+  box-shadow: 0 4px 12px rgba(255, 87, 51, 0.3);
+}
+
+.btn-save-contact-modal.already-saved {
+  background: #e2e8f0;
+  color: #64748b;
+  cursor: not-allowed;
+}
+
+/* Inline Toast Message */
+.prm-inline-toast {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.85rem 1.25rem;
+  border-radius: 12px;
+  margin-bottom: 1.25rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  animation: modal-fade-in 0.2s ease-out;
+}
+
+.prm-inline-toast.success {
+  background: #f0fdf4;
+  color: #166534;
+  border: 1px solid #bbf7d0;
+}
+
+.prm-inline-toast.info {
+  background: #eff6ff;
+  color: #1e40af;
+  border: 1px solid #bfdbfe;
+}
+
+.prm-toast-close {
+  background: none;
+  border: none;
+  color: inherit;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 0 0.25rem;
+}
+
+.search-clear-btn {
+  background: none;
+  border: none;
+  color: #94a3b8;
+  cursor: pointer;
+  font-size: 0.9rem;
+  padding: 0 0.25rem;
+}
+
+.search-clear-btn:hover {
+  color: #0f172a;
+}

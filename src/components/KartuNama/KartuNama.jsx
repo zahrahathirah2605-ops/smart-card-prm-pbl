@@ -127,13 +127,7 @@ const KartuNama = () => {
                 disabled={isExporting}
                 title="Download this business card as standard PDF"
               >
-                {isExporting ? '⏳ Exporting...' : '📄 Download Card (PDF)'}
-              </button>
-              <button
-                className="btn-public-preview"
-                onClick={() => navigate(`/card/${currentPreviewCard.id}`)}
-              >
-                Public Page ↗
+                {isExporting ? '⏳ Exporting...' : '📄 Download PDF Card'}
               </button>
             </div>
           </div>
@@ -311,7 +305,7 @@ const KartuNama = () => {
 
               {saveSuccess && (
                 <div className="save-success-banner">
-                  ✓ Business card updated successfully! Changes are live on your QR Code and Public Page.
+                  ✓ Business card updated successfully! Changes are live on your QR Code and Digital Badge.
                 </div>
               )}
 
