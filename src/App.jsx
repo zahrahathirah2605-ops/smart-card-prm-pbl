@@ -19,6 +19,7 @@ import AdminTambahPengguna from './components/Admin/AdminTambahPengguna';
 import ProtectedRoute from './components/Auth/ProtectedRoute';
 import KelolaPRM from './components/KelolaPRM/KelolaPRM';
 import KontakRelasi from './components/KontakRelasi/KontakRelasi';
+import TambahKontakEksternal from './components/KontakRelasi/TambahKontakEksternal';
 import Profile from './components/Profile/Profile';
 import './App.css';
 
@@ -87,6 +88,14 @@ function App() {
           element={
             <ProtectedRoute allowedRoles={['user', 'admin']}>
               <KontakRelasi />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/kontak-relasi/eksternal/create"
+          element={
+            <ProtectedRoute allowedRoles={['user', 'admin']}>
+              <TambahKontakEksternal />
             </ProtectedRoute>
           }
         />

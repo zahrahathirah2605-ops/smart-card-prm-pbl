@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import Navbar from '../Navbar/Navbar';
 import Footer from '../Footer/Footer';
 import DetailModal from '../Common/DetailModal';
@@ -10,10 +10,12 @@ const STORAGE_KEY_RELATION_CONTACTS = 'smart_card_relation_contacts';
 
 const KontakRelasi = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [searchTerm, setSearchTerm] = useState('');
   const [kontakData, setKontakData] = useState([]);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [alertMsg, setAlertMsg] = useState(null);
+  const [previewZoomPhoto, setPreviewZoomPhoto] = useState(null);
 
   // Modal Detail State (Popup rincian kontak relasi yang diklik)
   const [selectedDetail, setSelectedDetail] = useState(null);
@@ -72,7 +74,18 @@ const KontakRelasi = () => {
     }
 
     setKontakData(contacts);
-  }, []);
+
+    // Tangkap Flash Message dari redirect navigasi (mis. setelah simpan kontak eksternal)
+    if (location.state && location.state.successMessage) {
+      setAlertMsg({
+        type: 'success',
+        text: location.state.successMessage
+      });
+      // Bersihkan state agar tidak muncul ulang saat refresh
+      window.history.replaceState({}, document.title);
+      setTimeout(() => setAlertMsg(null), 4500);
+    }
+  }, [location.state]);
 
   const saveContactsToStorage = (updated) => {
     setKontakData(updated);
@@ -361,6 +374,59 @@ const KontakRelasi = () => {
       >
         {selectedDetail && (
           <div className="modal-detail-grid">
+            {/* Foto Kartu Nama Fisik (Jika Tersedia) */}
+            {selectedDetail.foto_kartu ? (
+              <div className="modal-field-box modal-detail-full" style={{ background: '#f8fafc', padding: '1rem' }}>
+                <span className="modal-field-label">📸 Foto Kartu Nama Fisik</span>
+                <div
+                  className="modal-photo-preview-box"
+                  style={{
+                    position: 'relative',
+                    marginTop: '0.5rem',
+                    borderRadius: '12px',
+                    overflow: 'hidden',
+                    border: '1px solid #e2e8f0',
+                    maxHeight: '220px',
+                    backgroundColor: '#0f172a',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    cursor: 'pointer'
+                  }}
+                  onClick={() => setPreviewZoomPhoto(selectedDetail.foto_kartu)}
+                  title="Klik untuk memperbesar foto kartu nama"
+                >
+                  <img
+                    src={selectedDetail.foto_kartu}
+                    alt={`Foto Kartu ${selectedDetail.nama}`}
+                    style={{ maxHeight: '220px', width: '100%', objectFit: 'contain' }}
+                  />
+                  <div
+                    style={{
+                      position: 'absolute',
+                      bottom: '8px',
+                      right: '8px',
+                      background: 'rgba(15, 23, 42, 0.75)',
+                      color: '#ffffff',
+                      fontSize: '0.74rem',
+                      fontWeight: 600,
+                      padding: '4px 8px',
+                      borderRadius: '6px'
+                    }}
+                  >
+                    🔍 Klik untuk perbesar
+                  </div>
+                </div>
+              </div>
+            ) : selectedDetail.tipe === 'eksternal' ? (
+              <div className="modal-field-box modal-detail-full" style={{ padding: '0.75rem 1rem' }}>
+                <span className="modal-field-label">📸 Foto Kartu Nama Fisik</span>
+                <div style={{ fontSize: '0.82rem', color: '#94a3b8', fontStyle: 'italic', marginTop: '0.25rem' }}>
+                  Tidak ada foto kartu nama
+                </div>
+              </div>
+            ) : null}
+
             <div className="modal-field-box">
               <span className="modal-field-label">👤 Nama Lengkap</span>
               <div className="modal-field-value">{selectedDetail.nama}</div>
@@ -387,7 +453,7 @@ const KontakRelasi = () => {
             <div className="modal-field-box">
               <span className="modal-field-label">📱 Nomor Telepon / WA</span>
               <div className="modal-field-value">
-                {selectedDetail.kontak ? (
+                {selectedDetail.kontak && selectedDetail.kontak !== '-' ? (
                   <a href={`tel:${selectedDetail.kontak}`}>{selectedDetail.kontak}</a>
                 ) : (
                   '-'
@@ -400,14 +466,16 @@ const KontakRelasi = () => {
               <div className="modal-field-value">
                 {selectedDetail.asal === 'PRM History'
                   ? 'Tersimpan otomatis dari Riwayat Janji Temu PRM'
+                  : selectedDetail.tipe === 'eksternal'
+                  ? 'Tersimpan dari Kartu Nama Fisik Eksternal'
                   : 'Ditambahkan secara manual oleh Pengguna'}
               </div>
             </div>
 
-            {selectedDetail.catatan && (
+            {(selectedDetail.catatan || selectedDetail.catatan_pertemuan) && (
               <div className="modal-field-box modal-detail-full">
-                <span className="modal-field-label">📝 Catatan Relasi</span>
-                <div className="modal-quote-box">{selectedDetail.catatan}</div>
+                <span className="modal-field-label">📝 Catatan Pertemuan / Relasi</span>
+                <div className="modal-quote-box">{selectedDetail.catatan || selectedDetail.catatan_pertemuan}</div>
               </div>
             )}
           </div>
@@ -541,6 +609,105 @@ const KontakRelasi = () => {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* Modal Zoom Foto Kartu Nama Fisik */}
+      {previewZoomPhoto && (
+        <div
+          style={{
+            position: 'fixed',
+            inset: 0,
+            background: 'rgba(15, 23, 42, 0.85)',
+            backdropFilter: 'blur(6px)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 10000,
+            padding: '1.5rem',
+            boxSizing: 'border-box'
+          }}
+          onClick={() => setPreviewZoomPhoto(null)}
+        >
+          <div
+            style={{
+              background: '#ffffff',
+              borderRadius: '18px',
+              maxWidth: '750px',
+              width: '100%',
+              maxHeight: '90vh',
+              display: 'flex',
+              flexDirection: 'column',
+              overflow: 'hidden',
+              boxShadow: '0 20px 50px rgba(0, 0, 0, 0.35)'
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div
+              style={{
+                padding: '1rem 1.5rem',
+                borderBottom: '1px solid #e2e8f0',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between'
+              }}
+            >
+              <span style={{ fontWeight: 700, fontSize: '1.05rem', color: '#0f172a' }}>
+                Foto Kartu Nama Fisik: {selectedDetail?.nama}
+              </span>
+              <button
+                type="button"
+                style={{
+                  background: '#f1f5f9',
+                  border: 'none',
+                  width: '32px',
+                  height: '32px',
+                  borderRadius: '50%',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: '#64748b'
+                }}
+                onClick={() => setPreviewZoomPhoto(null)}
+              >
+                ✕
+              </button>
+            </div>
+            <div
+              style={{
+                padding: '1rem',
+                overflow: 'auto',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                backgroundColor: '#0f172a'
+              }}
+            >
+              <img
+                src={previewZoomPhoto}
+                alt="Foto Kartu Nama Fisik"
+                style={{ maxWidth: '100%', maxHeight: '65vh', objectFit: 'contain', borderRadius: '8px' }}
+              />
+            </div>
+            <div
+              style={{
+                padding: '0.85rem 1.5rem',
+                borderTop: '1px solid #e2e8f0',
+                display: 'flex',
+                justifyContent: 'flex-end',
+                background: '#f8fafc'
+              }}
+            >
+              <button
+                type="button"
+                className="detail-modal-btn-close"
+                onClick={() => setPreviewZoomPhoto(null)}
+              >
+                Tutup
+              </button>
+            </div>
           </div>
         </div>
       )}
