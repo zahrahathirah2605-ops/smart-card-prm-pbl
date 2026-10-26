@@ -514,7 +514,7 @@
 .btn-submit-external {
   padding: 0.75rem 2.2rem;
   border-radius: 999px;
-  background: var(--accent, #FF6347); /* Warna Coral / Oranye-Merah */
+  background: var(--accent, #FF6347);
   border: none;
   color: #ffffff;
   font-size: 0.95rem;

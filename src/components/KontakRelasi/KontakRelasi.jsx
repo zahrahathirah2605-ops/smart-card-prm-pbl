@@ -13,7 +13,6 @@ const KontakRelasi = () => {
   const location = useLocation();
   const [searchTerm, setSearchTerm] = useState('');
   const [kontakData, setKontakData] = useState([]);
-  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [alertMsg, setAlertMsg] = useState(null);
   const [previewZoomPhoto, setPreviewZoomPhoto] = useState(null);
 
@@ -24,17 +23,6 @@ const KontakRelasi = () => {
   // Pagination State (Max 15 items per page)
   const [currentPage, setCurrentPage] = useState(1);
   const PAGE_SIZE = 15;
-
-  // Form state untuk penambahan kontak pihak eksternal secara manual
-  const [newContact, setNewContact] = useState({
-    nama: '',
-    instansi: '',
-    jabatan: '',
-    email: '',
-    kontak: '',
-    kategori: 'Mitra Industri / Eksternal',
-    catatan: ''
-  });
 
   // Default seed data kontak relasi yang eksplisit tersimpan
   const initialContacts = [
@@ -75,13 +63,11 @@ const KontakRelasi = () => {
 
     setKontakData(contacts);
 
-    // Tangkap Flash Message dari redirect navigasi (mis. setelah simpan kontak eksternal)
     if (location.state && location.state.successMessage) {
       setAlertMsg({
         type: 'success',
         text: location.state.successMessage
       });
-      // Bersihkan state agar tidak muncul ulang saat refresh
       window.history.replaceState({}, document.title);
       setTimeout(() => setAlertMsg(null), 4500);
     }
@@ -105,42 +91,7 @@ const KontakRelasi = () => {
     }
   };
 
-  const handleAddSubmit = (e) => {
-    e.preventDefault();
-    if (!newContact.nama.trim()) {
-      alert('Nama kontak relasi wajib diisi.');
-      return;
-    }
 
-    const created = {
-      id: `manual-${Date.now()}`,
-      nama: newContact.nama.trim(),
-      instansi: newContact.instansi.trim() || 'Pihak Eksternal',
-      jabatan: newContact.jabatan.trim() || 'Partner',
-      email: newContact.email.trim(),
-      kontak: newContact.kontak.trim() || '-',
-      kategori: newContact.kategori,
-      catatan: newContact.catatan.trim(),
-      isSaved: true,
-      asal: 'Manual'
-    };
-
-    const updated = [created, ...kontakData];
-    saveContactsToStorage(updated);
-    setIsAddModalOpen(false);
-    setNewContact({
-      nama: '',
-      instansi: '',
-      jabatan: '',
-      email: '',
-      kontak: '',
-      kategori: 'Mitra Industri / Eksternal',
-      catatan: ''
-    });
-
-    setAlertMsg({ type: 'success', text: `Kontak relasi "${created.nama}" berhasil disimpan ke direktori!` });
-    setTimeout(() => setAlertMsg(null), 4000);
-  };
 
   const filteredKontak = kontakData.filter(item => {
     const q = searchTerm.toLowerCase();
@@ -181,23 +132,6 @@ const KontakRelasi = () => {
             <p className="prm-main-desc">
               Hanya menampilkan daftar relasi profesional dan mitra eksternal yang sudah tersimpan secara eksplisit oleh Anda. Klik baris untuk melihat kartu rincian lengkap.
             </p>
-          </div>
-          <div style={{ display: 'flex', gap: '0.6rem', flexWrap: 'wrap' }}>
-            <button 
-              className="btn-prm-new" 
-              onClick={() => setIsAddModalOpen(true)}
-              style={{ background: '#ff5733', display: 'inline-flex', alignItems: 'center', gap: '6px' }}
-            >
-              <span>+</span> Tambah Kontak Relasi
-            </button>
-            <button 
-              className="btn-prm-new" 
-              onClick={() => navigate('/scan')}
-              style={{ background: '#ffffff', color: '#1e293b', border: '1px solid #cbd5e1' }}
-              title="Scan kartu nama digital civitas kampus"
-            >
-              📷 Scan Kartu Internal
-            </button>
           </div>
         </div>
 
@@ -481,137 +415,6 @@ const KontakRelasi = () => {
           </div>
         )}
       </DetailModal>
-
-      {/* Modal Tambah Kontak Relasi Eksternal */}
-      {isAddModalOpen && (
-        <div className="prm-modal-overlay" onClick={() => setIsAddModalOpen(false)}>
-          <div className="prm-modal-container" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '540px' }}>
-            <div className="prm-modal-header">
-              <div className="prm-modal-title-row">
-                <span className="prm-modal-badge accept">+ Relasi Baru</span>
-                <h3 className="prm-modal-heading">Tambah Kontak Relasi Eksternal</h3>
-              </div>
-              <button className="prm-modal-close-btn" onClick={() => setIsAddModalOpen(false)}>✕</button>
-            </div>
-
-            <form onSubmit={handleAddSubmit}>
-              <div className="prm-modal-body">
-                <p style={{ fontSize: '0.82rem', color: '#64748b', margin: 0 }}>
-                  Tambahkan informasi kontak relasi dari pihak luar (perusahaan, mitra industri, asosiasi, atau klien) yang pernah terhubung dengan Anda. Kontak ini akan tersimpan khusus dalam daftar relasi Anda.
-                </p>
-
-                <div className="prm-input-group">
-                  <label className="prm-input-label">
-                    Nama Lengkap / Kontak *
-                  </label>
-                  <input
-                    type="text"
-                    className="prm-textarea-reason"
-                    style={{ minHeight: 'auto', padding: '0.65rem 0.85rem' }}
-                    placeholder="Contoh: Dr. Budi Santoso, M.Kom"
-                    value={newContact.nama}
-                    onChange={(e) => setNewContact({ ...newContact, nama: e.target.value })}
-                    required
-                  />
-                </div>
-
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
-                  <div className="prm-input-group">
-                    <label className="prm-input-label">Instansi / Perusahaan</label>
-                    <input
-                      type="text"
-                      className="prm-textarea-reason"
-                      style={{ minHeight: 'auto', padding: '0.65rem 0.85rem' }}
-                      placeholder="Contoh: PT Inovasi Digital"
-                      value={newContact.instansi}
-                      onChange={(e) => setNewContact({ ...newContact, instansi: e.target.value })}
-                    />
-                  </div>
-                  <div className="prm-input-group">
-                    <label className="prm-input-label">Jabatan / Posisi</label>
-                    <input
-                      type="text"
-                      className="prm-textarea-reason"
-                      style={{ minHeight: 'auto', padding: '0.65rem 0.85rem' }}
-                      placeholder="Contoh: Managing Director"
-                      value={newContact.jabatan}
-                      onChange={(e) => setNewContact({ ...newContact, jabatan: e.target.value })}
-                    />
-                  </div>
-                </div>
-
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
-                  <div className="prm-input-group">
-                    <label className="prm-input-label">Email Kontak</label>
-                    <input
-                      type="email"
-                      className="prm-textarea-reason"
-                      style={{ minHeight: 'auto', padding: '0.65rem 0.85rem' }}
-                      placeholder="budi@domain.com"
-                      value={newContact.email}
-                      onChange={(e) => setNewContact({ ...newContact, email: e.target.value })}
-                    />
-                  </div>
-                  <div className="prm-input-group">
-                    <label className="prm-input-label">Nomor HP / WhatsApp</label>
-                    <input
-                      type="text"
-                      className="prm-textarea-reason"
-                      style={{ minHeight: 'auto', padding: '0.65rem 0.85rem' }}
-                      placeholder="+62 812-xxxx-xxxx"
-                      value={newContact.kontak}
-                      onChange={(e) => setNewContact({ ...newContact, kontak: e.target.value })}
-                    />
-                  </div>
-                </div>
-
-                <div className="prm-input-group">
-                  <label className="prm-input-label">Kategori Relasi</label>
-                  <select
-                    className="prm-textarea-reason"
-                    style={{ minHeight: 'auto', padding: '0.65rem 0.85rem', cursor: 'pointer' }}
-                    value={newContact.kategori}
-                    onChange={(e) => setNewContact({ ...newContact, kategori: e.target.value })}
-                  >
-                    <option value="Mitra Industri / Eksternal">Mitra Industri / Eksternal</option>
-                    <option value="Akademisi / Riset">Akademisi / Riset</option>
-                    <option value="Mitra Magang / Rekrutmen">Mitra Magang / Rekrutmen</option>
-                    <option value="Alumni Kampus">Alumni Kampus</option>
-                    <option value="Klien / Konsultan">Klien / Konsultan</option>
-                  </select>
-                </div>
-
-                <div className="prm-input-group">
-                  <label className="prm-input-label">Catatan Tambahan (Opsional)</label>
-                  <textarea
-                    className="prm-textarea-reason"
-                    style={{ minHeight: '65px' }}
-                    placeholder="Contoh: Bertemu di seminar industri 2026, tertarik kolaborasi riset web."
-                    value={newContact.catatan}
-                    onChange={(e) => setNewContact({ ...newContact, catatan: e.target.value })}
-                  />
-                </div>
-              </div>
-
-              <div className="prm-modal-footer">
-                <button
-                  type="button"
-                  className="prm-modal-cancel-btn"
-                  onClick={() => setIsAddModalOpen(false)}
-                >
-                  Batal
-                </button>
-                <button
-                  type="submit"
-                  className="prm-modal-submit-btn accept"
-                >
-                  Simpan Kontak Relasi
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
 
       {/* Modal Zoom Foto Kartu Nama Fisik */}
       {previewZoomPhoto && (

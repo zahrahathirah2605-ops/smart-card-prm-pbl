@@ -418,9 +418,6 @@ const RiwayatPRM = () => {
               Kelola, pantau seluruh riwayat interaksi kemitraan, klik baris untuk melihat rincian detail, dan simpan kontak langsung ke relasi Anda.
             </p>
           </div>
-          <button className="btn-prm-new" onClick={() => navigate('/scan')}>
-            📷 Scan Kartu Baru
-          </button>
         </div>
 
         {/* Toast Notifikasi Sukses Simpan Kontak */}

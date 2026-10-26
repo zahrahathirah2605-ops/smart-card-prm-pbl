@@ -17,7 +17,7 @@ const TambahKontakEksternal = () => {
     telepon: '',
     email: '',
     catatan_pertemuan: '',
-    foto_kartu: null, // Data URL / base64 string
+    foto_kartu: null,
     foto_nama_file: ''
   });
 
@@ -35,7 +35,6 @@ const TambahKontakEksternal = () => {
       [name]: value
     }));
 
-    // Hapus error real-time saat pengguna mengetik
     if (errors[name]) {
       setErrors((prev) => {
         const updated = { ...prev };
@@ -44,7 +43,6 @@ const TambahKontakEksternal = () => {
       });
     }
 
-    // Jika sedang mengisi telepon atau email, bersihkan error kontak wajib jika ada
     if ((name === 'telepon' || name === 'email') && (errors.telepon || errors.email || errors.kontak_gabungan)) {
       setErrors((prev) => {
         const updated = { ...prev };
@@ -62,7 +60,6 @@ const TambahKontakEksternal = () => {
     const file = e.target.files && e.target.files[0];
     if (!file) return;
 
-    // Validasi tipe file (jpg, jpeg, png)
     const validTypes = ['image/jpeg', 'image/jpg', 'image/png'];
     if (!validTypes.includes(file.type)) {
       setPhotoError('Format foto tidak valid. Hanya mendukung file JPG atau PNG.');
@@ -70,7 +67,6 @@ const TambahKontakEksternal = () => {
       return;
     }
 
-    // Validasi ukuran file (maks 2MB / 2048 KB)
     const maxSize = 2 * 1024 * 1024; // 2MB
     if (file.size > maxSize) {
       setPhotoError('Ukuran foto terlalu besar. Maksimal 2 MB.');
@@ -137,7 +133,6 @@ const TambahKontakEksternal = () => {
       if (telTrimmed.length > 20) {
         newErrors.telepon = 'Nomor telepon maksimal 20 karakter.';
       } else {
-        // Format valid nomor telepon: angka, boleh +, spasi, -
         const phoneRegex = /^[+]?[\d\s-]+$/;
         if (!phoneRegex.test(telTrimmed)) {
           newErrors.telepon = 'Format nomor telepon tidak valid (gunakan angka, +, spasi, atau tanda strip).';
@@ -161,7 +156,6 @@ const TambahKontakEksternal = () => {
       newErrors.catatan_pertemuan = 'Catatan pertemuan maksimal 500 karakter.';
     }
 
-    // 7. foto_kartu error (jika ada error dari picker)
     if (photoError) {
       newErrors.foto_kartu = photoError;
     }
@@ -170,7 +164,6 @@ const TambahKontakEksternal = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  // Submit Handler
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -180,7 +173,6 @@ const TambahKontakEksternal = () => {
 
     setIsSubmitting(true);
 
-    // Simulasi request network & penyimpanan terproteksi
     setTimeout(() => {
       try {
         const rawContacts = localStorage.getItem(STORAGE_KEY_RELATION_CONTACTS);
@@ -193,7 +185,6 @@ const TambahKontakEksternal = () => {
           }
         }
 
-        // Simpan data kontak eksternal
         const newContactRecord = {
           id: `ext-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`,
           nama: formData.nama_lengkap.trim(),
@@ -217,7 +208,6 @@ const TambahKontakEksternal = () => {
         const updatedList = [newContactRecord, ...contactsList];
         localStorage.setItem(STORAGE_KEY_RELATION_CONTACTS, JSON.stringify(updatedList));
 
-        // Redirect ke Kontak Relasi dengan flash message sukses
         navigate('/kontak-relasi', {
           state: {
             successMessage: `Kontak eksternal "${newContactRecord.nama}" berhasil disimpan ke Kontak Relasi.`
@@ -233,7 +223,6 @@ const TambahKontakEksternal = () => {
 
   return (
     <div className="external-contact-page-container">
-      {/* Navbar Konsisten */}
       <Navbar active="kartu-nama" />
 
       <main className="external-contact-main">
@@ -264,7 +253,6 @@ const TambahKontakEksternal = () => {
           </div>
         </div>
 
-        {/* General Error Banner */}
         {errors.general && (
           <div className="external-alert-error">
             <span>{errors.general}</span>
@@ -272,14 +260,12 @@ const TambahKontakEksternal = () => {
           </div>
         )}
 
-        {/* Form Container dengan Enctype Multipart */}
         <form
           onSubmit={handleSubmit}
           className="external-form-container"
           encType="multipart/form-data"
           noValidate
         >
-          {/* Layout Dua Kolom */}
           <div className="external-cards-grid">
             {/* Kolom Kiri: Foto Kartu Nama (Opsional) */}
             <div className="external-card card-left">
@@ -288,7 +274,6 @@ const TambahKontakEksternal = () => {
                 <span className="card-optional-tag">Opsional</span>
               </div>
 
-              {/* Area Preview Dashed */}
               <div
                 className={`photo-upload-zone ${photoPreview ? 'has-preview' : ''} ${photoError ? 'has-error' : ''}`}
                 onClick={() => fileInputRef.current && fileInputRef.current.click()}
@@ -325,7 +310,6 @@ const TambahKontakEksternal = () => {
                 )}
               </div>
 
-              {/* Hidden File Input */}
               <input
                 ref={fileInputRef}
                 type="file"
@@ -336,7 +320,6 @@ const TambahKontakEksternal = () => {
                 onChange={handlePhotoChange}
               />
 
-              {/* Action Buttons for Photo */}
               <div className="photo-action-buttons">
                 <button
                   type="button"
@@ -363,14 +346,12 @@ const TambahKontakEksternal = () => {
                 )}
               </div>
 
-              {/* Error Message for Photo */}
               {photoError && (
                 <div className="field-error-msg">
                   ⚠️ {photoError}
                 </div>
               )}
 
-              {/* Helper Texts */}
               <div className="photo-helper-texts">
                 <p className="helper-item">
                   <span className="bullet">•</span>
@@ -393,7 +374,7 @@ const TambahKontakEksternal = () => {
               </p>
 
               <div className="form-fields-stack">
-                {/* 1. Nama Lengkap (Full Width) */}
+                {/* 1. Nama Lengkap */}
                 <div className="form-group full-width">
                   <label htmlFor="nama_lengkap" className="form-label">
                     Nama lengkap <span className="required-star">*</span>
@@ -413,7 +394,7 @@ const TambahKontakEksternal = () => {
                   )}
                 </div>
 
-                {/* 2 & 3. Instansi & Jabatan (2 Kolom Sejajar) */}
+                {/* 2 & 3. Instansi & Jabatan */}
                 <div className="form-row-two-cols">
                   <div className="form-group">
                     <label htmlFor="instansi" className="form-label">
@@ -454,7 +435,7 @@ const TambahKontakEksternal = () => {
                   </div>
                 </div>
 
-                {/* 4 & 5. Telepon & Email (2 Kolom Sejajar dengan Ikon) */}
+                {/* 4 & 5. Telepon & Email */}
                 <div className="form-row-two-cols">
                   <div className="form-group">
                     <label htmlFor="telepon" className="form-label">
@@ -522,7 +503,7 @@ const TambahKontakEksternal = () => {
                   )}
                 </div>
 
-                {/* 6. Catatan Pertemuan (Textarea, Full Width) */}
+                {/* 6. Catatan Pertemuan */}
                 <div className="form-group full-width">
                   <div className="label-with-counter">
                     <label htmlFor="catatan_pertemuan" className="form-label">
@@ -609,7 +590,6 @@ const TambahKontakEksternal = () => {
         </div>
       )}
 
-      {/* Footer */}
       <Footer />
     </div>
   );

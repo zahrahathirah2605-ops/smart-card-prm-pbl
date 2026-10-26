@@ -5,6 +5,15 @@ import './Footer.css';
 
 const Footer = () => {
   const navigate = useNavigate();
+  const loggedRole = localStorage.getItem('smart_card_logged_role');
+
+  const handleBrandClick = () => {
+    if (loggedRole) {
+      navigate('/home');
+    } else {
+      navigate('/');
+    }
+  };
 
   return (
     <footer className="global-footer">
@@ -12,7 +21,7 @@ const Footer = () => {
       <div className="footer-main-container">
         {/* Brand & Campus Info */}
         <div className="footer-col footer-col-brand">
-          <div className="footer-logo-row" onClick={() => navigate('/')}>
+          <div className="footer-logo-row" onClick={handleBrandClick}>
             <img
               src={logoImg}
               alt="Politeknik Negeri Batam"

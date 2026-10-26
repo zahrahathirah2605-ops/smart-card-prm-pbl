@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Scanner } from '@yudiel/react-qr-scanner';
+import Navbar from '../Navbar/Navbar';
 import PublicNavbar from '../Navbar/PublicNavbar';
 import Footer from '../Footer/Footer';
 import { getUserCard } from '../../utils/cardStorage';
@@ -73,11 +74,12 @@ const ScanQR = () => {
   };
 
   const currentCard = getUserCard();
+  const loggedRole = localStorage.getItem('smart_card_logged_role');
 
   return (
     <div className="scan-qr-container">
-      {/* Public Navbar without redundant Scan button since visitor is already on the scan page */}
-      <PublicNavbar hideScanAction={true} />
+      {/* If logged in, show User Navbar. Otherwise, show PublicNavbar */}
+      {loggedRole ? <Navbar active="home" /> : <PublicNavbar hideScanAction={true} />}
 
       {/* Main Content */}
       <div className="scan-main-content">

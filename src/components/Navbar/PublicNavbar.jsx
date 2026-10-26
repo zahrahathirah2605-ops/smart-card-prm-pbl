@@ -5,11 +5,20 @@ import './PublicNavbar.css';
 
 const PublicNavbar = ({ hideScanAction = false }) => {
   const navigate = useNavigate();
+  const loggedRole = localStorage.getItem('smart_card_logged_role');
+
+  const handleBrandClick = () => {
+    if (loggedRole) {
+      navigate('/home');
+    } else {
+      navigate('/');
+    }
+  };
 
   return (
     <header className="public-navbar">
       <div className="public-navbar-container">
-        <div className="public-nav-brand" onClick={() => navigate('/')}>
+        <div className="public-nav-brand" onClick={handleBrandClick}>
           <img
             src={logoImg}
             alt="Politeknik Negeri Batam"
