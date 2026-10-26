@@ -16,6 +16,7 @@ import AdminPengguna from './components/Admin/AdminPengguna';
 import AdminAktivitas from './components/Admin/AdminAktivitas';
 import AdminTambahPengguna from './components/Admin/AdminTambahPengguna';
 
+import ProtectedRoute from './components/Auth/ProtectedRoute';
 import KelolaPRM from './components/KelolaPRM/KelolaPRM';
 import KontakRelasi from './components/KontakRelasi/KontakRelasi';
 import Profile from './components/Profile/Profile';
@@ -25,25 +26,104 @@ function App() {
   return (
     <Router>
       <Routes>
-        {/* Public & User Routes */}
+        {/* Public Visitor Routes */}
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/card/:id" element={<PublicCard />} />
-        <Route path="/home" element={<Home />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/kartu-nama" element={<KartuNama />} />
         <Route path="/scan" element={<ScanQR />} />
         <Route path="/janji-temu/:id" element={<JanjiTemu />} />
-        <Route path="/jadwal-prm" element={<JadwalPertemuan />} />
-        <Route path="/riwayat-prm" element={<RiwayatPRM />} />
 
-        {/* Admin Routes */}
-        <Route path="/admin" element={<AdminHome />} />
-        <Route path="/admin/pengguna" element={<AdminPengguna />} />
-        <Route path="/admin/aktivitas" element={<AdminAktivitas />} />
-        <Route path="/admin/tambah-pengguna" element={<AdminTambahPengguna />} />
-        <Route path="/kelola-prm" element={<KelolaPRM />} />
-        <Route path="/kontak-relasi" element={<KontakRelasi />} />
+        {/* Protected User Routes (Require Authentication) */}
+        <Route
+          path="/home"
+          element={
+            <ProtectedRoute allowedRoles={['user', 'admin']}>
+              <Home />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute allowedRoles={['user', 'admin']}>
+              <Profile />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/kartu-nama"
+          element={
+            <ProtectedRoute allowedRoles={['user', 'admin']}>
+              <KartuNama />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/jadwal-prm"
+          element={
+            <ProtectedRoute allowedRoles={['user', 'admin']}>
+              <JadwalPertemuan />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/riwayat-prm"
+          element={
+            <ProtectedRoute allowedRoles={['user', 'admin']}>
+              <RiwayatPRM />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/kelola-prm"
+          element={
+            <ProtectedRoute allowedRoles={['user', 'admin']}>
+              <KelolaPRM />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/kontak-relasi"
+          element={
+            <ProtectedRoute allowedRoles={['user', 'admin']}>
+              <KontakRelasi />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Protected Admin Routes */}
+        <Route
+          path="/admin"
+          element={
+            <ProtectedRoute allowedRoles={['admin']}>
+              <AdminHome />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/pengguna"
+          element={
+            <ProtectedRoute allowedRoles={['admin']}>
+              <AdminPengguna />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/aktivitas"
+          element={
+            <ProtectedRoute allowedRoles={['admin']}>
+              <AdminAktivitas />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/tambah-pengguna"
+          element={
+            <ProtectedRoute allowedRoles={['admin']}>
+              <AdminTambahPengguna />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
     </Router>
   );

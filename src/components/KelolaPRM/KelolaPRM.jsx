@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import Navbar from '../Navbar/Navbar';
 import Footer from '../Footer/Footer';
 import { getStoredAppointments, updateAppointmentStatus, getUserCard } from '../../utils/cardStorage';
+import DetailModal from '../Common/DetailModal';
+import Pagination from '../Common/Pagination';
 import "../RiwayatPRM/RiwayatPRM.css"; 
 import './KelolaPRM.css';
 
@@ -20,6 +22,14 @@ const KelolaPRM = () => {
   const [additionalNote, setAdditionalNote] = useState('');
   const [isSendingEmail, setIsSendingEmail] = useState(false);
   const [notificationBanner, setNotificationBanner] = useState(null);
+
+  // Modal Detail State (Popup rincian pengajuan masuk)
+  const [detailItem, setDetailItem] = useState(null);
+  const [isDetailOpen, setIsDetailOpen] = useState(false);
+
+  // Pagination State (Max 15 items per page)
+  const [currentPage, setCurrentPage] = useState(1);
+  const PAGE_SIZE = 15;
 
   // Default mock incoming requests jika belum ada data pengajuan
   const defaultIncoming = [
@@ -175,6 +185,20 @@ const KelolaPRM = () => {
     );
   });
 
+  const totalItems = filteredData.length;
+  const startIndex = (currentPage - 1) * PAGE_SIZE;
+  const paginatedData = filteredData.slice(startIndex, startIndex + PAGE_SIZE);
+
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+    setCurrentPage(1);
+  };
+
+  const handleRowClick = (item) => {
+    setDetailItem(item);
+    setIsDetailOpen(true);
+  };
+
   return (
     <div className="riwayat-page-container">
       {/* Navbar Konsisten */}
@@ -186,7 +210,7 @@ const KelolaPRM = () => {
           <div>
             <h1 className="prm-main-title">Kelola Janji Temu PRM (Masuk)</h1>
             <p className="prm-main-desc">
-              Tinjau pengajuan janji temu dari pihak eksternal. Sistem otomatis mengirimkan notifikasi email konfirmasi beserta alasan status.
+              Tinjau pengajuan janji temu dari pihak eksternal. Klik baris pengajuan untuk melihat rincian lengkap, lalu setujui atau tolak dengan notifikasi email otomatis.
             </p>
           </div>
         </div>
@@ -221,13 +245,18 @@ const KelolaPRM = () => {
               type="text"
               placeholder="Cari berdasarkan topik, nama pemohon, atau ID pengajuan..."
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={handleSearchChange}
             />
-            <button className="filter-icon-btn" title="Filter requests">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
-              </svg>
-            </button>
+            {searchTerm && (
+              <button
+                type="button"
+                className="search-clear-btn"
+                onClick={() => { setSearchTerm(''); setCurrentPage(1); }}
+                title="Hapus filter"
+              >
+                ✕
+              </button>
+            )}
           </div>
         </div>
 
@@ -243,14 +272,19 @@ const KelolaPRM = () => {
               </tr>
             </thead>
             <tbody>
-              {filteredData.length > 0 ? (
-                filteredData.map((item, index) => {
+              {paginatedData.length > 0 ? (
+                paginatedData.map((item, index) => {
                   const namaPemohon = item.pemohon || item.pengaju || 'Pihak Eksternal';
                   const emailTujuan = item.emailPemohon || 'email.eksternal@domain.com';
                   const isPending = item.status === 'Pending Confirmation' || item.status === 'Menunggu Konfirmasi';
 
                   return (
-                    <tr key={index}>
+                    <tr
+                      key={item.id || index}
+                      className="prm-clickable-row"
+                      onClick={() => handleRowClick(item)}
+                      title="Klik baris untuk melihat rincian detail pengajuan"
+                    >
                       <td>
                         <div style={{ fontWeight: 600, color: '#1e293b', fontSize: '0.92rem' }}>
                           {item.permintaan}
@@ -295,7 +329,7 @@ const KelolaPRM = () => {
                           </div>
                         )}
                       </td>
-                      <td style={{ textAlign: 'right' }}>
+                      <td style={{ textAlign: 'right' }} onClick={(e) => e.stopPropagation()}>
                         {isPending ? (
                           <div className="prm-action-btns">
                             <button 
@@ -344,8 +378,128 @@ const KelolaPRM = () => {
               )}
             </tbody>
           </table>
+
+          {/* Pagination Component (Max 15 items per page) */}
+          <Pagination
+            currentPage={currentPage}
+            totalItems={totalItems}
+            pageSize={PAGE_SIZE}
+            onPageChange={(page) => setCurrentPage(page)}
+          />
         </div>
       </main>
+
+      {/* Detail Modal: Rincian Lengkap Pengajuan Janji Temu Masuk */}
+      <DetailModal
+        isOpen={isDetailOpen}
+        onClose={() => setIsDetailOpen(false)}
+        title={detailItem ? `Detail Janji Temu: ${detailItem.id}` : 'Rincian Pengajuan'}
+        badgeText={detailItem?.status}
+        badgeType={
+          detailItem?.status === 'Accepted' || detailItem?.status === 'Disetujui'
+            ? 'success'
+            : detailItem?.status === 'Declined' || detailItem?.status === 'Ditolak'
+            ? 'danger'
+            : 'warning'
+        }
+        actions={
+          <>
+            {detailItem && (detailItem.status === 'Pending Confirmation' || detailItem.status === 'Menunggu Konfirmasi') && (
+              <>
+                <button
+                  type="button"
+                  className="btn-accept"
+                  style={{ padding: '0.55rem 1.1rem' }}
+                  onClick={() => {
+                    setIsDetailOpen(false);
+                    openActionModal(detailItem, 'accept');
+                  }}
+                >
+                  ✓ Setujui Pengajuan
+                </button>
+                <button
+                  type="button"
+                  className="btn-reject"
+                  style={{ padding: '0.55rem 1.1rem' }}
+                  onClick={() => {
+                    setIsDetailOpen(false);
+                    openActionModal(detailItem, 'reject');
+                  }}
+                >
+                  ✕ Tolak Pengajuan
+                </button>
+              </>
+            )}
+            <button
+              type="button"
+              className="detail-modal-btn-close"
+              onClick={() => setIsDetailOpen(false)}
+            >
+              Tutup
+            </button>
+          </>
+        }
+      >
+        {detailItem && (
+          <div className="modal-detail-grid">
+            <div className="modal-field-box modal-detail-full">
+              <span className="modal-field-label">📌 Permintaan / Topik Pertemuan</span>
+              <div className="modal-field-value">{detailItem.permintaan}</div>
+            </div>
+
+            <div className="modal-field-box">
+              <span className="modal-field-label">👤 Nama Pemohon</span>
+              <div className="modal-field-value">{detailItem.pemohon || detailItem.pengaju}</div>
+              {detailItem.perusahaanPemohon && (
+                <div className="modal-field-sub">🏢 {detailItem.perusahaanPemohon}</div>
+              )}
+              {detailItem.jabatanPemohon && (
+                <div className="modal-field-sub">💼 {detailItem.jabatanPemohon}</div>
+              )}
+            </div>
+
+            <div className="modal-field-box">
+              <span className="modal-field-label">📅 Jadwal Diusulkan</span>
+              <div className="modal-field-value">{detailItem.date || 'TBD'}</div>
+              {detailItem.jam && (
+                <div className="modal-field-sub">⏰ Pukul {detailItem.jam}</div>
+              )}
+            </div>
+
+            <div className="modal-field-box">
+              <span className="modal-field-label">✉️ Email Pemohon</span>
+              <div className="modal-field-value">
+                {detailItem.emailPemohon ? (
+                  <a href={`mailto:${detailItem.emailPemohon}`}>
+                    {detailItem.emailPemohon}
+                  </a>
+                ) : (
+                  '-'
+                )}
+              </div>
+            </div>
+
+            <div className="modal-field-box">
+              <span className="modal-field-label">📱 Nomor Telepon / WA</span>
+              <div className="modal-field-value">{detailItem.teleponPemohon || '-'}</div>
+            </div>
+
+            {detailItem.alasanLengkap && (
+              <div className="modal-field-box modal-detail-full">
+                <span className="modal-field-label">📝 Uraian Lengkap Pertemuan</span>
+                <div className="modal-quote-box">{detailItem.alasanLengkap}</div>
+              </div>
+            )}
+
+            {detailItem.alasanRespon && (
+              <div className="modal-field-box modal-detail-full">
+                <span className="modal-field-label">💬 Catatan Keputusan / Alasan Respon</span>
+                <div className="modal-quote-box">{detailItem.alasanRespon}</div>
+              </div>
+            )}
+          </div>
+        )}
+      </DetailModal>
 
       {/* Modal Dialog: Konfirmasi Status & Input Alasan Notifikasi Email */}
       {isModalOpen && selectedItem && (

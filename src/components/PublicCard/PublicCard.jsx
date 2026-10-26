@@ -161,21 +161,23 @@ const PublicCard = () => {
 
               {/* Action Buttons */}
               <div className="bottom-action-buttons">
-                {/* PDF Card Download */}
-                <button
-                  className="btn-primary-action"
-                  onClick={handleDownloadPDF}
-                  disabled={isExporting}
-                  title="Download standard business card as PDF"
-                >
-                  {isExporting ? '⏳ Exporting...' : '📄 Download PDF Card'}
-                </button>
+                {/* PDF Card Download: ONLY accessible to logged-in internal users */}
+                {loggedRole ? (
+                  <button
+                    className="btn-primary-action"
+                    onClick={handleDownloadPDF}
+                    disabled={isExporting}
+                    title="Unduh kartu nama resmi sebagai dokumen PDF (Akses Internal)"
+                  >
+                    {isExporting ? '⏳ Exporting...' : '📄 Download PDF Card'}
+                  </button>
+                ) : null}
 
-                {/* Save Contact (vCard) */}
+                {/* Save Contact (vCard): Standard public action for saving contact to phone/PC */}
                 <button
                   className="btn-outline-action"
                   onClick={handleDownloadContact}
-                  title="Save contact (.vcf) directly into phone or PC contacts"
+                  title="Simpan kontak langsung (.vcf) ke kontak telepon atau komputer"
                 >
                   📥 Save Contact (vCard)
                 </button>

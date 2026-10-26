@@ -1,0 +1,113 @@
+.prm-pagination-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.1rem 1.5rem;
+  background: #ffffff;
+  border-top: 1px solid #e2e8f0;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+  gap: 1rem;
+  flex-wrap: wrap;
+  box-sizing: border-box;
+}
+
+.prm-pagination-info {
+  font-size: 0.85rem;
+  color: #64748b;
+}
+
+.prm-pagination-info strong {
+  color: #0f172a;
+  font-weight: 600;
+}
+
+.prm-pagination-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.prm-page-nav-btn {
+  padding: 0.45rem 0.95rem;
+  border-radius: 10px;
+  border: 1px solid #cbd5e1;
+  background: #ffffff;
+  color: #334155;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.prm-page-nav-btn:hover:not(:disabled) {
+  background: #f8fafc;
+  border-color: #94a3b8;
+  color: #12417d;
+  transform: translateY(-1px);
+}
+
+.prm-page-nav-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  border-color: #e2e8f0;
+  color: #94a3b8;
+}
+
+.prm-page-numbers {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.prm-page-num-btn {
+  min-width: 34px;
+  height: 34px;
+  padding: 0 0.4rem;
+  border-radius: 9px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: #475569;
+  font-size: 0.84rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: inherit;
+}
+
+.prm-page-num-btn:hover:not(.active) {
+  background: #f1f5f9;
+  color: #0f172a;
+}
+
+.prm-page-num-btn.active {
+  background: #12417d;
+  color: #ffffff;
+  border-color: #12417d;
+  box-shadow: 0 2px 6px rgba(18, 65, 125, 0.25);
+}
+
+.prm-page-ellipsis {
+  padding: 0 0.35rem;
+  color: #94a3b8;
+  font-size: 0.75rem;
+  user-select: none;
+}
+
+@media (max-width: 640px) {
+  .prm-pagination-container {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+  }
+  .prm-pagination-controls {
+    justify-content: center;
+  }
+}

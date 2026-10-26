@@ -48,9 +48,18 @@
   font-weight: 600;
 }
 
-/* Title & Subtitle */
+/* Title, Header Flex & Real-time Live Widget */
+.jadwal-header-flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
 .jadwal-title {
-  font-size: 2.2rem;
+  font-size: 2.1rem;
   font-weight: 800;
   color: #12417d;
   margin: 0 0 0.4rem;
@@ -60,7 +69,61 @@
 .jadwal-subtitle {
   font-size: 0.95rem;
   color: #64748b;
-  margin: 0 0 1.5rem;
+  margin: 0;
+  max-width: 680px;
+}
+
+/* Real-Time Live Widget Card */
+.realtime-status-card {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  padding: 0.75rem 1.25rem;
+  border-radius: 14px;
+  box-shadow: 0 4px 12px rgba(18, 65, 125, 0.05);
+}
+
+.live-pulse-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #10b981;
+  position: relative;
+  box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+  animation: pulse-green 2s infinite;
+}
+
+@keyframes pulse-green {
+  0% {
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 8px rgba(16, 185, 129, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+  }
+}
+
+.realtime-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.realtime-clock {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #12417d;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.5px;
+}
+
+.realtime-date {
+  font-size: 0.75rem;
+  color: #64748b;
+  font-weight: 500;
 }
 
 /* Notice Banner */
@@ -110,18 +173,67 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  gap: 0.75rem;
 }
 
-.calendar-month-title {
-  font-size: 1.45rem;
-  font-weight: 700;
+.calendar-title-selectors {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.calendar-selectors-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #f8fafc;
+  padding: 0.25rem 0.35rem;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+}
+
+.cal-select-dropdown {
+  padding: 0.4rem 2rem 0.4rem 0.75rem;
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+  background: #ffffff url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23475569' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e") no-repeat right 0.55rem center;
+  background-size: 13px 13px;
   color: #0f172a;
-  margin: 0 0 0.2rem;
+  font-size: 0.88rem;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  line-height: 1.2;
+}
+
+.cal-select-dropdown:hover {
+  border-color: #94a3b8;
+  background-color: #fafbfc;
+}
+
+.cal-select-dropdown:focus {
+  border-color: #12417d;
+  box-shadow: 0 0 0 2.5px rgba(18, 65, 125, 0.15);
+}
+
+.cal-select-dropdown.year-select {
+  font-weight: 600;
+  color: #334155;
+  padding-right: 1.8rem;
 }
 
 .calendar-subtitle-count {
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   color: #64748b;
+  font-weight: 500;
+  margin-top: 2px;
 }
 
 .calendar-btn-group {
