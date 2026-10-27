@@ -410,6 +410,60 @@
   background: #b91c1c;
 }
 
+/* Button Lihat / Ubah Alasan (View / Edit Reason) */
+.btn-view-reason-action {
+  background: #12417D;
+  color: #ffffff;
+  border: 1px solid #12417D;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.42rem 0.85rem;
+  border-radius: 8px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 6px rgba(18, 65, 125, 0.25);
+  white-space: nowrap;
+}
+
+.btn-view-reason-action:hover {
+  background: #0d3260;
+  border-color: #0d3260;
+  color: #ffffff;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(18, 65, 125, 0.35);
+}
+
+/* Harmonized Status Badges in Kelola PRM */
+.kelola-page-container .prm-status-badge {
+  padding: 0.3rem 0.75rem;
+  border-radius: 6px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  border: 1px solid transparent;
+}
+
+.kelola-page-container .prm-status-badge.status-ulang {
+  background: #f8fafc;
+  color: #12417D;
+  border-color: #cbd5e1;
+}
+
+.kelola-page-container .prm-status-badge.status-selesai {
+  background: #f0fdf4;
+  color: #15803d;
+  border-color: #bbf7d0;
+}
+
+.kelola-page-container .prm-status-badge.status-ditolak {
+  background: #fef2f2;
+  color: #991b1b;
+  border-color: #fecaca;
+}
+
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }

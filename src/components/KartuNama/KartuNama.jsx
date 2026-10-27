@@ -19,6 +19,8 @@ const KartuNama = () => {
     telepon: '',
     email: '',
     instagram: '',
+    twitterX: '',
+    facebook: '',
     linkedin: '',
     portofolio: '',
     bio: '',
@@ -37,6 +39,8 @@ const KartuNama = () => {
         telepon: existing.telepon || '',
         email: existing.email || '',
         instagram: existing.instagram || '',
+        twitterX: existing.twitterX || '',
+        facebook: existing.facebook || '',
         linkedin: existing.linkedin || '',
         portofolio: existing.portofolio || '',
         bio: existing.bio || '',
@@ -241,7 +245,7 @@ const KartuNama = () => {
               </div>
 
               <div className="kn-form-row">
-                <div className="kn-form-group">
+                <div className="kn-form-group" style={{ width: '100%' }}>
                   <label className="kn-label">Email Address *</label>
                   <input
                     type="email"
@@ -253,14 +257,28 @@ const KartuNama = () => {
                     required
                   />
                 </div>
+              </div>
+
+              <div className="kn-form-row">
                 <div className="kn-form-group">
                   <label className="kn-label">Instagram Username</label>
                   <input
                     type="text"
                     name="instagram"
                     className="kn-input"
-                    placeholder="e.g. aprilliabunga"
+                    placeholder="e.g. aprilliabunga (Optional)"
                     value={formData.instagram}
+                    onChange={handleChange}
+                  />
+                </div>
+                <div className="kn-form-group">
+                  <label className="kn-label">X / Twitter Username</label>
+                  <input
+                    type="text"
+                    name="twitterX"
+                    className="kn-input"
+                    placeholder="e.g. @aprilliabunga (Optional)"
+                    value={formData.twitterX}
                     onChange={handleChange}
                   />
                 </div>
@@ -268,23 +286,37 @@ const KartuNama = () => {
 
               <div className="kn-form-row">
                 <div className="kn-form-group">
+                  <label className="kn-label">Facebook Profile / Username</label>
+                  <input
+                    type="text"
+                    name="facebook"
+                    className="kn-input"
+                    placeholder="e.g. aprillia.bunga.lestari (Optional)"
+                    value={formData.facebook}
+                    onChange={handleChange}
+                  />
+                </div>
+                <div className="kn-form-group">
                   <label className="kn-label">LinkedIn Handle / Profile</label>
                   <input
                     type="text"
                     name="linkedin"
                     className="kn-input"
-                    placeholder="e.g. aprillia-bunga-lestari"
+                    placeholder="e.g. aprillia-bunga-lestari (Optional)"
                     value={formData.linkedin}
                     onChange={handleChange}
                   />
                 </div>
-                <div className="kn-form-group">
+              </div>
+
+              <div className="kn-form-row">
+                <div className="kn-form-group" style={{ width: '100%' }}>
                   <label className="kn-label">Portfolio / Website URL</label>
                   <input
                     type="text"
                     name="portofolio"
                     className="kn-input"
-                    placeholder="e.g. https://github.com/aprilliabunga"
+                    placeholder="e.g. https://github.com/aprilliabunga (Optional)"
                     value={formData.portofolio}
                     onChange={handleChange}
                   />

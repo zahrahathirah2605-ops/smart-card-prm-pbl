@@ -10,6 +10,8 @@ export const DEFAULT_CARD = {
   telepon: '+62 812-3478-010',
   email: 'bungaa.123@gmail.com',
   instagram: 'aprilliabunga',
+  twitterX: '',
+  facebook: '',
   linkedin: 'aprillia-bunga-lestari',
   portofolio: 'https://github.com/aprilliabunga',
   bio: 'Passionate Informatics Engineering student focusing on full-stack web development, intelligent business cards, and modern digital ecosystems.',

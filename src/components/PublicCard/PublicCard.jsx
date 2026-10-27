@@ -126,6 +126,38 @@ const PublicCard = () => {
                   </a>
                 )}
 
+                {card.twitterX && (
+                  <a
+                    href={card.twitterX.startsWith('http') ? card.twitterX : `https://x.com/${card.twitterX.replace(/^@/, '')}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="action-contact-card"
+                  >
+                    <span className="contact-icon">𝕏</span>
+                    <div className="contact-info-col">
+                      <span className="contact-type">X / Twitter</span>
+                      <span className="contact-val">{card.twitterX.startsWith('@') ? card.twitterX : `@${card.twitterX}`}</span>
+                    </div>
+                    <span className="contact-arrow">Follow ↗</span>
+                  </a>
+                )}
+
+                {card.facebook && (
+                  <a
+                    href={card.facebook.startsWith('http') ? card.facebook : `https://facebook.com/${card.facebook}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="action-contact-card"
+                  >
+                    <span className="contact-icon">🌐</span>
+                    <div className="contact-info-col">
+                      <span className="contact-type">Facebook</span>
+                      <span className="contact-val">{card.facebook.replace(/^https?:\/\/(www\.)?facebook\.com\//, '')}</span>
+                    </div>
+                    <span className="contact-arrow">View ↗</span>
+                  </a>
+                )}
+
                 {card.linkedin && (
                   <a
                     href={card.linkedin.startsWith('http') ? card.linkedin : `https://linkedin.com/in/${card.linkedin}`}

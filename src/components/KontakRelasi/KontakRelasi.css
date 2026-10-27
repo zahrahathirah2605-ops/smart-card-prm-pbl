@@ -28,3 +28,118 @@
   border-radius: 10px;
   font-size: 0.86rem;
 }
+
+/* Category Badges for Relationship Contacts - Unified Calm Palette */
+.rel-category-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 9px;
+  border-radius: 6px;
+  font-size: 0.74rem;
+  font-weight: 600;
+  white-space: nowrap;
+  letter-spacing: 0.1px;
+  background-color: #f1f5f9;
+  color: #334155;
+  border: 1px solid #e2e8f0;
+}
+
+.rel-category-badge.badge-prm-history {
+  background-color: #f8fafc;
+  color: #0f172a;
+  border-color: #cbd5e1;
+}
+
+.rel-category-badge.badge-external-contact {
+  background-color: #f0f4f8;
+  color: #12417D;
+  border-color: #d0dce8;
+}
+
+.rel-category-badge .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.rel-category-badge.badge-prm-history .dot {
+  background-color: #64748b;
+}
+
+.rel-category-badge.badge-external-contact .dot {
+  background-color: #12417D;
+}
+
+/* Filter Controls Bar */
+.rel-filter-header-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.rel-filter-header-bar .prm-search-box-kelola {
+  flex: 1;
+  min-width: 280px;
+}
+
+.rel-filter-pills {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: #f1f5f9;
+  padding: 4px;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+}
+
+.rel-pill-btn {
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  padding: 0.5rem 0.9rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.rel-pill-btn:hover {
+  background: rgba(255, 255, 255, 0.6);
+  color: #0f172a;
+}
+
+.rel-pill-btn.active {
+  background: #12417D;
+  color: #ffffff;
+  box-shadow: 0 2px 6px rgba(18, 65, 125, 0.25);
+}
+
+.rel-pill-btn.active.pill-all,
+.rel-pill-btn.active.pill-prm,
+.rel-pill-btn.active.pill-ext {
+  background: #12417D;
+  color: #ffffff;
+}
+
+.rel-pill-btn .pill-count {
+  font-size: 0.72rem;
+  padding: 1px 6px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.06);
+  font-weight: 700;
+}
+
+.rel-pill-btn.active .pill-count {
+  background: rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+}

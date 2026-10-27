@@ -12,6 +12,7 @@ const KontakRelasi = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [searchTerm, setSearchTerm] = useState('');
+  const [sourceFilter, setSourceFilter] = useState('ALL'); // 'ALL' | 'PRM_HISTORY' | 'EXTERNAL_CONTACT'
   const [kontakData, setKontakData] = useState([]);
   const [alertMsg, setAlertMsg] = useState(null);
   const [previewZoomPhoto, setPreviewZoomPhoto] = useState(null);
@@ -24,35 +25,76 @@ const KontakRelasi = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const PAGE_SIZE = 15;
 
-  // Default seed data kontak relasi yang eksplisit tersimpan
+  // Default seed data kontak relasi (English categories)
   const initialContacts = [
-    { id: 'rel-1', nama: 'Budi Santoso', instansi: 'PT Teknologi Nusantara', jabatan: 'Tech Lead', email: 'budi.santoso@tekno.id', kontak: '+62 812-3456-7890', kategori: 'Mitra Industri / Eksternal', isSaved: true, asal: 'Manual' },
-    { id: 'rel-2', nama: 'Siti Rahma', instansi: 'Universitas Batam', jabatan: 'Dosen Rekanan', email: 'siti.rahma@uniba.ac.id', kontak: '+62 853-9876-5432', kategori: 'Akademisi / Riset', isSaved: true, asal: 'Manual' },
-    { id: 'rel-3', nama: 'Ahmad Fauzi', instansi: 'CV Digital Kreasi', jabatan: 'Project Manager', email: 'ahmad@digitalkreasi.com', kontak: '+62 813-1122-3344', kategori: 'Mitra Industri / Eksternal', isSaved: true, asal: 'Manual' },
-    { id: 'rel-4', nama: 'Dewi Lestari', instansi: 'PT Media Solusi Utama', jabatan: 'HR Director', email: 'dewi.l@mediasolusi.com', kontak: '+62 878-5566-7788', kategori: 'Mitra Magang / Rekrutmen', isSaved: true, asal: 'Manual' },
-    { id: 'rel-5', nama: 'Hendra Gunawan', instansi: 'Global Tech Corp', jabatan: 'Principal Architect', email: 'hendra.g@globaltech.com', kontak: '+62 821-4433-2211', kategori: 'Mitra Industri / Eksternal', isSaved: true, asal: 'Manual' },
-    { id: 'rel-6', nama: 'Jessica Wong', instansi: 'Nusantara Ventures', jabatan: 'Investment Partner', email: 'jessica.w@nuventures.id', kontak: '+62 812-9988-7766', kategori: 'Mitra Investasi', isSaved: true, asal: 'Manual' },
-    { id: 'rel-7', nama: 'Alex Turner', instansi: 'TechNova Global', jabatan: 'VP of Engineering', email: 'alex.turner@technova.com', kontak: '+62 813-4455-6677', kategori: 'Mitra Industri / Eksternal', isSaved: true, asal: 'Manual' },
-    { id: 'rel-8', nama: 'Sarah Connor', instansi: 'Cyberdyne Systems', jabatan: 'Security Lead', email: 'sarah.c@cyberdyne.org', kontak: '+62 855-6677-8899', kategori: 'Keamanan Siber', isSaved: true, asal: 'Manual' },
-    { id: 'rel-9', nama: 'Michael Brown', instansi: 'Inovasi Digital', jabatan: 'Senior Solution Consultant', email: 'm.brown@inovasi.id', kontak: '+62 811-2233-4455', kategori: 'Mitra Industri / Eksternal', isSaved: true, asal: 'Manual' },
-    { id: 'rel-10', nama: 'Rian Pratama', instansi: 'Batam Times Media', jabatan: 'Chief Editor', email: 'rian.pratama@batamtimes.co.id', kontak: '+62 819-3344-5566', kategori: 'Media & Publikasi', isSaved: true, asal: 'Manual' },
-    { id: 'rel-11', nama: 'Faisal Basri', instansi: 'Cyber Defense Indonesia', jabatan: 'Principal Consultant', email: 'faisal.b@cyberdefense.id', kontak: '+62 818-7788-9900', kategori: 'Mitra Industri / Eksternal', isSaved: true, asal: 'Manual' },
-    { id: 'rel-12', nama: 'Maya Indah', instansi: 'TransDigital Solusi', jabatan: 'Operations Manager', email: 'maya.indah@transdigital.co.id', kontak: '+62 852-1122-3344', kategori: 'Mitra Industri / Eksternal', isSaved: true, asal: 'Manual' },
-    { id: 'rel-13', nama: 'Bayu Nugroho', instansi: 'HardwareTech Solusi', jabatan: 'Hardware Engineer', email: 'bayu.n@hardwaretech.id', kontak: '+62 877-6655-4433', kategori: 'Vendor & Suplier', isSaved: true, asal: 'Manual' },
-    { id: 'rel-14', nama: 'Prof. Kevin Hart', instansi: 'Singapore Tech Alliance', jabatan: 'Visiting Professor', email: 'kevin.hart@mitrauniv.sg', kontak: '+65 9123 4567', kategori: 'Akademisi Internasional', isSaved: true, asal: 'Manual' },
-    { id: 'rel-15', nama: 'Doni Pratama', instansi: 'Ikatan Alumni Polibatam', jabatan: 'Ketua Divisi Kemitraan', email: 'doni.pratama@alumnipolibatam.org', kontak: '+62 812-5566-7788', kategori: 'Alumni Kampus', isSaved: true, asal: 'Manual' },
-    { id: 'rel-16', nama: 'Kurnia Setiawan', instansi: 'Batam Startup Center', jabatan: 'Program Director', email: 'kurnia@batamincubator.id', kontak: '+62 813-8899-0011', kategori: 'Inkubator Bisnis', isSaved: true, asal: 'Manual' },
-    { id: 'rel-17', nama: 'Nadia Salsabila', instansi: 'Event Nusantara Organizer', jabatan: 'Event Director', email: 'nadia.s@eventnusantara.com', kontak: '+62 821-3322-1100', kategori: 'Mitra Event & Promosi', isSaved: true, asal: 'Manual' },
-    { id: 'rel-18', nama: 'Dr. Ilham Habibie', instansi: 'Konsorsium Riset Vokasi', jabatan: 'Peneliti Utama', email: 'ilham.habibie@risetvokasi.id', kontak: '+62 811-9900-1122', kategori: 'Akademisi / Riset', isSaved: true, asal: 'Manual' }
+    { id: 'rel-1', nama: 'Budi Santoso', instansi: 'PT Teknologi Nusantara', jabatan: 'Tech Lead', email: 'budi.santoso@tekno.id', kontak: '+62 812-3456-7890', kategori: 'Industry & Enterprise Partner', isSaved: true, asal: 'External Physical Card' },
+    { id: 'rel-2', nama: 'Siti Rahma', instansi: 'Universitas Batam', jabatan: 'Dosen Rekanan', email: 'siti.rahma@uniba.ac.id', kontak: '+62 853-9876-5432', kategori: 'Academic & Research Partner', isSaved: true, asal: 'PRM History' },
+    { id: 'rel-3', nama: 'Ahmad Fauzi', instansi: 'CV Digital Kreasi', jabatan: 'Project Manager', email: 'ahmad@digitalkreasi.com', kontak: '+62 813-1122-3344', kategori: 'Industry & Enterprise Partner', isSaved: true, asal: 'External Physical Card' },
+    { id: 'rel-4', nama: 'Dewi Lestari', instansi: 'PT Media Solusi Utama', jabatan: 'HR Director', email: 'dewi.l@mediasolusi.com', kontak: '+62 878-5566-7788', kategori: 'Internship & Recruitment Partner', isSaved: true, asal: 'PRM History' },
+    { id: 'rel-5', nama: 'Hendra Gunawan', instansi: 'Global Tech Corp', jabatan: 'Principal Architect', email: 'hendra.g@globaltech.com', kontak: '+62 821-4433-2211', kategori: 'Industry & Enterprise Partner', isSaved: true, asal: 'External Physical Card' },
+    { id: 'rel-6', nama: 'Jessica Wong', instansi: 'Nusantara Ventures', jabatan: 'Investment Partner', email: 'jessica.w@nuventures.id', kontak: '+62 812-9988-7766', kategori: 'Investment & Funding Partner', isSaved: true, asal: 'PRM History' },
+    { id: 'rel-7', nama: 'Alex Turner', instansi: 'TechNova Global', jabatan: 'VP of Engineering', email: 'alex.turner@technova.com', kontak: '+62 813-4455-6677', kategori: 'Industry & Enterprise Partner', isSaved: true, asal: 'External Physical Card' },
+    { id: 'rel-8', nama: 'Sarah Connor', instansi: 'Cyberdyne Systems', jabatan: 'Security Lead', email: 'sarah.c@cyberdyne.org', kontak: '+62 855-6677-8899', kategori: 'Cybersecurity Partner', isSaved: true, asal: 'PRM History' },
+    { id: 'rel-9', nama: 'Michael Brown', instansi: 'Inovasi Digital', jabatan: 'Senior Solution Consultant', email: 'm.brown@inovasi.id', kontak: '+62 811-2233-4455', kategori: 'Industry & Enterprise Partner', isSaved: true, asal: 'External Physical Card' },
+    { id: 'rel-10', nama: 'Rian Pratama', instansi: 'Batam Times Media', jabatan: 'Chief Editor', email: 'rian.pratama@batamtimes.co.id', kontak: '+62 819-3344-5566', kategori: 'Media & Publications', isSaved: true, asal: 'PRM History' },
+    { id: 'rel-11', nama: 'Faisal Basri', instansi: 'Cyber Defense Indonesia', jabatan: 'Principal Consultant', email: 'faisal.b@cyberdefense.id', kontak: '+62 818-7788-9900', kategori: 'Industry & Enterprise Partner', isSaved: true, asal: 'External Physical Card' },
+    { id: 'rel-12', nama: 'Maya Indah', instansi: 'TransDigital Solusi', jabatan: 'Operations Manager', email: 'maya.indah@transdigital.co.id', kontak: '+62 852-1122-3344', kategori: 'Industry & Enterprise Partner', isSaved: true, asal: 'PRM History' },
+    { id: 'rel-13', nama: 'Bayu Nugroho', instansi: 'HardwareTech Solusi', jabatan: 'Hardware Engineer', email: 'bayu.n@hardwaretech.id', kontak: '+62 877-6655-4433', kategori: 'Vendor & Supplier', isSaved: true, asal: 'External Physical Card' },
+    { id: 'rel-14', nama: 'Prof. Kevin Hart', instansi: 'Singapore Tech Alliance', jabatan: 'Visiting Professor', email: 'kevin.hart@mitrauniv.sg', kontak: '+65 9123 4567', kategori: 'International Academic Partner', isSaved: true, asal: 'PRM History' },
+    { id: 'rel-15', nama: 'Doni Pratama', instansi: 'Ikatan Alumni Polibatam', jabatan: 'Ketua Divisi Kemitraan', email: 'doni.pratama@alumnipolibatam.org', kontak: '+62 812-5566-7788', kategori: 'Campus Alumni Network', isSaved: true, asal: 'External Physical Card' },
+    { id: 'rel-16', nama: 'Kurnia Setiawan', instansi: 'Batam Startup Center', jabatan: 'Program Director', email: 'kurnia@batamincubator.id', kontak: '+62 813-8899-0011', kategori: 'Business Incubator', isSaved: true, asal: 'PRM History' },
+    { id: 'rel-17', nama: 'Nadia Salsabila', instansi: 'Event Nusantara Organizer', jabatan: 'Event Director', email: 'nadia.s@eventnusantara.com', kontak: '+62 821-3322-1100', kategori: 'Event & Promotion Partner', isSaved: true, asal: 'External Physical Card' },
+    { id: 'rel-18', nama: 'Dr. Ilham Habibie', instansi: 'Konsorsium Riset Vokasi', jabatan: 'Peneliti Utama', email: 'ilham.habibie@risetvokasi.id', kontak: '+62 811-9900-1122', kategori: 'Academic & Research Partner', isSaved: true, asal: 'PRM History' }
   ];
 
-  // Inisialisasi: HANYA muat kontak yang tersimpan eksplisit oleh pengguna
+  // Helper normalization to map English categories and source types
+  const normalizeContact = (contact) => {
+    let asal = contact.asal;
+    if (!asal) {
+      if (contact.tipe === 'eksternal' || contact.foto_kartu) {
+        asal = 'External Physical Card';
+      } else {
+        asal = 'PRM History';
+      }
+    } else if (asal === 'Manual') {
+      asal = 'External Physical Card';
+    }
+
+    // Map Indonesian category names to English if present
+    let kategori = contact.kategori || 'External Partner';
+    const categoryMap = {
+      'Mitra Industri / Eksternal': 'Industry & Enterprise Partner',
+      'Akademisi / Riset': 'Academic & Research Partner',
+      'Mitra Magang / Rekrutmen': 'Internship & Recruitment Partner',
+      'Mitra Investasi': 'Investment & Funding Partner',
+      'Keamanan Siber': 'Cybersecurity Partner',
+      'Media & Publikasi': 'Media & Publications',
+      'Vendor & Suplier': 'Vendor & Supplier',
+      'Akademisi Internasional': 'International Academic Partner',
+      'Alumni Kampus': 'Campus Alumni Network',
+      'Inkubator Bisnis': 'Business Incubator',
+      'Mitra Event & Promosi': 'Event & Promotion Partner'
+    };
+
+    if (categoryMap[kategori]) {
+      kategori = categoryMap[kategori];
+    }
+
+    return {
+      ...contact,
+      asal,
+      kategori
+    };
+  };
+
+  // Inisialisasi: muat kontak dan normalisasi data kategori ke Bahasa Inggris
   useEffect(() => {
     const raw = localStorage.getItem(STORAGE_KEY_RELATION_CONTACTS);
     let contacts = [];
     if (raw) {
       try {
-        contacts = JSON.parse(raw);
+        const parsed = JSON.parse(raw);
+        contacts = parsed.map(normalizeContact);
       } catch (_e) {
         contacts = initialContacts;
       }
@@ -91,15 +133,26 @@ const KontakRelasi = () => {
     }
   };
 
+  // Counts for filter pills
+  const countPRM = kontakData.filter(c => c.asal === 'PRM History').length;
+  const countExt = kontakData.filter(c => c.asal !== 'PRM History').length;
+
   const filteredKontak = kontakData.filter(item => {
     const q = searchTerm.toLowerCase();
-    return (
+    const matchSearch = (
       item.nama.toLowerCase().includes(q) ||
       (item.instansi && item.instansi.toLowerCase().includes(q)) ||
       (item.kontak && item.kontak.toLowerCase().includes(q)) ||
       (item.email && item.email.toLowerCase().includes(q)) ||
       (item.kategori && item.kategori.toLowerCase().includes(q))
     );
+
+    const matchSource =
+      sourceFilter === 'ALL' ||
+      (sourceFilter === 'PRM_HISTORY' && item.asal === 'PRM History') ||
+      (sourceFilter === 'EXTERNAL_CONTACT' && item.asal !== 'PRM History');
+
+    return matchSearch && matchSource;
   });
 
   // Paginasi: hitung subset data (maks 15 per halaman)
@@ -109,6 +162,11 @@ const KontakRelasi = () => {
 
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
+    setCurrentPage(1);
+  };
+
+  const handleSourceFilterChange = (filter) => {
+    setSourceFilter(filter);
     setCurrentPage(1);
   };
 
@@ -156,8 +214,8 @@ const KontakRelasi = () => {
           </div>
         )}
 
-        {/* Search Bar */}
-        <div className="prm-filter-bar-full">
+        {/* Filter & Search Bar with Dual Source Filters */}
+        <div className="rel-filter-header-bar">
           <div className="prm-search-box-kelola">
             <span className="search-icon">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -182,6 +240,31 @@ const KontakRelasi = () => {
               </button>
             )}
           </div>
+
+          {/* Filter Pills based on 2 Sources: PRM History and External Contacts */}
+          <div className="rel-filter-pills">
+            <button
+              type="button"
+              className={`rel-pill-btn pill-all ${sourceFilter === 'ALL' ? 'active' : ''}`}
+              onClick={() => handleSourceFilterChange('ALL')}
+            >
+              All Contacts <span className="pill-count">{kontakData.length}</span>
+            </button>
+            <button
+              type="button"
+              className={`rel-pill-btn pill-prm ${sourceFilter === 'PRM_HISTORY' ? 'active' : ''}`}
+              onClick={() => handleSourceFilterChange('PRM_HISTORY')}
+            >
+              📅 From PRM History <span className="pill-count">{countPRM}</span>
+            </button>
+            <button
+              type="button"
+              className={`rel-pill-btn pill-ext ${sourceFilter === 'EXTERNAL_CONTACT' ? 'active' : ''}`}
+              onClick={() => handleSourceFilterChange('EXTERNAL_CONTACT')}
+            >
+              📇 External Card Contacts <span className="pill-count">{countExt}</span>
+            </button>
+          </div>
         </div>
 
         {/* Table of Relationship Contacts */}
@@ -189,77 +272,76 @@ const KontakRelasi = () => {
           <table className="prm-table">
             <thead>
               <tr>
-                <th style={{ width: '28%' }}>Name & Role</th>
-                <th style={{ width: '24%' }}>Organization / Campus</th>
-                <th style={{ width: '26%' }}>Contact & Email</th>
-                <th style={{ width: '12%' }}>Category</th>
+                <th style={{ width: '27%' }}>Name & Role</th>
+                <th style={{ width: '23%' }}>Organization / Campus</th>
+                <th style={{ width: '24%' }}>Contact & Email</th>
+                <th style={{ width: '16%' }}>Data Category</th>
                 <th style={{ width: '10%', textAlign: 'center' }}>Actions</th>
               </tr>
             </thead>
             <tbody>
               {paginatedKontak.length > 0 ? (
-                paginatedKontak.map((item) => (
-                  <tr
-                    key={item.id}
-                    className="prm-clickable-row"
-                    onClick={() => handleRowClick(item)}
-                    title="Click row to view relationship contact details"
-                  >
-                    <td>
-                      <div style={{ fontWeight: 600, color: '#0f172a', fontSize: '0.92rem' }}>
-                        {item.nama}
-                      </div>
-                      <div style={{ fontSize: '0.76rem', color: '#64748b', marginTop: '2px' }}>
-                        {item.jabatan || 'Partner'} {item.asal === 'PRM History' && <span style={{ color: '#ff5733', fontWeight: 600 }}>• From PRM History</span>}
-                      </div>
-                      {item.catatan && (
-                        <div style={{ fontSize: '0.72rem', color: '#94a3b8', marginTop: '2px', fontStyle: 'italic' }}>
-                          "{item.catatan}"
+                paginatedKontak.map((item) => {
+                  const isFromPRM = item.asal === 'PRM History';
+                  return (
+                    <tr
+                      key={item.id}
+                      className="prm-clickable-row"
+                      onClick={() => handleRowClick(item)}
+                      title="Click row to view relationship contact details"
+                    >
+                      <td>
+                        <div style={{ fontWeight: 600, color: '#0f172a', fontSize: '0.92rem' }}>
+                          {item.nama}
                         </div>
-                      )}
-                    </td>
-                    <td>
-                      <div style={{ fontWeight: 500, color: '#334155' }}>{item.instansi}</div>
-                    </td>
-                    <td>
-                      <div style={{ fontSize: '0.84rem', color: '#334155' }}>
-                        📱 {item.kontak}
-                      </div>
-                      {item.email && (
-                        <div style={{ fontSize: '0.76rem', color: '#0284c7', marginTop: '2px' }}>
-                          ✉️ <a href={`mailto:${item.email}`} style={{ color: 'inherit', textDecoration: 'none' }} onClick={(e) => e.stopPropagation()}>{item.email}</a>
+                        <div style={{ fontSize: '0.76rem', color: '#64748b', marginTop: '2px' }}>
+                          {item.jabatan || 'Partner'}
                         </div>
-                      )}
-                    </td>
-                    <td>
-                      <span style={{
-                        display: 'inline-block',
-                        padding: '3px 8px',
-                        borderRadius: '6px',
-                        fontSize: '0.72rem',
-                        fontWeight: 600,
-                        background: item.asal === 'PRM History' ? '#fff1ee' : '#f1f5f9',
-                        color: item.asal === 'PRM History' ? '#c2410c' : '#475569'
-                      }}>
-                        {item.kategori || 'External'}
-                      </span>
-                    </td>
-                    <td style={{ textAlign: 'center' }} onClick={(e) => e.stopPropagation()}>
-                      <button
-                        type="button"
-                        className="btn-delete-contact"
-                        title="Delete contact from relationship directory"
-                        onClick={(e) => handleDeleteContact(item.id, item.nama, e)}
-                      >
-                        Delete Contact
-                      </button>
-                    </td>
-                  </tr>
-                ))
+                        {item.catatan && (
+                          <div style={{ fontSize: '0.72rem', color: '#94a3b8', marginTop: '2px', fontStyle: 'italic' }}>
+                            "{item.catatan}"
+                          </div>
+                        )}
+                      </td>
+                      <td>
+                        <div style={{ fontWeight: 500, color: '#334155' }}>{item.instansi}</div>
+                      </td>
+                      <td>
+                        <div style={{ fontSize: '0.84rem', color: '#334155' }}>
+                          📱 {item.kontak}
+                        </div>
+                        {item.email && (
+                          <div style={{ fontSize: '0.76rem', color: '#0284c7', marginTop: '2px' }}>
+                            ✉️ <a href={`mailto:${item.email}`} style={{ color: 'inherit', textDecoration: 'none' }} onClick={(e) => e.stopPropagation()}>{item.email}</a>
+                          </div>
+                        )}
+                      </td>
+                      <td>
+                        <span className={`rel-category-badge ${isFromPRM ? 'badge-prm-history' : 'badge-external-contact'}`}>
+                          <span className="dot" />
+                          {item.kategori || (isFromPRM ? 'PRM Meeting Partner' : 'External Partner')}
+                        </span>
+                        <div style={{ fontSize: '0.70rem', color: '#64748b', fontWeight: 500, marginTop: '3px' }}>
+                          {isFromPRM ? 'PRM History' : 'External Contact'}
+                        </div>
+                      </td>
+                      <td style={{ textAlign: 'center' }} onClick={(e) => e.stopPropagation()}>
+                        <button
+                          type="button"
+                          className="btn-delete-contact"
+                          title="Delete contact from relationship directory"
+                          onClick={(e) => handleDeleteContact(item.id, item.nama, e)}
+                        >
+                          Delete Contact
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                })
               ) : (
                 <tr>
                   <td colSpan="5" className="prm-empty-row">
-                    No relationship contacts match your search. Click <strong>+ Add External Contact</strong> or save from PRM History to add contacts here.
+                    No relationship contacts match your current filter. Click <strong>+ Add External Contact</strong> or save from PRM History to add contacts here.
                   </td>
                 </tr>
               )}

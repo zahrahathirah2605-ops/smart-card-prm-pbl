@@ -77,6 +77,18 @@ const DigitalCardBadge = ({ card, qrUrl, elementId = 'printable-card' }) => {
                 <span className="contact-text">{card.email}</span>
               </div>
             )}
+            {card?.twitterX && (
+              <div className="contact-row">
+                <span className="icon-badge">𝕏</span>
+                <span className="contact-text">{card.twitterX.startsWith('@') ? card.twitterX : `@${card.twitterX}`}</span>
+              </div>
+            )}
+            {card?.facebook && (
+              <div className="contact-row">
+                <span className="icon-badge">🌐</span>
+                <span className="contact-text">fb/{card.facebook.replace(/^https?:\/\/(www\.)?facebook\.com\//, '')}</span>
+              </div>
+            )}
             {card?.linkedin && (
               <div className="contact-row">
                 <span className="icon-badge">💼</span>

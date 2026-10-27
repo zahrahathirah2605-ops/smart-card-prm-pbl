@@ -223,24 +223,6 @@ const Login = () => {
               />
             </div>
 
-            {/* Quick Demo Helper Hint */}
-            <div className="demo-credentials-box">
-              <div className="demo-hint-title">
-                💡 Demo Credentials ({role === 'admin' ? 'Admin' : 'User'}):
-              </div>
-              <div className="demo-hint-code">
-                {role === 'admin' ? (
-                  <>
-                    Email: <strong>admin@gmail.com</strong> | Password: <strong>admin123</strong>
-                  </>
-                ) : (
-                  <>
-                    Email: <strong>smart.card@gmail.com</strong> | Password (NIM): <strong>3312401001</strong> (or <strong>pbljaya</strong>)
-                  </>
-                )}
-              </div>
-            </div>
-
             <button type="submit" className={`auth-submit-btn ${role === 'admin' ? 'btn-admin-login' : ''}`}>
               {role === 'admin' ? 'Login to Admin Dashboard →' : 'Login to User Portal →'}
             </button>

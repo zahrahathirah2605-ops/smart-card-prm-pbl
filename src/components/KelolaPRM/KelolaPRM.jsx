@@ -353,21 +353,7 @@ const KelolaPRM = () => {
                             <button 
                               type="button"
                               className="btn-view-reason-action"
-                              style={{
-                                background: '#f8fafc',
-                                border: '1px solid #cbd5e1',
-                                color: '#12417D',
-                                fontSize: '0.78rem',
-                                fontWeight: 600,
-                                padding: '0.35rem 0.75rem',
-                                borderRadius: '6px',
-                                cursor: 'pointer',
-                                display: 'inline-flex',
-                                alignItems: 'center',
-                                gap: '4px',
-                                transition: 'all 0.2s ease',
-                                boxShadow: '0 1px 2px rgba(0,0,0,0.05)'
-                              }}
+                              title="Click to view or edit response reason"
                               onClick={() => openActionModal(item, item.status === 'Accepted' || item.status === 'Disetujui' ? 'accept' : 'reject')}
                             >
                               ✏️ View / Edit Reason
