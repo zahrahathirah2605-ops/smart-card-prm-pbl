@@ -27,8 +27,8 @@ const AdminProfileModal = ({ onClose }) => {
               </svg>
             </div>
             <div>
-              <h3 className="admin-modal-title">Profil Administrator</h3>
-              <p className="admin-modal-sub">Kelola akun dan otorisasi akses sistem</p>
+              <h3 className="admin-modal-title">Administrator Profile</h3>
+              <p className="admin-modal-sub">Manage account credentials and system authorization</p>
             </div>
           </div>
           <button className="admin-modal-close" onClick={onClose}>✕</button>
@@ -36,13 +36,13 @@ const AdminProfileModal = ({ onClose }) => {
 
         {savedSuccess && (
           <div className="admin-modal-alert">
-            ✓ Perubahan profil administrator berhasil disimpan!
+            ✓ Administrator profile changes saved successfully!
           </div>
         )}
 
         <form onSubmit={handleSubmit} className="admin-profile-form">
           <div className="form-group-modal">
-            <label>Nama Administrator</label>
+            <label>Administrator Name</label>
             <input
               type="text"
               value={profile.nama}
@@ -53,19 +53,19 @@ const AdminProfileModal = ({ onClose }) => {
           </div>
 
           <div className="form-group-modal">
-            <label>Email Akses Admin</label>
+            <label>Admin Access Email</label>
             <input
               type="email"
               value={profile.email}
               disabled
-              title="Email default sistem admin"
+              title="Default admin system email"
             />
-            <span className="input-hint">Email sistem resmi untuk login hak akses administrator</span>
+            <span className="input-hint">Official system email for administrator login rights</span>
           </div>
 
           <div className="modal-row-grid">
             <div className="form-group-modal">
-              <label>Jabatan / Peran</label>
+              <label>Role / Position</label>
               <input
                 type="text"
                 value={profile.jabatan}
@@ -74,7 +74,7 @@ const AdminProfileModal = ({ onClose }) => {
               />
             </div>
             <div className="form-group-modal">
-              <label>Nomor Telepon</label>
+              <label>Phone Number</label>
               <input
                 type="text"
                 value={profile.telepon}
@@ -85,7 +85,7 @@ const AdminProfileModal = ({ onClose }) => {
           </div>
 
           <div className="form-group-modal">
-            <label>Instansi / Organisasi</label>
+            <label>Organization / Campus</label>
             <input
               type="text"
               value={profile.instansi}
@@ -105,10 +105,10 @@ const AdminProfileModal = ({ onClose }) => {
                     setIsEditing(false);
                   }}
                 >
-                  Batal
+                  Cancel
                 </button>
                 <button type="submit" className="btn-modal-save">
-                  Simpan Perubahan
+                  Save Changes
                 </button>
               </>
             ) : (
@@ -118,14 +118,14 @@ const AdminProfileModal = ({ onClose }) => {
                   className="btn-modal-cancel"
                   onClick={onClose}
                 >
-                  Tutup
+                  Close
                 </button>
                 <button
                   type="button"
                   className="btn-modal-save"
                   onClick={() => setIsEditing(true)}
                 >
-                  Edit Profil
+                  Edit Profile
                 </button>
               </>
             )}

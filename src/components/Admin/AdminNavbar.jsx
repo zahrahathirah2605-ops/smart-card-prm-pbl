@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import AdminProfileModal from './AdminProfileModal';
 import './AdminNavbar.css';
@@ -8,6 +8,22 @@ const AdminNavbar = ({ active = 'beranda' }) => {
   const location = useLocation();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
+  const adminDropdownRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (adminDropdownRef.current && !adminDropdownRef.current.contains(event.target)) {
+        setIsDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('touchstart', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('touchstart', handleClickOutside);
+    };
+  }, []);
 
   const handleLogout = () => {
     localStorage.removeItem('smart_card_logged_role');
@@ -61,7 +77,7 @@ const AdminNavbar = ({ active = 'beranda' }) => {
           </div>
 
           {/* Hamburger Menu Circular Button */}
-          <div className="admin-dropdown-container">
+          <div className="admin-dropdown-container" ref={adminDropdownRef}>
             <button
               className={`admin-menu-circle-btn ${isDropdownOpen ? 'open' : ''}`}
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}

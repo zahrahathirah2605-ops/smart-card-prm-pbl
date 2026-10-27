@@ -128,7 +128,7 @@ const Home = () => {
                   gap: '0.5rem'
                 }}
               >
-                📅 Lihat Kalender Jadwal PRM →
+                📅 View PRM Schedule Calendar →
               </button>
               <button
                 type="button"

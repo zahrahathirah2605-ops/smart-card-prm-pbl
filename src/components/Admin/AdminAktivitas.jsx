@@ -49,24 +49,24 @@ const AdminAktivitas = () => {
       {
         aktor: 'Aprillia Bunga Lestari',
         email: 'smart.card@gmail.com',
-        kategori: 'Kartu Nama',
-        aksi: 'Membagikan kartu nama digital via QR Code ke mitra baru',
+        kategori: 'Business Card',
+        aksi: 'Shared digital business card via QR Code to a new partner',
         status: 'Sukses',
         statusClass: 'log-success'
       },
       {
         aktor: 'Budi Santoso, M.Kom',
         email: 'budi.santoso@inovasidigital.id',
-        kategori: 'Autentikasi',
-        aksi: 'Masuk ke sistem dashboard profil pengguna terdaftar',
+        kategori: 'Authentication',
+        aksi: 'Logged in to registered user dashboard profile',
         status: 'Sukses',
         statusClass: 'log-success'
       },
       {
         aktor: 'Siti Rahma, S.T., M.Sc',
         email: 'siti.rahma@polibatam.ac.id',
-        kategori: 'PRM Interaksi',
-        aksi: 'Menerima permintaan jadwal janji temu riset PBL',
+        kategori: 'PRM Interaction',
+        aksi: 'Accepted PBL research meeting appointment request',
         status: 'Sukses',
         statusClass: 'log-success'
       }
@@ -75,12 +75,12 @@ const AdminAktivitas = () => {
     const randomEvent = sampleEvents[Math.floor(Math.random() * sampleEvents.length)];
     addActivityLog(randomEvent);
     loadAllData();
-    showNotification(`Aktivitas baru dari ${randomEvent.aktor} berhasil dicatat ke sistem!`);
+    showNotification(`New activity from ${randomEvent.aktor} logged to the system!`);
   };
 
   // Export logs to CSV
   const handleExportCSV = () => {
-    const header = ['ID', 'Waktu', 'Aktor', 'Email', 'Kategori', 'Aktivitas', 'Status', 'IP'];
+    const header = ['ID', 'Time', 'Actor', 'Email', 'Category', 'Activity', 'Status', 'IP'];
     const rows = logs.map(l => [
       `"${l.id}"`,
       `"${l.timestamp}"`,
@@ -96,11 +96,11 @@ const AdminAktivitas = () => {
     const encodedUri = encodeURI(csvContent);
     const link = document.createElement('a');
     link.setAttribute('href', encodedUri);
-    link.setAttribute('download', `Log_Aktivitas_SmartCard_${new Date().toISOString().slice(0, 10)}.csv`);
+    link.setAttribute('download', `Activity_Logs_SmartCard_${new Date().toISOString().slice(0, 10)}.csv`);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-    showNotification('File CSV Log Aktivitas berhasil diunduh!');
+    showNotification('Activity logs CSV file downloaded successfully!');
   };
 
   // Filter logs
@@ -112,7 +112,12 @@ const AdminAktivitas = () => {
       log.id.toLowerCase().includes(searchLog.toLowerCase());
 
     const matchCategory =
-      categoryFilter === 'ALL' || log.kategori === categoryFilter;
+      categoryFilter === 'ALL' ||
+      (categoryFilter === 'Business Card' && (log.kategori === 'Kartu Nama' || log.kategori === 'Business Card')) ||
+      (categoryFilter === 'Authentication' && (log.kategori === 'Autentikasi' || log.kategori === 'Authentication')) ||
+      (categoryFilter === 'PRM Interaction' && (log.kategori === 'PRM Interaksi' || log.kategori === 'PRM Interaction')) ||
+      (categoryFilter === 'Account Access' && (log.kategori === 'Akses Akun' || log.kategori === 'Account Access')) ||
+      log.kategori === categoryFilter;
 
     return matchSearch && matchCategory;
   });
@@ -133,19 +138,19 @@ const AdminAktivitas = () => {
         {/* Page Header */}
         <div className="admin-page-header">
           <div>
-            <div className="badge-tag">Kebutuhan Fungsional FR-14</div>
-            <h1 className="admin-page-title">Pemantauan & Statistik Terpusat</h1>
+            <div className="badge-tag">Functional Requirement FR-14</div>
+            <h1 className="admin-page-title">Centralized Monitoring & Statistics</h1>
             <p className="admin-page-desc">
-              Pantau data kartu nama digital, rekam jejak aktivitas pengguna internal, dan statistik penggunaan aplikasi secara terpusat.
+              Monitor digital business cards, internal user activity logs, and centralized application usage statistics.
             </p>
           </div>
 
           <div className="header-action-group">
             <button className="btn-secondary-audit" onClick={handleSimulateActivity}>
-              ⚡ Simulasikan Aktivitas
+              ⚡ Simulate Activity
             </button>
             <button className="btn-primary-audit" onClick={handleExportCSV}>
-              📥 Ekspor Log CSV
+              📥 Export CSV Log
             </button>
           </div>
         </div>
@@ -159,7 +164,7 @@ const AdminAktivitas = () => {
               </svg>
             </div>
             <div className="kpi-content">
-              <span className="kpi-title">Total Log Aktivitas</span>
+              <span className="kpi-title">Total Activity Logs</span>
               <div className="kpi-value">{stats.totalAktivitas}</div>
               <span className="kpi-sub green">↑ Real-time tracking</span>
             </div>
@@ -175,9 +180,9 @@ const AdminAktivitas = () => {
               </svg>
             </div>
             <div className="kpi-content">
-              <span className="kpi-title">Pengguna Terdaftar Aktif</span>
+              <span className="kpi-title">Active Registered Users</span>
               <div className="kpi-value">{stats.penggunaAktif} / {stats.totalPengguna}</div>
-              <span className="kpi-sub">{stats.penggunaNonaktif} Akun Ditangguhkan</span>
+              <span className="kpi-sub">{stats.penggunaNonaktif} Deactivated</span>
             </div>
           </div>
 
@@ -189,9 +194,9 @@ const AdminAktivitas = () => {
               </svg>
             </div>
             <div className="kpi-content">
-              <span className="kpi-title">Kartu Digital Terdata</span>
+              <span className="kpi-title">Recorded Digital Cards</span>
               <div className="kpi-value">{users.length}</div>
-              <span className="kpi-sub green">Tersinkronisasi QR Cloud</span>
+              <span className="kpi-sub green">Cloud QR Synchronized</span>
             </div>
           </div>
 
@@ -202,9 +207,9 @@ const AdminAktivitas = () => {
               </svg>
             </div>
             <div className="kpi-content">
-              <span className="kpi-title">Interaksi PRM & Janji</span>
+              <span className="kpi-title">PRM Appointments & Interactions</span>
               <div className="kpi-value">{stats.totalInteraksiPRM}</div>
-              <span className="kpi-sub">Pertemuan relasi mitra</span>
+              <span className="kpi-sub">Partner relations meetings</span>
             </div>
           </div>
         </div>
@@ -223,7 +228,7 @@ const AdminAktivitas = () => {
               <line x1="3" y1="12" x2="3.01" y2="12"></line>
               <line x1="3" y1="18" x2="3.01" y2="18"></line>
             </svg>
-            Rekam Jejak Aktivitas ({logs.length})
+            Activity Audit Logs ({logs.length})
           </button>
 
           <button
@@ -234,7 +239,7 @@ const AdminAktivitas = () => {
               <rect x="2" y="4" width="20" height="16" rx="2"></rect>
               <line x1="2" y1="10" x2="22" y2="10"></line>
             </svg>
-            Pemantauan Kartu Nama Digital ({users.length})
+            Digital Business Cards Monitoring ({users.length})
           </button>
         </div>
 
@@ -250,7 +255,7 @@ const AdminAktivitas = () => {
                 </svg>
                 <input
                   type="text"
-                  placeholder="Cari aktivitas berdasarkan nama pengguna, email, atau aksi..."
+                  placeholder="Search activity by user name, email, or action..."
                   value={searchLog}
                   onChange={(e) => setSearchLog(e.target.value)}
                 />
@@ -261,31 +266,31 @@ const AdminAktivitas = () => {
                   className={`pill-btn ${categoryFilter === 'ALL' ? 'active' : ''}`}
                   onClick={() => setCategoryFilter('ALL')}
                 >
-                  Semua Kategori
+                  All Categories
                 </button>
                 <button
-                  className={`pill-btn ${categoryFilter === 'Kartu Nama' ? 'active' : ''}`}
-                  onClick={() => setCategoryFilter('Kartu Nama')}
+                  className={`pill-btn ${categoryFilter === 'Business Card' ? 'active' : ''}`}
+                  onClick={() => setCategoryFilter('Business Card')}
                 >
-                  Kartu Nama
+                  Business Card
                 </button>
                 <button
-                  className={`pill-btn ${categoryFilter === 'Akses Akun' ? 'active' : ''}`}
-                  onClick={() => setCategoryFilter('Akses Akun')}
+                  className={`pill-btn ${categoryFilter === 'Account Access' ? 'active' : ''}`}
+                  onClick={() => setCategoryFilter('Account Access')}
                 >
-                  Akses Akun
+                  Account Access
                 </button>
                 <button
-                  className={`pill-btn ${categoryFilter === 'Autentikasi' ? 'active' : ''}`}
-                  onClick={() => setCategoryFilter('Autentikasi')}
+                  className={`pill-btn ${categoryFilter === 'Authentication' ? 'active' : ''}`}
+                  onClick={() => setCategoryFilter('Authentication')}
                 >
-                  Autentikasi
+                  Authentication
                 </button>
                 <button
-                  className={`pill-btn ${categoryFilter === 'PRM Interaksi' ? 'active' : ''}`}
-                  onClick={() => setCategoryFilter('PRM Interaksi')}
+                  className={`pill-btn ${categoryFilter === 'PRM Interaction' ? 'active' : ''}`}
+                  onClick={() => setCategoryFilter('PRM Interaction')}
                 >
-                  PRM Interaksi
+                  PRM Interaction
                 </button>
               </div>
             </div>
@@ -296,11 +301,11 @@ const AdminAktivitas = () => {
                 <thead>
                   <tr>
                     <th>Log ID</th>
-                    <th>Waktu (WIB)</th>
-                    <th>Aktor / Pengguna</th>
-                    <th>Kategori</th>
-                    <th>Aktivitas Terlaksana</th>
-                    <th>Perangkat / IP</th>
+                    <th>Time</th>
+                    <th>Actor / User</th>
+                    <th>Category</th>
+                    <th>Completed Action</th>
+                    <th>Device / IP</th>
                     <th>Status</th>
                   </tr>
                 </thead>
@@ -308,7 +313,7 @@ const AdminAktivitas = () => {
                   {filteredLogs.length === 0 ? (
                     <tr>
                       <td colSpan="7" className="table-empty-state">
-                        Belum ada aktivitas yang sesuai dengan filter.
+                        No activity found matching the filter.
                       </td>
                     </tr>
                   ) : (
@@ -325,7 +330,12 @@ const AdminAktivitas = () => {
                           <div className="log-actor-email">{log.email}</div>
                         </td>
                         <td>
-                          <span className="log-category-pill">{log.kategori}</span>
+                          <span className="log-category-pill">
+                            {log.kategori === 'Kartu Nama' ? 'Business Card' :
+                             log.kategori === 'Autentikasi' ? 'Authentication' :
+                             log.kategori === 'PRM Interaksi' ? 'PRM Interaction' :
+                             log.kategori === 'Akses Akun' ? 'Account Access' : log.kategori}
+                          </span>
                         </td>
                         <td>
                           <div className="log-action-text">{log.aksi}</div>
@@ -337,7 +347,7 @@ const AdminAktivitas = () => {
                         <td>
                           <span className={`status-badge-pill ${log.status === 'Sukses' ? 'badge-aktif' : 'badge-nonaktif'}`}>
                             <span className="dot" />
-                            {log.status}
+                            {log.status === 'Sukses' ? 'Success' : log.status}
                           </span>
                         </td>
                       </tr>
@@ -349,7 +359,7 @@ const AdminAktivitas = () => {
           </div>
         )}
 
-        {/* TAB 2: PEMANTAUAN DATA KARTU NAMA DIGITAL */}
+        {/* TAB 2: DIGITAL BUSINESS CARD MONITORING */}
         {activeTab === 'cards' && (
           <div className="cards-monitoring-section">
             <div className="cards-monitoring-grid">
@@ -360,7 +370,7 @@ const AdminAktivitas = () => {
                     <div className="card-monitor-header">
                       <span className={`status-badge-pill ${u.status === 'Aktif' ? 'badge-aktif' : 'badge-nonaktif'}`}>
                         <span className="dot" />
-                        Akun {u.status}
+                        Account {u.status === 'Aktif' ? 'Active' : 'Inactive'}
                       </span>
                       <span className="card-id-label">{u.id}</span>
                     </div>
@@ -389,7 +399,7 @@ const AdminAktivitas = () => {
                         </div>
                         <div className="qr-info">
                           <span className="qr-title">Digital QR Badge</span>
-                          <span className="qr-desc">Dapat dipindai langsung oleh tamu & mitra PRM</span>
+                          <span className="qr-desc">Scannable by guests & PRM partners</span>
                         </div>
                       </div>
                     </div>
@@ -405,7 +415,7 @@ const AdminAktivitas = () => {
                           <polyline points="15 3 21 3 21 9"></polyline>
                           <line x1="10" y1="14" x2="21" y2="3"></line>
                         </svg>
-                        Lihat Kartu Publik
+                        View Public Card
                       </button>
                     </div>
                   </div>

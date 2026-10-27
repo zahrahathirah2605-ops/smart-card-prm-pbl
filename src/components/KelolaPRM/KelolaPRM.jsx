@@ -102,10 +102,10 @@ const KelolaPRM = () => {
     setSelectedItem(item);
     setActionType(type);
     if (type === 'accept') {
-      setReasonInput('Pengajuan disetujui. Pertemuan akan dilaksanakan via Google Meet / Ruang Rapat Politeknik Negeri Batam.');
-      setAdditionalNote('Tautan ruang meeting: https://meet.google.com/prm-meet-session');
+      setReasonInput('Request accepted. The meeting will be held via Google Meet / Meeting Room at Politeknik Negeri Batam.');
+      setAdditionalNote('Meeting room link: https://meet.google.com/prm-meet-session');
     } else {
-      setReasonInput('Mohon maaf, jadwal pada waktu tersebut bentrok dengan agenda prioritas internal. Silakan ajukan jadwal alternatif.');
+      setReasonInput('Apologies, the requested schedule conflicts with prior campus commitments. Please propose an alternate date.');
       setAdditionalNote('');
     }
     setIsModalOpen(true);
@@ -122,21 +122,21 @@ const KelolaPRM = () => {
   const handleConfirmDecision = () => {
     if (!selectedItem) return;
     if (!reasonInput.trim()) {
-      alert('Mohon isi alasan / catatan konfirmasi agar pihak eksternal dapat mengetahui detailnya.');
+      alert('Please provide a reason / confirmation note so external partners understand the decision.');
       return;
     }
 
     setIsSendingEmail(true);
 
     const statusText = actionType === 'accept' ? 'Accepted' : 'Declined';
-    const statusLabelId = actionType === 'accept' ? 'Disetujui' : 'Ditolak';
+    const statusLabelId = actionType === 'accept' ? 'Accepted' : 'Declined';
 
-    // Simulasikan pengiriman email otomatis ke email pihak eksternal
+    // Simulate automated email transmission to external partner
     setTimeout(() => {
-      // Simpan ke storage jika item ada di stored appointments
+      // Save status update
       updateAppointmentStatus(selectedItem.id, statusText, reasonInput, additionalNote);
 
-      // Update state tabel langsung
+      // Update local table state
       setKelolaData(prev => prev.map(item => {
         if (item.id === selectedItem.id) {
           return {
@@ -149,7 +149,7 @@ const KelolaPRM = () => {
               sentTo: selectedItem.emailPemohon || 'external@partner.com',
               status: statusText,
               alasan: reasonInput,
-              sentAt: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })
+              sentAt: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
             }
           };
         }
@@ -159,16 +159,16 @@ const KelolaPRM = () => {
       setIsSendingEmail(false);
       setIsModalOpen(false);
 
-      // Tampilkan banner notifikasi pengiriman email berhasil
+      // Display email notification banner
       setNotificationBanner({
         type: actionType,
-        email: selectedItem.emailPemohon || 'pihak eksternal',
+        email: selectedItem.emailPemohon || 'external partner',
         nama: selectedItem.pemohon || selectedItem.pengaju,
         status: statusLabelId,
         alasan: reasonInput
       });
 
-      // Auto dismiss banner setelah 7 detik
+      // Auto dismiss banner after 7s
       setTimeout(() => {
         setNotificationBanner(null);
       }, 7000);
@@ -208,9 +208,9 @@ const KelolaPRM = () => {
       <main className="prm-main-content">
         <div className="prm-header-row">
           <div>
-            <h1 className="prm-main-title">Kelola Janji Temu PRM (Masuk)</h1>
+            <h1 className="prm-main-title">Manage PRM Appointments (Incoming)</h1>
             <p className="prm-main-desc">
-              Tinjau pengajuan janji temu dari pihak eksternal. Klik baris pengajuan untuk melihat rincian lengkap, lalu setujui atau tolak dengan notifikasi email otomatis.
+              Review meeting requests submitted by external partners. Click any row to inspect complete details, then accept or decline with automated email notification.
             </p>
           </div>
         </div>
@@ -222,9 +222,9 @@ const KelolaPRM = () => {
               {notificationBanner.type === 'accept' ? '📧 ✅' : '📧 ⚠️'}
             </div>
             <div className="prm-email-alert-text">
-              <strong>Notifikasi Email Otomatis Terkirim!</strong>
+              <strong>Automated Email Notification Sent!</strong>
               <p>
-                Email konfirmasi status <b>{notificationBanner.status}</b> telah otomatis dikirimkan ke <b>{notificationBanner.email}</b> ({notificationBanner.nama}) beserta alasan yang dicantumkan.
+                Status confirmation email for <b>{notificationBanner.status}</b> was sent to <b>{notificationBanner.email}</b> ({notificationBanner.nama}) along with your decision notes.
               </p>
               <div className="prm-email-alert-quote">"{notificationBanner.alasan}"</div>
             </div>
@@ -232,7 +232,7 @@ const KelolaPRM = () => {
           </div>
         )}
 
-        {/* Search Bar dengan Icon Filter di Kanan */}
+        {/* Search Bar */}
         <div className="prm-filter-bar-full">
           <div className="prm-search-box-kelola">
             <span className="search-icon">
@@ -243,7 +243,7 @@ const KelolaPRM = () => {
             </span>
             <input
               type="text"
-              placeholder="Cari berdasarkan topik, nama pemohon, atau ID pengajuan..."
+              placeholder="Search by topic, partner name, or request ID..."
               value={searchTerm}
               onChange={handleSearchChange}
             />
@@ -252,7 +252,7 @@ const KelolaPRM = () => {
                 type="button"
                 className="search-clear-btn"
                 onClick={() => { setSearchTerm(''); setCurrentPage(1); }}
-                title="Hapus filter"
+                title="Clear search"
               >
                 ✕
               </button>
@@ -265,17 +265,17 @@ const KelolaPRM = () => {
           <table className="prm-table">
             <thead>
               <tr>
-                <th style={{ width: '42%' }}>Detail Pengajuan & Pemohon</th>
-                <th style={{ width: '18%' }}>Jadwal</th>
-                <th style={{ width: '18%' }}>Status & Email Notifikasi</th>
-                <th style={{ width: '22%', textAlign: 'right' }}>Aksi Keputusan</th>
+                <th style={{ width: '42%' }}>Request Details & Partner</th>
+                <th style={{ width: '18%' }}>Schedule</th>
+                <th style={{ width: '18%' }}>Status & Email Notification</th>
+                <th style={{ width: '22%', textAlign: 'right' }}>Decision Actions</th>
               </tr>
             </thead>
             <tbody>
               {paginatedData.length > 0 ? (
                 paginatedData.map((item, index) => {
-                  const namaPemohon = item.pemohon || item.pengaju || 'Pihak Eksternal';
-                  const emailTujuan = item.emailPemohon || 'email.eksternal@domain.com';
+                  const namaPemohon = item.pemohon || item.pengaju || 'External Partner';
+                  const emailTujuan = item.emailPemohon || 'external@partner.com';
                   const isPending = item.status === 'Pending Confirmation' || item.status === 'Menunggu Konfirmasi';
 
                   return (
@@ -283,7 +283,7 @@ const KelolaPRM = () => {
                       key={item.id || index}
                       className="prm-clickable-row"
                       onClick={() => handleRowClick(item)}
-                      title="Klik baris untuk melihat rincian detail pengajuan"
+                      title="Click row to view full appointment details"
                     >
                       <td>
                         <div style={{ fontWeight: 600, color: '#1e293b', fontSize: '0.92rem' }}>
@@ -305,7 +305,7 @@ const KelolaPRM = () => {
                             borderLeft: '3px solid #64748b',
                             color: '#334155'
                           }}>
-                            <strong>Alasan Status:</strong> "{item.alasanRespon}"
+                            <strong>Decision Note:</strong> "{item.alasanRespon}"
                           </div>
                         )}
                       </td>
@@ -325,7 +325,7 @@ const KelolaPRM = () => {
                         </span>
                         {item.emailNotifikasi && (
                           <div style={{ fontSize: '0.7rem', color: '#16a34a', marginTop: '4px', fontWeight: 500 }}>
-                            ✓ Email otomatis terkirim
+                            ✓ Automated email delivered
                           </div>
                         )}
                       </td>
@@ -334,34 +334,43 @@ const KelolaPRM = () => {
                           <div className="prm-action-btns">
                             <button 
                               className="btn-accept"
-                              title="Setujui dan kirim email konfirmasi ke pihak eksternal"
+                              title="Accept and transmit confirmation email to partner"
                               onClick={() => openActionModal(item, 'accept')}
                             >
-                              ✓ Setujui
+                              ✓ Accept
                             </button>
                             <button 
                               className="btn-reject"
-                              title="Tolak dan beri alasan ke pihak eksternal via email"
+                              title="Decline and send reason note via email"
                               onClick={() => openActionModal(item, 'reject')}
                             >
-                              ✕ Tolak
+                              ✕ Decline
                             </button>
                           </div>
                         ) : (
-                          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '3px' }}>
-                            <span className="text-processed">Selesai Diproses</span>
+                          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '6px' }}>
+                            <span className="text-processed">Processed</span>
                             <button 
+                              type="button"
+                              className="btn-view-reason-action"
                               style={{
-                                background: 'none',
-                                border: 'none',
-                                color: '#ff5733',
-                                fontSize: '0.75rem',
+                                background: '#f8fafc',
+                                border: '1px solid #cbd5e1',
+                                color: '#12417D',
+                                fontSize: '0.78rem',
+                                fontWeight: 600,
+                                padding: '0.35rem 0.75rem',
+                                borderRadius: '6px',
                                 cursor: 'pointer',
-                                textDecoration: 'underline'
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: '4px',
+                                transition: 'all 0.2s ease',
+                                boxShadow: '0 1px 2px rgba(0,0,0,0.05)'
                               }}
                               onClick={() => openActionModal(item, item.status === 'Accepted' || item.status === 'Disetujui' ? 'accept' : 'reject')}
                             >
-                              Lihat / Ubah Alasan
+                              ✏️ View / Edit Reason
                             </button>
                           </div>
                         )}
@@ -372,7 +381,7 @@ const KelolaPRM = () => {
               ) : (
                 <tr>
                   <td colSpan="4" className="prm-empty-row">
-                    Tidak ada pengajuan janji temu yang sesuai kriteria pencarian.
+                    No appointment requests match your search criteria.
                   </td>
                 </tr>
               )}
@@ -389,11 +398,11 @@ const KelolaPRM = () => {
         </div>
       </main>
 
-      {/* Detail Modal: Rincian Lengkap Pengajuan Janji Temu Masuk */}
+      {/* Detail Modal: Complete Appointment Overview */}
       <DetailModal
         isOpen={isDetailOpen}
         onClose={() => setIsDetailOpen(false)}
-        title={detailItem ? `Detail Janji Temu: ${detailItem.id}` : 'Rincian Pengajuan'}
+        title={detailItem ? `Appointment Details: ${detailItem.id}` : 'Request Overview'}
         badgeText={detailItem?.status}
         badgeType={
           detailItem?.status === 'Accepted' || detailItem?.status === 'Disetujui'
@@ -415,7 +424,7 @@ const KelolaPRM = () => {
                     openActionModal(detailItem, 'accept');
                   }}
                 >
-                  ✓ Setujui Pengajuan
+                  ✓ Accept Request
                 </button>
                 <button
                   type="button"
@@ -426,7 +435,7 @@ const KelolaPRM = () => {
                     openActionModal(detailItem, 'reject');
                   }}
                 >
-                  ✕ Tolak Pengajuan
+                  ✕ Decline Request
                 </button>
               </>
             )}
@@ -435,7 +444,7 @@ const KelolaPRM = () => {
               className="detail-modal-btn-close"
               onClick={() => setIsDetailOpen(false)}
             >
-              Tutup
+              Close
             </button>
           </>
         }
@@ -443,12 +452,12 @@ const KelolaPRM = () => {
         {detailItem && (
           <div className="modal-detail-grid">
             <div className="modal-field-box modal-detail-full">
-              <span className="modal-field-label">📌 Permintaan / Topik Pertemuan</span>
+              <span className="modal-field-label">📌 Meeting Request / Topic</span>
               <div className="modal-field-value">{detailItem.permintaan}</div>
             </div>
 
             <div className="modal-field-box">
-              <span className="modal-field-label">👤 Nama Pemohon</span>
+              <span className="modal-field-label">👤 Partner Name</span>
               <div className="modal-field-value">{detailItem.pemohon || detailItem.pengaju}</div>
               {detailItem.perusahaanPemohon && (
                 <div className="modal-field-sub">🏢 {detailItem.perusahaanPemohon}</div>
@@ -459,15 +468,15 @@ const KelolaPRM = () => {
             </div>
 
             <div className="modal-field-box">
-              <span className="modal-field-label">📅 Jadwal Diusulkan</span>
+              <span className="modal-field-label">📅 Proposed Schedule</span>
               <div className="modal-field-value">{detailItem.date || 'TBD'}</div>
               {detailItem.jam && (
-                <div className="modal-field-sub">⏰ Pukul {detailItem.jam}</div>
+                <div className="modal-field-sub">⏰ At {detailItem.jam}</div>
               )}
             </div>
 
             <div className="modal-field-box">
-              <span className="modal-field-label">✉️ Email Pemohon</span>
+              <span className="modal-field-label">✉️ Partner Email</span>
               <div className="modal-field-value">
                 {detailItem.emailPemohon ? (
                   <a href={`mailto:${detailItem.emailPemohon}`}>
@@ -480,20 +489,20 @@ const KelolaPRM = () => {
             </div>
 
             <div className="modal-field-box">
-              <span className="modal-field-label">📱 Nomor Telepon / WA</span>
+              <span className="modal-field-label">📱 Phone / WhatsApp</span>
               <div className="modal-field-value">{detailItem.teleponPemohon || '-'}</div>
             </div>
 
             {detailItem.alasanLengkap && (
               <div className="modal-field-box modal-detail-full">
-                <span className="modal-field-label">📝 Uraian Lengkap Pertemuan</span>
+                <span className="modal-field-label">📝 Meeting Agenda Description</span>
                 <div className="modal-quote-box">{detailItem.alasanLengkap}</div>
               </div>
             )}
 
             {detailItem.alasanRespon && (
               <div className="modal-field-box modal-detail-full">
-                <span className="modal-field-label">💬 Catatan Keputusan / Alasan Respon</span>
+                <span className="modal-field-label">💬 Decision Note / Reason</span>
                 <div className="modal-quote-box">{detailItem.alasanRespon}</div>
               </div>
             )}
@@ -501,69 +510,69 @@ const KelolaPRM = () => {
         )}
       </DetailModal>
 
-      {/* Modal Dialog: Konfirmasi Status & Input Alasan Notifikasi Email */}
+      {/* Modal Dialog: Confirm Status & Email Notification Input */}
       {isModalOpen && selectedItem && (
         <div className="prm-modal-overlay" onClick={closeModal}>
           <div className="prm-modal-container" onClick={(e) => e.stopPropagation()}>
             <div className="prm-modal-header">
               <div className="prm-modal-title-row">
                 <span className={`prm-modal-badge ${actionType}`}>
-                  {actionType === 'accept' ? 'Disetujui (Approved)' : 'Ditolak (Declined)'}
+                  {actionType === 'accept' ? 'Approved' : 'Declined'}
                 </span>
                 <h3 className="prm-modal-heading">
-                  {actionType === 'accept' ? 'Konfirmasi Persetujuan Janji Temu' : 'Konfirmasi Penolakan Janji Temu'}
+                  {actionType === 'accept' ? 'Confirm Appointment Approval' : 'Confirm Appointment Decline'}
                 </h3>
               </div>
               <button className="prm-modal-close-btn" onClick={closeModal} disabled={isSendingEmail}>✕</button>
             </div>
 
             <div className="prm-modal-body">
-              {/* Ringkasan Pihak Eksternal & Pengajuan */}
+              {/* Partner Overview */}
               <div className="prm-recipient-card">
                 <div className="prm-recipient-icon">✉️</div>
                 <div className="prm-recipient-info">
                   <div className="prm-recipient-name">
-                    Penerima Email: <strong>{selectedItem.pemohon || selectedItem.pengaju}</strong>
+                    Email Recipient: <strong>{selectedItem.pemohon || selectedItem.pengaju}</strong>
                   </div>
                   <div className="prm-recipient-email">
-                    Alamat Tujuan: <code>{selectedItem.emailPemohon || 'email.eksternal@domain.com'}</code>
+                    Target Address: <code>{selectedItem.emailPemohon || 'external@partner.com'}</code>
                   </div>
                   <div className="prm-recipient-sub">
-                    Agenda: "{selectedItem.permintaan}" • Jadwal: {selectedItem.date || 'TBD'} ({selectedItem.jam || 'Jam fleksibel'})
+                    Agenda: "{selectedItem.permintaan}" • Schedule: {selectedItem.date || 'TBD'} ({selectedItem.jam || 'Flexible time'})
                   </div>
                 </div>
               </div>
 
-              {/* Form Input Alasan */}
+              {/* Form Input Reason */}
               <div className="prm-input-group">
                 <label className="prm-input-label">
-                  Alasan / Keterangan Status <span className="prm-required">* (Wajib diisi)</span>
+                  Decision Note / Reason <span className="prm-required">* (Required)</span>
                 </label>
                 <textarea
                   className="prm-textarea"
                   rows="3"
                   placeholder={
                     actionType === 'accept'
-                      ? 'Contoh: Pengajuan diterima. Pertemuan diadakan daring melalui Google Meet.'
-                      : 'Contoh: Mohon maaf, jadwal pada waktu tersebut bentrok dengan rapat internal. Silakan ajukan jadwal di hari lain.'
+                      ? 'Example: Request accepted. The meeting will take place online via Google Meet.'
+                      : 'Example: Apologies, this time slot conflicts with an internal meeting. Please propose an alternate date.'
                   }
                   value={reasonInput}
                   onChange={(e) => setReasonInput(e.target.value)}
                   disabled={isSendingEmail}
                 />
                 <span className="prm-input-hint">
-                  Alasan ini akan otomatis disertakan di dalam badan email notifikasi ke pihak eksternal agar mereka mengetahui keputusannya.
+                  This note will be automatically sent inside the notification email so partners understand the response.
                 </span>
               </div>
 
-              {/* Input Catatan Tambahan / Link Meeting jika disetujui */}
+              {/* Additional Meeting Note */}
               {actionType === 'accept' && (
                 <div className="prm-input-group">
-                  <label className="prm-input-label">Tautan Rapat / Lokasi Ruang Rapat</label>
+                  <label className="prm-input-label">Meeting Link / Room Location</label>
                   <input
                     type="text"
                     className="prm-text-input"
-                    placeholder="https://meet.google.com/xxx-xxxx-xxx atau Ruang Rapat 204"
+                    placeholder="https://meet.google.com/xxx-xxxx-xxx or Polibatam Meeting Room 204"
                     value={additionalNote}
                     onChange={(e) => setAdditionalNote(e.target.value)}
                     disabled={isSendingEmail}
@@ -574,28 +583,28 @@ const KelolaPRM = () => {
               {/* Live Preview Email Notification */}
               <div className="prm-email-preview-box">
                 <div className="prm-preview-header">
-                  <span>📄 Preview Email Otomatis:</span>
+                  <span>📄 Automated Email Preview:</span>
                   <span className="prm-preview-to">To: {selectedItem.emailPemohon || 'external@partner.com'}</span>
                 </div>
                 <div className="prm-preview-content">
-                  <p><strong>Subjek:</strong> [PRM Notifikasi] Konfirmasi Janji Temu: <b>{actionType === 'accept' ? 'DISETUJUI' : 'DITOLAK'}</b> - {userProfile?.namaLengkap || 'Smart Business Card PRM'}</p>
+                  <p><strong>Subject:</strong> [PRM Notification] Meeting Confirmation: <b>{actionType === 'accept' ? 'APPROVED' : 'DECLINED'}</b> - {userProfile?.namaLengkap || 'Smart Business Card PRM'}</p>
                   <hr style={{ borderColor: '#e2e8f0', margin: '8px 0' }} />
-                  <p>Halo <b>{selectedItem.pemohon || selectedItem.pengaju}</b>,</p>
+                  <p>Hello <b>{selectedItem.pemohon || selectedItem.pengaju}</b>,</p>
                   <p>
-                    Pengajuan janji temu Anda mengenai "<em>{selectedItem.permintaan}</em>" telah{' '}
+                    Your appointment request regarding "<em>{selectedItem.permintaan}</em>" has been{' '}
                     <strong style={{ color: actionType === 'accept' ? '#16a34a' : '#dc2626' }}>
-                      {actionType === 'accept' ? 'DISETUJUI' : 'DITOLAK'}
+                      {actionType === 'accept' ? 'APPROVED' : 'DECLINED'}
                     </strong>.
                   </p>
                   <div className="prm-preview-reason-quote">
-                    <strong>Alasan / Catatan dari Penyelenggara:</strong><br />
-                    {reasonInput || '(Belum mengisi alasan)'}
+                    <strong>Host Decision Note:</strong><br />
+                    {reasonInput || '(No notes provided)'}
                     {actionType === 'accept' && additionalNote && (
-                      <div style={{ marginTop: '4px' }}><strong>Lokasi / Link:</strong> {additionalNote}</div>
+                      <div style={{ marginTop: '4px' }}><strong>Location / Meeting Link:</strong> {additionalNote}</div>
                     )}
                   </div>
                   <p style={{ fontSize: '0.72rem', color: '#94a3b8', marginTop: '6px' }}>
-                    Sistem Otomatis Smart Business Card & PRM — Politeknik Negeri Batam
+                    Politeknik Negeri Batam — Smart Business Card & PRM Platform
                   </p>
                 </div>
               </div>
@@ -619,32 +628,32 @@ const KelolaPRM = () => {
                     alignItems: 'center',
                     gap: '6px'
                   }}
-                  title="Buka draf resmi di Gmail akun Anda untuk mengirim email nyata langsung"
+                  title="Open official Gmail draft to send a real email directly"
                   onClick={() => {
                     const recipientEmail = selectedItem.emailPemohon || 'partner@eksternal.com';
-                    const recipientName = selectedItem.pemohon || selectedItem.pengaju || 'Rekan Mitra';
-                    const statusSubject = actionType === 'accept' ? 'DISETUJUI' : 'DITOLAK';
-                    const subject = encodeURIComponent(`[PRM Notifikasi] Konfirmasi Janji Temu: ${statusSubject} - ${userProfile?.namaLengkap || 'Polibatam'}`);
+                    const recipientName = selectedItem.pemohon || selectedItem.pengaju || 'Partner';
+                    const statusSubject = actionType === 'accept' ? 'APPROVED' : 'DECLINED';
+                    const subject = encodeURIComponent(`[PRM Notification] Appointment Confirmation: ${statusSubject} - ${userProfile?.namaLengkap || 'Polibatam'}`);
                     const bodyText = encodeURIComponent(
-`Halo ${recipientName},
+`Hello ${recipientName},
 
-Terima kasih telah mengajukan janji temu melalui Smart Business Card & PRM.
-Kami menginformasikan bahwa permohonan pertemuan Anda mengenai "${selectedItem.permintaan}" telah: ${statusSubject}.
+Thank you for requesting an appointment through our Smart Business Card & PRM system.
+We are writing to inform you that your meeting proposal regarding "${selectedItem.permintaan}" has been: ${statusSubject}.
 
-Alasan / Catatan Penyelenggara:
-"${reasonInput || '(Pengajuan telah ditinjau)'}"
-${actionType === 'accept' && additionalNote ? `\nLokasi / Link Rapat: ${additionalNote}` : ''}
+Host Notes / Instructions:
+"${reasonInput || '(Request has been reviewed)'}"
+${actionType === 'accept' && additionalNote ? `\nLocation / Meeting Link: ${additionalNote}` : ''}
 
-Jadwal Pertemuan: ${selectedItem.date || 'Sesuai kesepakatan'} (${selectedItem.jam || 'Jam kerja'})
-Penyelenggara: ${userProfile?.namaLengkap || 'Civitas Akademika'} (${userProfile?.instansi || 'Politeknik Negeri Batam'})
+Proposed Time: ${selectedItem.date || 'To be scheduled'} (${selectedItem.jam || 'Working hours'})
+Host: ${userProfile?.namaLengkap || 'Campus Member'} (${userProfile?.instansi || 'Politeknik Negeri Batam'})
 
-Hormat kami,
-Sistem Smart Business Card & PRM`
+Best regards,
+Smart Business Card & PRM System`
                     );
                     window.open(`https://mail.google.com/mail/?view=cm&fs=1&to=${recipientEmail}&su=${subject}&body=${bodyText}`, '_blank');
                   }}
                 >
-                  ✉️ Buka Draft di Gmail Resmi
+                  ✉️ Open Draft in Gmail
                 </button>
               </div>
 
@@ -655,7 +664,7 @@ Sistem Smart Business Card & PRM`
                   onClick={closeModal}
                   disabled={isSendingEmail}
                 >
-                  Batal
+                  Cancel
                 </button>
                 <button 
                   type="button" 
@@ -664,9 +673,9 @@ Sistem Smart Business Card & PRM`
                   disabled={isSendingEmail}
                 >
                   {isSendingEmail ? (
-                    <>Mengirim Email Notifikasi...</>
+                    <>Sending Email...</>
                   ) : (
-                    <>Kirim Notifikasi & {actionType === 'accept' ? 'Setujui' : 'Tolak'}</>
+                    <>Send Notification & {actionType === 'accept' ? 'Accept' : 'Decline'}</>
                   )}
                 </button>
               </div>
@@ -681,4 +690,4 @@ Sistem Smart Business Card & PRM`
   );
 };
 
-export default KelolaPRM;
+export default KelolaPRM;

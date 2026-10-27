@@ -26,12 +26,12 @@ const AdminHome = () => {
 
       {/* Main Container */}
       <main className="admin-home-content">
-        {/* Welcome Section - Exactly matching mockup hero text */}
+        {/* Welcome Section */}
         <section className="admin-welcome-hero">
-          <div className="welcome-badge">Dashboard Administrator</div>
-          <h1 className="admin-welcome-title">Halo selamat datang admin!</h1>
+          <div className="welcome-badge">Administrator Dashboard</div>
+          <h1 className="admin-welcome-title">Welcome back, Administrator!</h1>
           <p className="admin-welcome-subtitle">
-            Silahkan kelola kartu nama dan log aktivitas pengguna
+            Manage registered smart cards and monitor user activity logs
           </p>
         </section>
 
@@ -51,24 +51,24 @@ const AdminHome = () => {
               <span className="card-fr-tag">FR-13</span>
             </div>
 
-            <h3 className="card-title">Kelola Pengguna Terdaftar</h3>
+            <h3 className="card-title">Manage Registered Users</h3>
             <p className="card-desc">
-              Tambahkan pengguna baru, kelola data akun, dan atur izin akses (mengaktifkan atau menonaktifkan akun internal).
+              Add new users, edit account details, and manage access authorization (activate or deactivate internal accounts).
             </p>
 
             <div className="card-stat-pill-row">
               <span className="stat-pill success">
-                <strong>{stats.penggunaAktif}</strong> Akun Aktif
+                <strong>{stats.penggunaAktif}</strong> Active Accounts
               </span>
               {stats.penggunaNonaktif > 0 && (
                 <span className="stat-pill warning">
-                  <strong>{stats.penggunaNonaktif}</strong> Nonaktif
+                  <strong>{stats.penggunaNonaktif}</strong> Inactive
                 </span>
               )}
             </div>
 
             <div className="card-action-footer">
-              <span>Buka Manajemen Pengguna</span>
+              <span>Open User Management</span>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                 <polyline points="9 18 15 12 9 6"></polyline>
               </svg>
@@ -86,20 +86,20 @@ const AdminHome = () => {
               <span className="card-fr-tag">FR-14</span>
             </div>
 
-            <h3 className="card-title">Pantau Aktivitas & Log</h3>
+            <h3 className="card-title">Activity Logs & Security Audit</h3>
             <p className="card-desc">
-              Pantau rekam jejak aktivitas pengguna internal secara real-time, audit keamanan, dan jejak transaksi akun secara terpusat.
+              Monitor real-time system activities, audit logs, authentication records, and user operations centrally.
             </p>
 
             <div className="card-stat-pill-row">
               <span className="stat-pill primary">
-                <strong>{stats.totalAktivitas}</strong> Total Log Aktivitas
+                <strong>{stats.totalAktivitas}</strong> Total Activity Logs
               </span>
               <span className="stat-pill neutral">Live Audit</span>
             </div>
 
             <div className="card-action-footer">
-              <span>Buka Log Aktivitas</span>
+              <span>Open Activity Logs</span>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                 <polyline points="9 18 15 12 9 6"></polyline>
               </svg>
@@ -118,20 +118,20 @@ const AdminHome = () => {
               <span className="card-fr-tag">FR-14</span>
             </div>
 
-            <h3 className="card-title">Data Kartu Nama Digital</h3>
+            <h3 className="card-title">Digital Business Cards Data</h3>
             <p className="card-desc">
-              Monitoring data kartu nama digital seluruh staf & mahasiswa Politeknik Negeri Batam serta statistik pembagian kartu.
+              Monitor digital card directory of faculty, students, and staff across Politeknik Negeri Batam.
             </p>
 
             <div className="card-stat-pill-row">
               <span className="stat-pill primary">
-                <strong>{stats.totalKartuDigital}</strong> Kartu Terdaftar
+                <strong>{stats.totalKartuDigital}</strong> Registered Cards
               </span>
-              <span className="stat-pill success">QR Aktif</span>
+              <span className="stat-pill success">Active QR</span>
             </div>
 
             <div className="card-action-footer">
-              <span>Lihat Koleksi Kartu</span>
+              <span>View Cards Directory</span>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                 <polyline points="9 18 15 12 9 6"></polyline>
               </svg>
@@ -143,11 +143,11 @@ const AdminHome = () => {
         <section className="admin-live-summary-box">
           <div className="live-summary-header">
             <div>
-              <h4 className="live-title">Aktivitas Terakhir di Sistem</h4>
-              <p className="live-subtitle">Pembaruan aktivitas pengguna terdaftar terbaru</p>
+              <h4 className="live-title">Recent System Activities</h4>
+              <p className="live-subtitle">Real-time registered user operations and authentications</p>
             </div>
             <button className="btn-view-all-logs" onClick={() => navigate('/admin/aktivitas')}>
-              Lihat Semua Log →
+              View All Logs →
             </button>
           </div>
 

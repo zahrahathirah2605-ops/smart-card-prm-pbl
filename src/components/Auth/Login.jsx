@@ -45,22 +45,22 @@ const Login = () => {
         });
         navigate('/admin');
       } else {
-        setError('Kredensial Admin salah. Gunakan akun demo: admin@gmail.com / admin123');
+        setError('Incorrect Admin credentials. Use demo account: admin@gmail.com / admin123');
       }
       return;
     }
 
-    // Registered User (Pengguna Terdaftar) Login
+    // Registered User Login
     const cleanEmail = email.trim().toLowerCase();
 
     // Check account status (FR-13: Admin can deactivate accounts)
     if (!isUserAccountActive(cleanEmail)) {
-      setError('⚠️ Akses akun Anda telah dinonaktifkan oleh Administrator. Silahkan hubungi administrator sistem untuk pengaktifan kembali.');
+      setError('⚠️ Your account access has been deactivated by the Administrator. Please contact system support for reactivation.');
       addActivityLog({
         aktor: cleanEmail,
         email: cleanEmail,
         kategori: 'Autentikasi',
-        aksi: `Percobaan login ditolak: status akun pengguna dinonaktifkan (${cleanEmail})`,
+        aksi: `Login attempt rejected: user account status is inactive (${cleanEmail})`,
         status: 'Peringatan',
         statusClass: 'log-warning'
       });

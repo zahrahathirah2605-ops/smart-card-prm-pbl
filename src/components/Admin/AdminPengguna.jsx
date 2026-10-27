@@ -14,20 +14,20 @@ const AdminPengguna = () => {
   const navigate = useNavigate();
   const [users, setUsers] = useState(() => getAdminUsers());
   const [searchTerm, setSearchTerm] = useState('');
-  const [filterStatus, setFilterStatus] = useState('ALL'); // 'ALL' | 'Aktif' | 'Nonaktif'
+  const [filterStatus, setFilterStatus] = useState('ALL'); // 'ALL' | 'Active' | 'Inactive'
   
-  // State untuk berpindah tampilan antara Tabel dan Form Tambah Pengguna
+  // State to toggle between Table and Add User Form
   const [isAdding, setIsAdding] = useState(false);
 
-  // Form state untuk Tambah Pengguna sesuai permintaan
+  // Form state for Add User
   const [addFormData, setAddFormData] = useState({
     namaLengkap: '',
     email: '',
     nimNik: '',
     role: 'Pengguna',
-    instansi: 'Politeknik Negeri Batam', // Otomatis terisi politeknik negeri batam
-    jabatan: '', // Opsional
-    telepon: '', // Opsional
+    instansi: 'Politeknik Negeri Batam',
+    jabatan: '',
+    telepon: '',
     status: 'Aktif'
   });
 
@@ -57,16 +57,16 @@ const AdminPengguna = () => {
     const updated = toggleUserStatus(user.id);
     if (updated) {
       loadUsers();
-      const statusText = updated.status === 'Aktif' ? 'diaktifkan kembali' : 'dinonaktifkan';
-      showToast(`Akses akun untuk ${updated.namaLengkap} berhasil ${statusText}!`, updated.status === 'Aktif' ? 'success' : 'warning');
+      const statusText = updated.status === 'Aktif' ? 'reactivated' : 'deactivated';
+      showToast(`Account access for ${updated.namaLengkap} has been successfully ${statusText}!`, updated.status === 'Aktif' ? 'success' : 'warning');
     }
   };
 
-  // Handle Submit Tambah Pengguna dari Halaman Form
+  // Handle Submit Add User
   const handleAddSubmit = (e) => {
     e.preventDefault();
     if (!addFormData.email || !addFormData.namaLengkap || !addFormData.nimNik) {
-      showToast('Nama Lengkap, Email, dan NIM/NIK wajib diisi (NIM/NIK digunakan untuk login)!', 'error');
+      showToast('Full Name, Email, and NIM/NIK are required (NIM/NIK is used to log in)!', 'error');
       return;
     }
 
@@ -75,14 +75,14 @@ const AdminPengguna = () => {
       namaLengkap: addFormData.namaLengkap.trim(),
       nimNik: addFormData.nimNik.trim(),
       instansi: addFormData.instansi.trim() || 'Politeknik Negeri Batam',
-      jabatan: addFormData.jabatan.trim() || 'Civitas Akademika',
+      jabatan: addFormData.jabatan.trim() || 'Academic Staff',
       telepon: addFormData.telepon.trim() || '-'
     };
 
     const created = addAdminUser(payload);
     if (created) {
       loadUsers();
-      setIsAdding(false); // Kembali ke halaman tabel
+      setIsAdding(false);
       setAddFormData({
         namaLengkap: '',
         email: '',
@@ -93,7 +93,7 @@ const AdminPengguna = () => {
         telepon: '',
         status: 'Aktif'
       });
-      showToast(`Akun ${created.namaLengkap} (${created.email}) berhasil ditambahkan dan siap digunakan untuk login!`, 'success');
+      showToast(`Account ${created.namaLengkap} (${created.email}) added successfully and is ready to log in!`, 'success');
     }
   };
 
@@ -112,16 +112,16 @@ const AdminPengguna = () => {
       loadUsers();
       setIsEditModalOpen(false);
       setEditingUser(null);
-      showToast(`Data pengguna ${updated.namaLengkap} berhasil diperbarui!`, 'success');
+      showToast(`User data for ${updated.namaLengkap} updated successfully!`, 'success');
     }
   };
 
   // Handle Delete User
   const handleDeleteUser = (user) => {
-    if (window.confirm(`Apakah Anda yakin ingin menghapus akun ${user.namaLengkap}?`)) {
+    if (window.confirm(`Are you sure you want to delete the account for ${user.namaLengkap}?`)) {
       deleteAdminUser(user.id);
       loadUsers();
-      showToast(`Akun ${user.namaLengkap} telah dihapus dari sistem.`, 'warning');
+      showToast(`Account ${user.namaLengkap} has been removed from the system.`, 'warning');
     }
   };
 
@@ -134,7 +134,9 @@ const AdminPengguna = () => {
       u.id.toLowerCase().includes(searchTerm.toLowerCase());
 
     const matchStatus =
-      filterStatus === 'ALL' || u.status === filterStatus;
+      filterStatus === 'ALL' ||
+      (filterStatus === 'Active' && u.status === 'Aktif') ||
+      (filterStatus === 'Inactive' && u.status === 'Nonaktif');
 
     return matchSearch && matchStatus;
   });
@@ -155,41 +157,41 @@ const AdminPengguna = () => {
           </div>
         )}
 
-        {/* KONDISI 1: JIKA DALAM MODE TAMBAH PENGGUNA */}
+        {/* CONDITION 1: IF IN ADD USER MODE */}
         {isAdding ? (
           <div>
-            {/* Tombol Kembali ke Daftar Pengguna */}
+            {/* Back Button to Users List */}
             <div style={{ marginBottom: '1.5rem' }}>
               <button 
                 onClick={() => setIsAdding(false)}
                 style={{ background: 'none', border: 'none', color: '#12417D', fontWeight: 600, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px', padding: 0, fontSize: '0.95rem' }}
               >
-                ← Kembali ke daftar pengguna
+                ← Back to users list
               </button>
             </div>
 
-            {/* Header Form Tambah Pengguna */}
+            {/* Header Form Add User */}
             <div className="admin-page-header" style={{ marginBottom: '1.5rem' }}>
               <div>
-                <h1 className="admin-page-title" style={{ fontSize: '1.8rem', fontWeight: 800, color: '#12417D' }}>Tambah Pengguna</h1>
+                <h1 className="admin-page-title" style={{ fontSize: '1.8rem', fontWeight: 800, color: '#12417D' }}>Add User</h1>
                 <p className="admin-page-desc" style={{ color: '#64748b', fontSize: '0.95rem' }}>
-                  Tambahkan akun baru dengan mengisi identitas dan role pengguna.
+                  Add a new account by providing user identity and role.
                 </p>
               </div>
             </div>
 
-            {/* Card Form Sesuai Wireframe */}
+            {/* Card Form */}
             <div style={{ background: '#ffffff', border: '1px solid #E2E8F0', borderRadius: '16px', padding: '2.5rem', boxShadow: '0 4px 20px rgba(0,0,0,0.03)', maxWidth: '850px' }}>
               <form onSubmit={handleAddSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
                 
-                {/* Nama Lengkap */}
+                {/* Full Name */}
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                   <label style={{ fontWeight: 600, fontSize: '0.9rem', color: '#1e293b' }}>
-                    Nama Lengkap <span style={{ color: '#ff5733' }}>*</span>
+                    Full Name <span style={{ color: '#ff5733' }}>*</span>
                   </label>
                   <input
                     type="text"
-                    placeholder="Contoh: Muhammad Rizky, S.T."
+                    placeholder="e.g. Muhammad Rizky, S.T."
                     value={addFormData.namaLengkap}
                     onChange={(e) => setAddFormData({ ...addFormData, namaLengkap: e.target.value })}
                     required
@@ -197,14 +199,14 @@ const AdminPengguna = () => {
                   />
                 </div>
 
-                {/* Email Pengguna */}
+                {/* User Email */}
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                   <label style={{ fontWeight: 600, fontSize: '0.9rem', color: '#1e293b' }}>
-                    Email Pengguna (untuk Login) <span style={{ color: '#ff5733' }}>*</span>
+                    User Email (for Login) <span style={{ color: '#ff5733' }}>*</span>
                   </label>
                   <input
                     type="email"
-                    placeholder="Masukkan email pengguna (misal: rizky@polibatam.ac.id)"
+                    placeholder="Enter user email (e.g. rizky@polibatam.ac.id)"
                     value={addFormData.email}
                     onChange={(e) => setAddFormData({ ...addFormData, email: e.target.value })}
                     required
@@ -212,28 +214,28 @@ const AdminPengguna = () => {
                   />
                 </div>
 
-                {/* NIM / NIK - WAJIB KARENA DIGUNAKAN SEBAGAI PASSWORD LOGIN */}
+                {/* NIM / NIK */}
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                   <label style={{ fontWeight: 600, fontSize: '0.9rem', color: '#1e293b' }}>
-                    NIM / NIK <span style={{ color: '#ff5733' }}>* (Digunakan sebagai Kata Sandi Login)</span>
+                    NIM / NIK <span style={{ color: '#ff5733' }}>* (Used as Login Password)</span>
                   </label>
                   <input
                     type="text"
-                    placeholder="Masukkan NIM atau NIK (misal: 3312401050)"
+                    placeholder="Enter NIM or NIK (e.g. 3312401050)"
                     value={addFormData.nimNik}
                     onChange={(e) => setAddFormData({ ...addFormData, nimNik: e.target.value })}
                     required
                     style={{ padding: '0.85rem 1rem', borderRadius: '10px', border: '1.5px solid #0284c7', outline: 'none', fontSize: '0.95rem', fontFamily: 'inherit', background: '#f0f9ff' }}
                   />
                   <span style={{ fontSize: '0.78rem', color: '#0369a1' }}>
-                    🔒 Pengguna akan menggunakan nomor NIM/NIK ini sebagai password saat login ke sistem.
+                    🔒 Users will use this NIM/NIK number as their initial password when logging in.
                   </span>
                 </div>
 
-                {/* Instansi (Otomatis Politeknik Negeri Batam) */}
+                {/* Institution */}
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                   <label style={{ fontWeight: 600, fontSize: '0.9rem', color: '#1e293b' }}>
-                    Instansi Kampus <span style={{ color: '#64748b', fontSize: '0.8rem', fontWeight: 400 }}>(Otomatis terisi internal kampus)</span>
+                    Campus Institution <span style={{ color: '#64748b', fontSize: '0.8rem', fontWeight: 400 }}>(Pre-filled campus internal)</span>
                   </label>
                   <input
                     type="text"
@@ -243,15 +245,15 @@ const AdminPengguna = () => {
                   />
                 </div>
 
-                {/* Jabatan / Posisi (Opsional) & Nomor Telepon (Opsional) */}
+                {/* Position & Phone */}
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem' }}>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                     <label style={{ fontWeight: 600, fontSize: '0.9rem', color: '#1e293b' }}>
-                      Jabatan / Jurusan <span style={{ color: '#64748b', fontSize: '0.8rem', fontWeight: 400 }}>(Opsional)</span>
+                      Position / Department <span style={{ color: '#64748b', fontSize: '0.8rem', fontWeight: 400 }}>(Optional)</span>
                     </label>
                     <input
                       type="text"
-                      placeholder="Contoh: Dosen Informatika / Mahasiswa"
+                      placeholder="e.g. Informatics Lecturer / Student"
                       value={addFormData.jabatan}
                       onChange={(e) => setAddFormData({ ...addFormData, jabatan: e.target.value })}
                       style={{ padding: '0.85rem 1rem', borderRadius: '10px', border: '1px solid #cbd5e1', outline: 'none', fontSize: '0.95rem', fontFamily: 'inherit' }}
@@ -260,11 +262,11 @@ const AdminPengguna = () => {
 
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                     <label style={{ fontWeight: 600, fontSize: '0.9rem', color: '#1e293b' }}>
-                      Nomor Telepon / WhatsApp <span style={{ color: '#64748b', fontSize: '0.8rem', fontWeight: 400 }}>(Opsional)</span>
+                      Phone / WhatsApp Number <span style={{ color: '#64748b', fontSize: '0.8rem', fontWeight: 400 }}>(Optional)</span>
                     </label>
                     <input
                       type="tel"
-                      placeholder="Contoh: +62 812-3456-7890"
+                      placeholder="e.g. +62 812-3456-7890"
                       value={addFormData.telepon}
                       onChange={(e) => setAddFormData({ ...addFormData, telepon: e.target.value })}
                       style={{ padding: '0.85rem 1rem', borderRadius: '10px', border: '1px solid #cbd5e1', outline: 'none', fontSize: '0.95rem', fontFamily: 'inherit' }}
@@ -275,22 +277,22 @@ const AdminPengguna = () => {
                 {/* Role */}
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                   <label style={{ fontWeight: 600, fontSize: '0.9rem', color: '#1e293b' }}>
-                    Role Hak Akses <span style={{ color: '#ff5733' }}>*</span>
+                    Access Role <span style={{ color: '#ff5733' }}>*</span>
                   </label>
                   <select
                     value={addFormData.role}
                     onChange={(e) => setAddFormData({ ...addFormData, role: e.target.value })}
                     style={{ padding: '0.85rem 1rem', borderRadius: '10px', border: '1px solid #cbd5e1', outline: 'none', fontSize: '0.95rem', fontFamily: 'inherit', background: '#fff', cursor: 'pointer' }}
                   >
-                    <option value="Pengguna">Pengguna Terdaftar</option>
-                    <option value="Admin">Admin</option>
+                    <option value="Pengguna">Registered User</option>
+                    <option value="Admin">Administrator</option>
                   </select>
                 </div>
 
                 {/* Footer Form & Actions */}
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '1rem', paddingTop: '1.5rem', borderTop: '1px solid #f1f5f9' }}>
                   <span style={{ fontSize: '0.85rem', color: '#64748b' }}>
-                    <span style={{ color: '#ff5733' }}>*</span> Wajib diisi
+                    <span style={{ color: '#ff5733' }}>*</span> Required
                   </span>
                   <div style={{ display: 'flex', gap: '1rem' }}>
                     <button
@@ -298,13 +300,13 @@ const AdminPengguna = () => {
                       onClick={() => setIsAdding(false)}
                       style={{ padding: '0.75rem 1.5rem', borderRadius: '10px', border: '1px solid #cbd5e1', background: '#fff', color: '#475569', fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit' }}
                     >
-                      Batal
+                      Cancel
                     </button>
                     <button
                       type="submit"
                       style={{ padding: '0.75rem 1.8rem', borderRadius: '10px', border: 'none', background: '#12417D', color: '#fff', fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit', display: 'flex', alignItems: 'center', gap: '8px' }}
                     >
-                      + Tambah Pengguna
+                      + Add User
                     </button>
                   </div>
                 </div>
@@ -313,19 +315,19 @@ const AdminPengguna = () => {
             </div>
           </div>
         ) : (
-          /* KONDISI 2: HALAMAN UTAMA KELOLA PENGGUNA (TABEL & METRIK) */
+          /* CONDITION 2: MAIN REGISTERED USERS PAGE */
           <div>
             {/* Header Row */}
             <div className="admin-page-header">
               <div>
-                <div className="badge-tag">Kebutuhan Fungsional FR-13</div>
-                <h1 className="admin-page-title">Kelola Pengguna Terdaftar</h1>
+                <div className="badge-tag">Functional Requirement FR-13</div>
+                <h1 className="admin-page-title">Manage Registered Users</h1>
                 <p className="admin-page-desc">
-                  Kelola akun pengguna internal Politeknik Negeri Batam, tambahkan akun baru, serta atur izin akses (mengaktifkan atau menonaktifkan akun).
+                  Manage Politeknik Negeri Batam internal user accounts, add new accounts, and configure access permissions (activate or deactivate accounts).
                 </p>
               </div>
 
-              {/* Tombol Mengaktifkan Navigasi ke Halaman Tambah Pengguna */}
+              {/* Add User Navigation Button */}
               <button 
                 className="btn-add-user-primary" 
                 onClick={() => navigate('/admin/tambah-pengguna')}
@@ -334,7 +336,7 @@ const AdminPengguna = () => {
                   <line x1="12" y1="5" x2="12" y2="19"></line>
                   <line x1="5" y1="12" x2="19" y2="12"></line>
                 </svg>
-                Tambah Pengguna
+                Add User
               </button>
             </div>
 
@@ -342,15 +344,15 @@ const AdminPengguna = () => {
             <div className="admin-metrics-row">
               <div className="metric-box total">
                 <div className="metric-num">{users.length}</div>
-                <div className="metric-label">Total Pengguna Terdaftar</div>
+                <div className="metric-label">Total Registered Users</div>
               </div>
               <div className="metric-box active">
                 <div className="metric-num">{totalAktif}</div>
-                <div className="metric-label">Akun Aktif (Dapat Login)</div>
+                <div className="metric-label">Active Accounts (Can Login)</div>
               </div>
               <div className="metric-box inactive">
                 <div className="metric-num">{totalNonaktif}</div>
-                <div className="metric-label">Akun Dinonaktifkan (Diblokir)</div>
+                <div className="metric-label">Deactivated Accounts</div>
               </div>
             </div>
 
@@ -363,7 +365,7 @@ const AdminPengguna = () => {
                 </svg>
                 <input
                   type="text"
-                  placeholder="Cari berdasarkan nama, email, instansi, atau ID..."
+                  placeholder="Search by name, email, institution, or ID..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
@@ -374,19 +376,19 @@ const AdminPengguna = () => {
                   className={`pill-btn ${filterStatus === 'ALL' ? 'active' : ''}`}
                   onClick={() => setFilterStatus('ALL')}
                 >
-                  Semua ({users.length})
+                  All ({users.length})
                 </button>
                 <button
-                  className={`pill-btn ${filterStatus === 'Aktif' ? 'active' : ''}`}
-                  onClick={() => setFilterStatus('Aktif')}
+                  className={`pill-btn ${filterStatus === 'Active' ? 'active' : ''}`}
+                  onClick={() => setFilterStatus('Active')}
                 >
-                  Aktif ({totalAktif})
+                  Active ({totalAktif})
                 </button>
                 <button
-                  className={`pill-btn ${filterStatus === 'Nonaktif' ? 'active' : ''}`}
-                  onClick={() => setFilterStatus('Nonaktif')}
+                  className={`pill-btn ${filterStatus === 'Inactive' ? 'active' : ''}`}
+                  onClick={() => setFilterStatus('Inactive')}
                 >
-                  Nonaktif ({totalNonaktif})
+                  Inactive ({totalNonaktif})
                 </button>
               </div>
             </div>
@@ -397,19 +399,19 @@ const AdminPengguna = () => {
                 <thead>
                   <tr>
                     <th>ID</th>
-                    <th>Nama Pengguna</th>
-                    <th>Kontak & Email</th>
-                    <th>Instansi & Jabatan</th>
-                    <th>Tgl Terdaftar</th>
-                    <th>Status Akun (FR-13)</th>
-                    <th style={{ textAlign: 'center' }}>Kelola Akses</th>
+                    <th>User Name</th>
+                    <th>Contact & Email</th>
+                    <th>Institution & Position</th>
+                    <th>Registered Date</th>
+                    <th>Account Status (FR-13)</th>
+                    <th style={{ textAlign: 'center' }}>Manage Access</th>
                   </tr>
                 </thead>
                 <tbody>
                   {filteredUsers.length === 0 ? (
                     <tr>
                       <td colSpan="7" className="table-empty-state">
-                        Tidak ada pengguna yang cocok dengan kriteria pencarian.
+                        No users match the search criteria.
                       </td>
                     </tr>
                   ) : (
@@ -426,7 +428,7 @@ const AdminPengguna = () => {
                             <div>
                               <div className="user-full-name">{user.namaLengkap}</div>
                               <div style={{ display: 'flex', gap: '0.4rem', alignItems: 'center', marginTop: '0.2rem', flexWrap: 'wrap' }}>
-                                <span className="user-role-tag">{user.role}</span>
+                                <span className="user-role-tag">{user.role === 'Pengguna' ? 'User' : user.role}</span>
                                 {user.nimNik && (
                                   <span style={{ fontSize: '0.75rem', background: '#f1f5f9', color: '#0d3b75', padding: '0.1rem 0.4rem', borderRadius: '4px', fontWeight: 700, fontFamily: 'monospace' }}>
                                     NIM: {user.nimNik}
@@ -450,7 +452,7 @@ const AdminPengguna = () => {
                         <td>
                           <span className={`status-badge-pill ${user.status === 'Aktif' ? 'badge-aktif' : 'badge-nonaktif'}`}>
                             <span className="dot" />
-                            {user.status === 'Aktif' ? 'Aktif' : 'Nonaktif'}
+                            {user.status === 'Aktif' ? 'Active' : 'Inactive'}
                           </span>
                         </td>
                         <td>
@@ -459,7 +461,7 @@ const AdminPengguna = () => {
                             <button
                               className={`btn-action-toggle ${user.status === 'Aktif' ? 'btn-deactivate' : 'btn-activate'}`}
                               onClick={() => handleToggleStatus(user)}
-                              title={user.status === 'Aktif' ? 'Nonaktifkan Akun Pengguna' : 'Aktifkan Kembali Akun Pengguna'}
+                              title={user.status === 'Aktif' ? 'Deactivate User Account' : 'Reactivate User Account'}
                             >
                               {user.status === 'Aktif' ? (
                                 <>
@@ -467,7 +469,7 @@ const AdminPengguna = () => {
                                     <circle cx="12" cy="12" r="10"></circle>
                                     <line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line>
                                   </svg>
-                                  Nonaktifkan
+                                  Deactivate
                                 </>
                               ) : (
                                 <>
@@ -475,7 +477,7 @@ const AdminPengguna = () => {
                                     <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
                                     <polyline points="22 4 12 14.01 9 11.01"></polyline>
                                   </svg>
-                                  Aktifkan
+                                  Activate
                                 </>
                               )}
                             </button>
@@ -484,7 +486,7 @@ const AdminPengguna = () => {
                             <button
                               className="btn-action-icon view-card"
                               onClick={() => navigate(`/card/${user.cardId || user.namaLengkap.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '')}`)}
-                              title="Buka Kartu Nama Digital & QR Pengguna"
+                              title="Open Digital Business Card & QR"
                               style={{ color: '#0d3b75' }}
                             >
                               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
@@ -499,7 +501,7 @@ const AdminPengguna = () => {
                             <button
                               className="btn-action-icon edit"
                               onClick={() => handleOpenEdit(user)}
-                              title="Edit Data Pengguna"
+                              title="Edit User Information"
                             >
                               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
                                 <path d="M12 20h9"></path>
@@ -511,7 +513,7 @@ const AdminPengguna = () => {
                             <button
                               className="btn-action-icon delete"
                               onClick={() => handleDeleteUser(user)}
-                              title="Hapus Akun Pengguna"
+                              title="Delete User Account"
                             >
                               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
                                 <polyline points="3 6 5 6 21 6"></polyline>
@@ -529,21 +531,21 @@ const AdminPengguna = () => {
           </div>
         )}
 
-        {/* Modal: Edit Data Pengguna */}
+        {/* Modal: Edit User Data */}
         {isEditModalOpen && editingUser && (
           <div className="admin-modal-overlay" onClick={() => setIsEditModalOpen(false)}>
             <div className="admin-modal-card" onClick={(e) => e.stopPropagation()}>
               <div className="admin-modal-header">
                 <div>
-                  <h3 className="admin-modal-title">Edit Data Pengguna ({editingUser.id})</h3>
-                  <p className="admin-modal-sub">Perbarui informasi profil atau status pengguna terdaftar</p>
+                  <h3 className="admin-modal-title">Edit User Data ({editingUser.id})</h3>
+                  <p className="admin-modal-sub">Update profile information or status of registered user</p>
                 </div>
                 <button className="admin-modal-close" onClick={() => setIsEditModalOpen(false)}>✕</button>
               </div>
 
               <form onSubmit={handleEditSubmit} className="admin-profile-form">
                 <div className="form-group-modal">
-                  <label>Nama Lengkap</label>
+                  <label>Full Name</label>
                   <input
                     type="text"
                     value={editingUser.namaLengkap}
@@ -553,7 +555,7 @@ const AdminPengguna = () => {
                 </div>
 
                 <div className="form-group-modal">
-                  <label>Email Pengguna</label>
+                  <label>User Email</label>
                   <input
                     type="email"
                     value={editingUser.email}
@@ -563,22 +565,22 @@ const AdminPengguna = () => {
                 </div>
 
                 <div className="form-group-modal">
-                  <label>NIM / NIK (Kata Sandi Login)</label>
+                  <label>NIM / NIK (Login Password)</label>
                   <input
                     type="text"
                     value={editingUser.nimNik || ''}
                     onChange={(e) => setEditingUser({ ...editingUser, nimNik: e.target.value })}
-                    placeholder="Contoh: 3312401001 atau NIK"
+                    placeholder="e.g. 3312401001 or NIK"
                     required
                   />
                   <small style={{ fontSize: '0.78rem', color: '#64748b', marginTop: '0.2rem' }}>
-                    NIM/NIK ini wajib dan digunakan sebagai password login akun pengguna.
+                    This NIM/NIK is required and used as the account login password.
                   </small>
                 </div>
 
                 <div className="modal-row-grid">
                   <div className="form-group-modal">
-                    <label>Instansi</label>
+                    <label>Institution</label>
                     <input
                       type="text"
                       value={editingUser.instansi}
@@ -586,7 +588,7 @@ const AdminPengguna = () => {
                     />
                   </div>
                   <div className="form-group-modal">
-                    <label>Jabatan</label>
+                    <label>Position</label>
                     <input
                       type="text"
                       value={editingUser.jabatan}
@@ -597,7 +599,7 @@ const AdminPengguna = () => {
 
                 <div className="modal-row-grid">
                   <div className="form-group-modal">
-                    <label>Nomor Telepon</label>
+                    <label>Phone Number</label>
                     <input
                       type="text"
                       value={editingUser.telepon}
@@ -605,14 +607,14 @@ const AdminPengguna = () => {
                     />
                   </div>
                   <div className="form-group-modal">
-                    <label>Status Akun</label>
+                    <label>Account Status</label>
                     <select
                       className="form-select-modal"
                       value={editingUser.status}
                       onChange={(e) => setEditingUser({ ...editingUser, status: e.target.value })}
                     >
-                      <option value="Aktif">Aktif</option>
-                      <option value="Nonaktif">Nonaktif</option>
+                      <option value="Aktif">Active</option>
+                      <option value="Nonaktif">Inactive</option>
                     </select>
                   </div>
                 </div>
@@ -623,10 +625,10 @@ const AdminPengguna = () => {
                     className="btn-modal-cancel"
                     onClick={() => setIsEditModalOpen(false)}
                   >
-                    Batal
+                    Cancel
                   </button>
                   <button type="submit" className="btn-modal-save">
-                    Simpan Perubahan
+                    Save Changes
                   </button>
                 </div>
               </form>

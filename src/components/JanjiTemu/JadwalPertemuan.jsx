@@ -5,30 +5,30 @@ import Footer from '../Footer/Footer';
 import { getStoredAppointments } from '../../utils/cardStorage';
 import './JadwalPertemuan.css';
 
-const MONTH_NAMES_ID = [
-  'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
-  'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+const MONTH_NAMES_EN = [
+  'January', 'February', 'March', 'April', 'May', 'June',
+  'July', 'August', 'September', 'October', 'November', 'December'
 ];
 
-const DAY_NAMES_ID = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+const DAY_NAMES_EN = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
 const JadwalPertemuan = () => {
   const navigate = useNavigate();
 
-  // Inisialisasi Real-Time Current Date & Time
+  // Initialize Real-Time Current Date & Time
   const [realTime, setRealTime] = useState(new Date());
 
-  // View state untuk kalender (Bulan & Tahun aktif)
+  // View state for calendar (Active Month & Year)
   const [viewYear, setViewYear] = useState(() => new Date().getFullYear());
   const [viewMonth, setViewMonth] = useState(() => new Date().getMonth()); // 0-indexed
 
-  // Tanggal yang dipilih (default: hari ini)
+  // Selected date (default: today)
   const [selectedDay, setSelectedDay] = useState(() => new Date().getDate());
 
-  // Data pertemuan dari stored appointments & mock sample
+  // Meeting appointments from stored appointments & mock samples
   const [appointments, setAppointments] = useState([]);
 
-  // Timer live clock (detik demi detik)
+  // Timer live clock
   useEffect(() => {
     const timer = setInterval(() => {
       setRealTime(new Date());
@@ -36,25 +36,25 @@ const JadwalPertemuan = () => {
     return () => clearInterval(timer);
   }, []);
 
-  // Ambil appointments dari storage
+  // Retrieve appointments from storage
   useEffect(() => {
     const stored = getStoredAppointments();
     setAppointments(stored || []);
   }, []);
 
-  // Deteksi kondisi hari ini
+  // Current today condition
   const isViewingCurrentMonth =
     viewYear === realTime.getFullYear() && viewMonth === realTime.getMonth();
   const currentTodayDate = realTime.getDate();
 
-  // Generate opsi Tahun (misal: 2024 s/d 2030)
+  // Generate Year options
   const currentYear = new Date().getFullYear();
   const yearOptions = [];
   for (let y = currentYear - 2; y <= currentYear + 5; y++) {
     yearOptions.push(y);
   }
 
-  // Navigasi Bulan / Tahun
+  // Navigation Month / Year
   const handlePrevMonth = () => {
     if (viewMonth === 0) {
       setViewMonth(11);
@@ -80,13 +80,11 @@ const JadwalPertemuan = () => {
     setSelectedDay(now.getDate());
   };
 
-  // Bangun grid matriks kalender secara dinamis (Senin - Minggu)
-  // Hari Senin = 0, Minggu = 6
+  // Build calendar matrix dynamically (Monday - Sunday)
   const getDaysInMonth = (year, month) => new Date(year, month + 1, 0).getDate();
 
   const firstDayOfMonth = new Date(viewYear, viewMonth, 1).getDay();
-  // Dalam standar Indonesia, minggu dimulai dari Senin:
-  // Sun(0)->6, Mon(1)->0, Tue(2)->1, Wed(3)->2, Thu(4)->3, Fri(5)->4, Sat(6)->5
+  // Monday start: Sun(0)->6, Mon(1)->0, Tue(2)->1, Wed(3)->2, Thu(4)->3, Fri(5)->4, Sat(6)->5
   const startDayOffset = (firstDayOfMonth + 6) % 7;
 
   const totalDaysCurrent = getDaysInMonth(viewYear, viewMonth);
@@ -95,7 +93,7 @@ const JadwalPertemuan = () => {
   const calendarGrid = [];
   let currentWeek = [];
 
-  // 1. Hari-hari sisa bulan sebelumnya
+  // 1. Previous month days
   for (let i = startDayOffset - 1; i >= 0; i--) {
     currentWeek.push({
       day: totalDaysPrev - i,
@@ -104,7 +102,7 @@ const JadwalPertemuan = () => {
     });
   }
 
-  // 2. Hari-hari bulan aktif
+  // 2. Current active month days
   for (let d = 1; d <= totalDaysCurrent; d++) {
     currentWeek.push({
       day: d,
@@ -118,7 +116,7 @@ const JadwalPertemuan = () => {
     }
   }
 
-  // 3. Hari-hari awal bulan berikutnya hingga baris lengkap (kelipatan 7)
+  // 3. Next month days until full week
   if (currentWeek.length > 0) {
     let nextDay = 1;
     while (currentWeek.length < 7) {
@@ -132,7 +130,6 @@ const JadwalPertemuan = () => {
     calendarGrid.push(currentWeek);
   }
 
-  // Pastikan kalender selalu memiliki 5 atau 6 baris rapi
   while (calendarGrid.length < 5) {
     const lastRow = calendarGrid[calendarGrid.length - 1];
     let startNext = lastRow[lastRow.length - 1].day + 1;
@@ -147,27 +144,27 @@ const JadwalPertemuan = () => {
     calendarGrid.push(newRow);
   }
 
-  // Format tanggal & jam real-time
-  const formattedRealTimeClock = realTime.toLocaleTimeString('id-ID', {
+  // Real-time formatted clock & date
+  const formattedRealTimeClock = realTime.toLocaleTimeString('en-US', {
     hour: '2-digit',
     minute: '2-digit',
-    second: '2-digit'
-  }) + ' WIB';
+    second: '2-digit',
+    hour12: true
+  });
 
-  const formattedRealTimeDate = `${DAY_NAMES_ID[realTime.getDay()]}, ${realTime.getDate()} ${MONTH_NAMES_ID[realTime.getMonth()]} ${realTime.getFullYear()}`;
+  const formattedRealTimeDate = `${DAY_NAMES_EN[realTime.getDay()]}, ${MONTH_NAMES_EN[realTime.getMonth()]} ${realTime.getDate()}, ${realTime.getFullYear()}`;
 
-  // Filter hanya janji temu yang statusnya sudah disetujui / di-ACC
+  // Filter approved appointments
   const isApprovedAppointment = (status) => {
     if (!status) return false;
     const s = status.toLowerCase();
     return s === 'accepted' || s === 'disetujui' || s === 'approved' || s === 'completed' || s === 'selesai';
   };
 
-  // Cek apakah tanggal memiliki jadwal yang DISETUJUI (di-ACC)
+  // Check if date has approved meetings
   const getMeetingForDate = (dayNum, isCurrMonth) => {
     if (!isCurrMonth) return null;
 
-    // Cek di stored appointments yang berstatus ACC / Disetujui
     const matchStored = appointments.find(app => {
       if (!app.date) return false;
       if (!isApprovedAppointment(app.status)) return false;
@@ -185,67 +182,97 @@ const JadwalPertemuan = () => {
 
     if (matchStored) {
       return {
-        title: matchStored.permintaan || 'Pertemuan PRM Disetujui',
-        waktu: matchStored.jam ? `${matchStored.jam} WIB` : '10.00 WIB',
-        lokasi: matchStored.lokasi || 'Daring (Google Meet) / Kampus Polibatam',
-        partner: matchStored.pemohon || matchStored.tujuan || 'Mitra PRM',
-        pengingat: '30 menit sebelumnya',
-        tag: 'Disetujui (ACC)',
+        title: matchStored.permintaan || 'Approved PRM Meeting',
+        waktu: matchStored.jam ? `${matchStored.jam}` : '10:00 AM',
+        lokasi: matchStored.lokasi || 'Online (Google Meet) / Campus Polibatam',
+        partner: matchStored.pemohon || matchStored.tujuan || 'PRM Partner',
+        pengingat: '30 minutes before',
+        tag: 'Approved (Confirmed)',
         status: matchStored.status
       };
     }
 
-    // Default sample fallback untuk ilustrasi di bulan aktif (Hanya jadwal yang sudah di-ACC)
+    // Default sample fallback
     if (dayNum === 12) {
       return {
-        title: 'Pertemuan koordinasi PRM (Disetujui)',
-        waktu: '09.00–10.00 WIB',
-        lokasi: 'Ruang rapat internal civitas Polibatam',
-        partner: 'Budi Santoso (CTO Mitra)',
-        pengingat: '30 menit sebelumnya • 08.30 WIB',
-        tag: 'Disetujui (ACC)',
-        status: 'Disetujui'
+        title: 'PRM Coordination Meeting (Approved)',
+        waktu: '09:00 - 10:00 AM',
+        lokasi: 'Polibatam Internal Meeting Room',
+        partner: 'Budi Santoso (Partner CTO)',
+        pengingat: '30 minutes before • 08:30 AM',
+        tag: 'Approved (Confirmed)',
+        status: 'Approved'
       };
     }
     if (dayNum === 15) {
       return {
-        title: 'Tindak lanjut PRM & Penandatanganan MoU (Disetujui)',
-        waktu: '14.00–15.00 WIB',
-        lokasi: 'Daring (Google Meet / Zoom)',
+        title: 'PRM Follow-up & MoU Signing (Approved)',
+        waktu: '02:00 - 03:00 PM',
+        lokasi: 'Online (Google Meet / Zoom)',
         partner: 'Siti Rahma, M.Sc',
-        pengingat: '30 menit sebelumnya • 13.30 WIB',
-        tag: 'Disetujui (ACC)',
-        status: 'Disetujui'
+        pengingat: '30 minutes before • 01:30 PM',
+        tag: 'Approved (Confirmed)',
+        status: 'Approved'
       };
     }
 
     return null;
   };
 
-  // Meeting detail untuk tanggal yang dipilih
   const selectedMeetingDetail = getMeetingForDate(selectedDay, true);
 
-  // Agenda mendatang yang HANYA berstatus Disetujui / di-ACC
-  const upcomingAgendas = [
+  // Dynamic agenda items from confirmed stored appointments + demo upcoming meetings
+  const allAgendas = [
+    ...appointments
+      .filter(app => isApprovedAppointment(app.status) && app.date)
+      .map(app => {
+        const d = new Date(app.date);
+        const dayCode = !isNaN(d.getTime()) ? DAY_NAMES_EN[d.getDay()].slice(0, 3).toUpperCase() : 'MEET';
+        const dateNum = !isNaN(d.getTime()) ? String(d.getDate()).padStart(2, '0') : '01';
+        const monthCode = !isNaN(d.getTime()) ? MONTH_NAMES_EN[d.getMonth()].slice(0, 3).toUpperCase() : 'PRM';
+        const dateRef = !isNaN(d.getTime()) ? d.getDate() : 1;
+        const fullDate = !isNaN(d.getTime()) ? d : new Date();
+
+        return {
+          dayCode,
+          dateNum,
+          monthCode,
+          title: app.permintaan || 'PRM Meeting (Confirmed)',
+          waktuLokasi: `${app.jam || '10:00 AM'} • ${app.lokasi || 'Meeting Room'}`,
+          pengingat: 'Reminder: 30 minutes before',
+          dateRef,
+          fullDate
+        };
+      }),
     {
-      dayCode: 'SEN',
+      dayCode: 'MON',
       dateNum: '12',
-      monthCode: MONTH_NAMES_ID[viewMonth].slice(0, 3).toUpperCase(),
-      title: 'Koordinasi PRM (ACC)',
-      waktuLokasi: '09.00–10.00 WIB • Ruang Rapat',
-      pengingat: 'Pengingat: 30 menit sebelumnya',
-      dateRef: 12
+      monthCode: MONTH_NAMES_EN[viewMonth].slice(0, 3).toUpperCase(),
+      title: 'PRM Coordination (Confirmed)',
+      waktuLokasi: '09:00–10:00 AM • Meeting Room',
+      pengingat: 'Reminder: 30 minutes before',
+      dateRef: 12,
+      fullDate: new Date(viewYear, viewMonth, 12, 10, 0, 0)
     },
     {
-      dayCode: 'KAM',
+      dayCode: 'THU',
       dateNum: '15',
-      monthCode: MONTH_NAMES_ID[viewMonth].slice(0, 3).toUpperCase(),
-      title: 'Tindak lanjut PRM (ACC)',
-      waktuLokasi: '14.00–15.00 WIB • Daring',
-      pengingat: 'Pengingat: 30 menit sebelumnya',
-      dateRef: 15
+      monthCode: MONTH_NAMES_EN[viewMonth].slice(0, 3).toUpperCase(),
+      title: 'PRM Follow-up (Confirmed)',
+      waktuLokasi: '02:00–03:00 PM • Online',
+      pengingat: 'Reminder: 30 minutes before',
+      dateRef: 15,
+      fullDate: new Date(viewYear, viewMonth, 15, 15, 0, 0)
     }
   ];
+
+  // Sesuai permintaan: Hilangkan agenda yang sudah lewat harinya (hanya tampilkan agenda yang mendatang / hari ini ke depan)
+  const startOfToday = new Date(realTime.getFullYear(), realTime.getMonth(), realTime.getDate());
+  const upcomingAgendas = allAgendas.filter(item => {
+    if (!item.fullDate) return true;
+    const itemDateOnly = new Date(item.fullDate.getFullYear(), item.fullDate.getMonth(), item.fullDate.getDate());
+    return itemDateOnly >= startOfToday;
+  }).sort((a, b) => a.fullDate - b.fullDate);
 
   return (
     <div className="jadwal-page-wrapper">
@@ -257,20 +284,20 @@ const JadwalPertemuan = () => {
         <div className="jadwal-breadcrumb">
           <span className="crumb-link" onClick={() => navigate('/home')}>PRM</span>
           <span className="crumb-sep">›</span>
-          <span className="crumb-active">Jadwal Pertemuan</span>
+          <span className="crumb-active">Meeting Schedule</span>
         </div>
 
         {/* Real-time Header & Live Clock */}
         <div className="jadwal-header-flex">
           <div>
-            <h1 className="jadwal-title">Jadwal Janji Temu & Pertemuan</h1>
+            <h1 className="jadwal-title">Appointments & Meeting Schedule</h1>
             <p className="jadwal-subtitle">
-              Navigasi kalender jadwal, tinjau agenda pertemuan, dan pantau waktu kondisi terkini secara real-time.
+              Navigate the schedule calendar, review upcoming meetings, and check real-time availability.
             </p>
           </div>
 
           {/* Real-Time Live Widget Badge */}
-          <div className="realtime-status-card" title="Deteksi waktu kondisi saat ini">
+          <div className="realtime-status-card" title="Current real-time clock">
             <div className="live-pulse-dot"></div>
             <div className="realtime-content">
               <span className="realtime-clock">{formattedRealTimeClock}</span>
@@ -292,9 +319,9 @@ const JadwalPertemuan = () => {
                     className="cal-select-dropdown"
                     value={viewMonth}
                     onChange={(e) => setViewMonth(parseInt(e.target.value, 10))}
-                    aria-label="Pilih Bulan"
+                    aria-label="Select Month"
                   >
-                    {MONTH_NAMES_ID.map((name, idx) => (
+                    {MONTH_NAMES_EN.map((name, idx) => (
                       <option key={idx} value={idx}>
                         {name}
                       </option>
@@ -306,7 +333,7 @@ const JadwalPertemuan = () => {
                     className="cal-select-dropdown year-select"
                     value={viewYear}
                     onChange={(e) => setViewYear(parseInt(e.target.value, 10))}
-                    aria-label="Pilih Tahun"
+                    aria-label="Select Year"
                   >
                     {yearOptions.map(y => (
                       <option key={y} value={y}>
@@ -316,25 +343,25 @@ const JadwalPertemuan = () => {
                   </select>
                 </div>
                 <span className="calendar-subtitle-count">
-                  {MONTH_NAMES_ID[viewMonth]} {viewYear} • 2 agenda terjadwal
+                  {MONTH_NAMES_EN[viewMonth]} {viewYear} • 2 scheduled meetings
                 </span>
               </div>
 
-              {/* Tombol Navigasi Cepat (‹ › Hari Ini) */}
+              {/* Quick Navigation Buttons */}
               <div className="calendar-btn-group">
                 <button
                   type="button"
                   className="btn-cal-today"
                   onClick={handleJumpToToday}
-                  title="Kembali ke Bulan & Hari Ini"
+                  title="Jump to Today"
                 >
-                  Hari ini
+                  Today
                 </button>
                 <button
                   type="button"
                   className="btn-cal-arrow"
                   onClick={handlePrevMonth}
-                  title="Bulan Sebelumnya"
+                  title="Previous Month"
                 >
                   ‹
                 </button>
@@ -342,24 +369,24 @@ const JadwalPertemuan = () => {
                   type="button"
                   className="btn-cal-arrow"
                   onClick={handleNextMonth}
-                  title="Bulan Berikutnya"
+                  title="Next Month"
                 >
                   ›
                 </button>
               </div>
             </div>
 
-            {/* Grid Kalender */}
+            {/* Calendar Grid */}
             <div className="calendar-table">
-              {/* Day names (Senin s/d Minggu) */}
+              {/* Day names */}
               <div className="calendar-weekdays-row">
-                <div>Senin</div>
-                <div>Selasa</div>
-                <div>Rabu</div>
-                <div>Kamis</div>
-                <div>Jumat</div>
-                <div>Sabtu</div>
-                <div>Minggu</div>
+                <div>Mon</div>
+                <div>Tue</div>
+                <div>Wed</div>
+                <div>Thu</div>
+                <div>Fri</div>
+                <div>Sat</div>
+                <div>Sun</div>
               </div>
 
               {/* Day cells */}
@@ -413,15 +440,15 @@ const JadwalPertemuan = () => {
             <div className="calendar-legend-row">
               <span className="legend-item">
                 <span className="legend-dot event-dot-orange"></span>
-                Agenda Pertemuan PRM
+                PRM Meeting Agenda
               </span>
               <span className="legend-item">
                 <span className="legend-ring ring-orange"></span>
-                Tanggal Dipilih ({selectedDay} {MONTH_NAMES_ID[viewMonth]})
+                Selected Date ({selectedDay} {MONTH_NAMES_EN[viewMonth]})
               </span>
               <span className="legend-item">
                 <span className="legend-ring ring-blue"></span>
-                Hari ini ({currentTodayDate} {MONTH_NAMES_ID[realTime.getMonth()]})
+                Today ({currentTodayDate} {MONTH_NAMES_EN[realTime.getMonth()]})
               </span>
             </div>
           </div>
@@ -430,10 +457,10 @@ const JadwalPertemuan = () => {
           <div className="jadwal-right-column">
             {/* Panel Detail Tanggal Dipilih */}
             <div className="jadwal-card detail-selected-card">
-              <span className="section-label-muted">Tanggal dipilih</span>
+              <span className="section-label-muted">Selected Date</span>
               <h2 className="selected-date-heading">
-                {selectedDay} {MONTH_NAMES_ID[viewMonth]} {viewYear}
-                {isViewingCurrentMonth && selectedDay === currentTodayDate && ' (Hari Ini)'}
+                {MONTH_NAMES_EN[viewMonth]} {selectedDay}, {viewYear}
+                {isViewingCurrentMonth && selectedDay === currentTodayDate && ' (Today)'}
               </h2>
 
               <div className="detail-separator"></div>
@@ -449,7 +476,7 @@ const JadwalPertemuan = () => {
                     <div className="meta-item">
                       <span className="meta-icon">👤</span>
                       <div>
-                        <div className="meta-label">Pihak / Mitra</div>
+                        <div className="meta-label">Partner / Contact</div>
                         <div className="meta-value">{selectedMeetingDetail.partner}</div>
                       </div>
                     </div>
@@ -457,7 +484,7 @@ const JadwalPertemuan = () => {
                     <div className="meta-item">
                       <span className="meta-icon">🕒</span>
                       <div>
-                        <div className="meta-label">Waktu Pertemuan</div>
+                        <div className="meta-label">Meeting Time</div>
                         <div className="meta-value">{selectedMeetingDetail.waktu}</div>
                       </div>
                     </div>
@@ -465,7 +492,7 @@ const JadwalPertemuan = () => {
                     <div className="meta-item">
                       <span className="meta-icon">📍</span>
                       <div>
-                        <div className="meta-label">Lokasi / Ruang</div>
+                        <div className="meta-label">Location / Room</div>
                         <div className="meta-value">{selectedMeetingDetail.lokasi}</div>
                       </div>
                     </div>
@@ -473,7 +500,7 @@ const JadwalPertemuan = () => {
                     <div className="meta-item">
                       <span className="meta-icon">🔔</span>
                       <div>
-                        <div className="meta-label">Pengingat Otomatis</div>
+                        <div className="meta-label">Automated Reminder</div>
                         <div className="meta-value">{selectedMeetingDetail.pengingat}</div>
                       </div>
                     </div>
@@ -483,10 +510,10 @@ const JadwalPertemuan = () => {
                 <div className="meeting-empty-state">
                   <span className="empty-icon">📅</span>
                   <p className="empty-text">
-                    Tidak ada jadwal pertemuan khusus pada tanggal {selectedDay} {MONTH_NAMES_ID[viewMonth]} {viewYear}.
+                    No scheduled meetings on {MONTH_NAMES_EN[viewMonth]} {selectedDay}, {viewYear}.
                   </p>
                   <p className="empty-sub">
-                    Klik pada tanggal 12 atau 15 untuk melihat rincian agenda koordinasi PRM.
+                    Click on the 12th or 15th to view sample confirmed PRM agendas.
                   </p>
                 </div>
               )}
@@ -495,29 +522,36 @@ const JadwalPertemuan = () => {
             {/* Panel Agenda Mendatang */}
             <div className="jadwal-card upcoming-card">
               <div className="upcoming-card-header">
-                <h3 className="upcoming-title">Agenda Mendatang</h3>
-                <span className="upcoming-count">{upcomingAgendas.length} pertemuan</span>
+                <h3 className="upcoming-title">Upcoming Agenda</h3>
+                <span className="upcoming-count">{upcomingAgendas.length} meetings</span>
               </div>
 
               <div className="upcoming-list">
-                {upcomingAgendas.map((item, idx) => (
-                  <div
-                    key={idx}
-                    className={`upcoming-item-box ${selectedDay === item.dateRef ? 'active-highlight' : ''}`}
-                    onClick={() => setSelectedDay(item.dateRef)}
-                  >
-                    <div className="date-badge-box">
-                      <span className="badge-day">{item.dayCode}</span>
-                      <span className="badge-num">{item.dateNum}</span>
-                      <span className="badge-month">{item.monthCode}</span>
+                {upcomingAgendas.length > 0 ? (
+                  upcomingAgendas.map((item, idx) => (
+                    <div
+                      key={idx}
+                      className={`upcoming-item-box ${selectedDay === item.dateRef ? 'active-highlight' : ''}`}
+                      onClick={() => setSelectedDay(item.dateRef)}
+                    >
+                      <div className="date-badge-box">
+                        <span className="badge-day">{item.dayCode}</span>
+                        <span className="badge-num">{item.dateNum}</span>
+                        <span className="badge-month">{item.monthCode}</span>
+                      </div>
+                      <div className="upcoming-info-col">
+                        <h4 className="upcoming-item-title">{item.title}</h4>
+                        <p className="upcoming-item-time">{item.waktuLokasi}</p>
+                        <span className="upcoming-reminder-text">{item.pengingat}</span>
+                      </div>
                     </div>
-                    <div className="upcoming-info-col">
-                      <h4 className="upcoming-item-title">{item.title}</h4>
-                      <p className="upcoming-item-time">{item.waktuLokasi}</p>
-                      <span className="upcoming-reminder-text">{item.pengingat}</span>
-                    </div>
+                  ))
+                ) : (
+                  <div style={{ textAlign: 'center', padding: '1.5rem', color: '#64748b', fontSize: '0.85rem' }}>
+                    <p style={{ margin: 0 }}>No upcoming meetings ahead.</p>
+                    <small>Past meetings are hidden automatically.</small>
                   </div>
-                ))}
+                )}
               </div>
             </div>
           </div>
@@ -525,8 +559,8 @@ const JadwalPertemuan = () => {
 
         {/* Small sub-footer notes */}
         <div className="jadwal-sub-notice">
-          <span>Pratinjau jadwal dan pengingat PRM terintegrasi real-time.</span>
-          <span>Sistem Kartu Nama Digital Polibatam • Internal Portal</span>
+          <span>Real-time integrated PRM schedule and reminders.</span>
+          <span>Polibatam Smart Business Card • Internal Portal</span>
         </div>
       </main>
 

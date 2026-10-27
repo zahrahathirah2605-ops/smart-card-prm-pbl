@@ -62,14 +62,14 @@ const TambahKontakEksternal = () => {
 
     const validTypes = ['image/jpeg', 'image/jpg', 'image/png'];
     if (!validTypes.includes(file.type)) {
-      setPhotoError('Format foto tidak valid. Hanya mendukung file JPG atau PNG.');
+      setPhotoError('Invalid image format. Only JPG or PNG are supported.');
       if (fileInputRef.current) fileInputRef.current.value = '';
       return;
     }
 
     const maxSize = 2 * 1024 * 1024; // 2MB
     if (file.size > maxSize) {
-      setPhotoError('Ukuran foto terlalu besar. Maksimal 2 MB.');
+      setPhotoError('Image size exceeds 2MB limit.');
       if (fileInputRef.current) fileInputRef.current.value = '';
       return;
     }
@@ -106,19 +106,19 @@ const TambahKontakEksternal = () => {
 
     // 1. nama_lengkap: required, string, max 100
     if (!formData.nama_lengkap.trim()) {
-      newErrors.nama_lengkap = 'Nama lengkap wajib diisi.';
+      newErrors.nama_lengkap = 'Full name is required.';
     } else if (formData.nama_lengkap.trim().length > 100) {
-      newErrors.nama_lengkap = 'Nama lengkap maksimal 100 karakter.';
+      newErrors.nama_lengkap = 'Full name must not exceed 100 characters.';
     }
 
     // 2. instansi: nullable, max 100
     if (formData.instansi && formData.instansi.trim().length > 100) {
-      newErrors.instansi = 'Instansi/perusahaan maksimal 100 karakter.';
+      newErrors.instansi = 'Organization must not exceed 100 characters.';
     }
 
     // 3. jabatan: nullable, max 100
     if (formData.jabatan && formData.jabatan.trim().length > 100) {
-      newErrors.jabatan = 'Jabatan maksimal 100 karakter.';
+      newErrors.jabatan = 'Job title must not exceed 100 characters.';
     }
 
     // 4 & 5. Telepon & Email: minimal salah satu harus terisi
@@ -126,34 +126,34 @@ const TambahKontakEksternal = () => {
     const emailTrimmed = formData.email.trim();
 
     if (!telTrimmed && !emailTrimmed) {
-      newErrors.kontak_gabungan = 'Isi minimal salah satu: Telepon atau Email.';
+      newErrors.kontak_gabungan = 'Please provide at least one contact method: Phone or Email.';
     }
 
     if (telTrimmed) {
       if (telTrimmed.length > 20) {
-        newErrors.telepon = 'Nomor telepon maksimal 20 karakter.';
+        newErrors.telepon = 'Phone number must not exceed 20 characters.';
       } else {
         const phoneRegex = /^[+]?[\d\s-]+$/;
         if (!phoneRegex.test(telTrimmed)) {
-          newErrors.telepon = 'Format nomor telepon tidak valid (gunakan angka, +, spasi, atau tanda strip).';
+          newErrors.telepon = 'Invalid phone number format (use digits, +, spaces, or hyphens).';
         }
       }
     }
 
     if (emailTrimmed) {
       if (emailTrimmed.length > 100) {
-        newErrors.email = 'Email maksimal 100 karakter.';
+        newErrors.email = 'Email must not exceed 100 characters.';
       } else {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(emailTrimmed)) {
-          newErrors.email = 'Format alamat email tidak valid.';
+          newErrors.email = 'Invalid email address format.';
         }
       }
     }
 
     // 6. catatan_pertemuan: nullable, max 500
     if (formData.catatan_pertemuan && formData.catatan_pertemuan.length > 500) {
-      newErrors.catatan_pertemuan = 'Catatan pertemuan maksimal 500 karakter.';
+      newErrors.catatan_pertemuan = 'Meeting notes must not exceed 500 characters.';
     }
 
     if (photoError) {
@@ -189,8 +189,8 @@ const TambahKontakEksternal = () => {
           id: `ext-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`,
           nama: formData.nama_lengkap.trim(),
           nama_lengkap: formData.nama_lengkap.trim(),
-          instansi: formData.instansi.trim() || 'Pihak Eksternal',
-          jabatan: formData.jabatan.trim() || 'Mitra',
+          instansi: formData.instansi.trim() || 'External Partner',
+          jabatan: formData.jabatan.trim() || 'Partner',
           kontak: formData.telepon.trim() || '-',
           telepon: formData.telepon.trim(),
           email: formData.email.trim(),
@@ -199,9 +199,9 @@ const TambahKontakEksternal = () => {
           foto_kartu: formData.foto_kartu || null,
           foto_nama_file: formData.foto_nama_file || '',
           tipe: 'eksternal',
-          kategori: 'Mitra Industri / Eksternal',
+          kategori: 'External Partner',
           isSaved: true,
-          asal: 'Kartu Fisik Eksternal',
+          asal: 'External Physical Card',
           createdAt: new Date().toISOString()
         };
 
@@ -210,12 +210,12 @@ const TambahKontakEksternal = () => {
 
         navigate('/kontak-relasi', {
           state: {
-            successMessage: `Kontak eksternal "${newContactRecord.nama}" berhasil disimpan ke Kontak Relasi.`
+            successMessage: `External contact "${newContactRecord.nama}" was successfully saved to Relationship Contacts.`
           }
         });
       } catch (err) {
-        console.error('Gagal menyimpan kontak eksternal:', err);
-        setErrors({ general: 'Terjadi kesalahan saat menyimpan kontak. Silakan coba lagi.' });
+        console.error('Failed to save external contact:', err);
+        setErrors({ general: 'An error occurred while saving contact. Please try again.' });
         setIsSubmitting(false);
       }
     }, 400);
@@ -237,19 +237,19 @@ const TambahKontakEksternal = () => {
               <line x1="19" y1="12" x2="5" y2="12"></line>
               <polyline points="12 19 5 12 12 5"></polyline>
             </svg>
-            <span>Kembali ke Kontak Relasi</span>
+            <span>Back to Relationship Contacts</span>
           </button>
         </div>
 
         {/* Header Judul & Subjudul */}
         <div className="external-header-section">
-          <h1 className="external-page-title">Tambah Kontak Eksternal</h1>
+          <h1 className="external-page-title">Add External Contact</h1>
           <p className="external-page-subtitle">
-            Masukkan data dari kartu nama fisik secara manual untuk menyimpan kenalan ke Kontak Relasi.
+            Manually enter details from a physical business card to save acquaintances into Relationship Contacts.
           </p>
           <div className="external-note-badge">
             <span className="note-icon">ℹ️</span>
-            <span>Kenalan tidak perlu memiliki akun. Penyimpanan ini tidak membuat akun atau kartu nama internal.</span>
+            <span>External contacts do not need an account. This entry does not create an internal campus profile.</span>
           </div>
         </div>
 
@@ -270,8 +270,8 @@ const TambahKontakEksternal = () => {
             {/* Kolom Kiri: Foto Kartu Nama (Opsional) */}
             <div className="external-card card-left">
               <div className="card-header-inner">
-                <h3 className="card-section-title">Foto Kartu Nama</h3>
-                <span className="card-optional-tag">Opsional</span>
+                <h3 className="card-section-title">Business Card Photo</h3>
+                <span className="card-optional-tag">Optional</span>
               </div>
 
               <div
@@ -282,7 +282,7 @@ const TambahKontakEksternal = () => {
                   <div className="photo-preview-wrapper">
                     <img
                       src={photoPreview}
-                      alt="Preview Kartu Nama Fisik"
+                      alt="Physical Business Card Preview"
                       className="photo-preview-img"
                     />
                     <div
@@ -291,9 +291,9 @@ const TambahKontakEksternal = () => {
                         e.stopPropagation();
                         setShowPhotoModal(true);
                       }}
-                      title="Klik untuk memperbesar foto"
+                      title="Click to zoom image"
                     >
-                      <span>🔍 Klik untuk Perbesar</span>
+                      <span>🔍 Click to Zoom</span>
                     </div>
                   </div>
                 ) : (
@@ -305,7 +305,7 @@ const TambahKontakEksternal = () => {
                         <polyline points="21 15 16 10 5 21"></polyline>
                       </svg>
                     </div>
-                    <span className="photo-placeholder-text">Lampirkan foto kartu nama fisik</span>
+                    <span className="photo-placeholder-text">Attach photo of physical card</span>
                   </div>
                 )}
               </div>
@@ -331,7 +331,7 @@ const TambahKontakEksternal = () => {
                     <polyline points="17 8 12 3 7 8"></polyline>
                     <line x1="12" y1="3" x2="12" y2="15"></line>
                   </svg>
-                  <span>{photoPreview ? 'Ganti Foto' : 'Tambahkan Foto'}</span>
+                  <span>{photoPreview ? 'Change Photo' : 'Upload Photo'}</span>
                 </button>
 
                 {photoPreview && (
@@ -339,9 +339,9 @@ const TambahKontakEksternal = () => {
                     type="button"
                     className="btn-remove-photo"
                     onClick={handleRemovePhoto}
-                    title="Hapus foto kartu nama"
+                    title="Remove card photo"
                   >
-                    Hapus
+                    Remove
                   </button>
                 )}
               </div>
@@ -355,11 +355,11 @@ const TambahKontakEksternal = () => {
               <div className="photo-helper-texts">
                 <p className="helper-item">
                   <span className="bullet">•</span>
-                  <span>Format JPG atau PNG. Pastikan tulisan pada kartu terlihat jelas.</span>
+                  <span>JPG or PNG format. Ensure text on card is legible.</span>
                 </p>
                 <p className="helper-item">
                   <span className="bullet">•</span>
-                  <span>Foto ini menjadi lampiran kartu nama, bukan foto profil. Tetap isi data kontak secara manual.</span>
+                  <span>This image serves as an attachment, not a profile avatar.</span>
                 </p>
               </div>
             </div>
@@ -367,24 +367,24 @@ const TambahKontakEksternal = () => {
             {/* Kolom Kanan: Identitas & Kontak */}
             <div className="external-card card-right">
               <div className="card-header-inner">
-                <h3 className="card-section-title">Identitas & Kontak</h3>
+                <h3 className="card-section-title">Identity & Contact</h3>
               </div>
               <p className="card-header-note">
-                <span className="required-star">*</span> Wajib diisi. Data lain dapat dilengkapi jika tersedia.
+                <span className="required-star">*</span> Required. Other details can be completed if available.
               </p>
 
               <div className="form-fields-stack">
                 {/* 1. Nama Lengkap */}
                 <div className="form-group full-width">
                   <label htmlFor="nama_lengkap" className="form-label">
-                    Nama lengkap <span className="required-star">*</span>
+                    Full Name <span className="required-star">*</span>
                   </label>
                   <input
                     type="text"
                     id="nama_lengkap"
                     name="nama_lengkap"
                     className={`form-input ${errors.nama_lengkap ? 'input-error' : ''}`}
-                    placeholder="Silahkan isi nama lengkap"
+                    placeholder="Enter full name"
                     value={formData.nama_lengkap}
                     onChange={handleInputChange}
                     maxLength={100}
@@ -398,14 +398,14 @@ const TambahKontakEksternal = () => {
                 <div className="form-row-two-cols">
                   <div className="form-group">
                     <label htmlFor="instansi" className="form-label">
-                      Instansi/perusahaan
+                      Organization / Company
                     </label>
                     <input
                       type="text"
                       id="instansi"
                       name="instansi"
                       className={`form-input ${errors.instansi ? 'input-error' : ''}`}
-                      placeholder="Silahkan isi instansi/perusahaan"
+                      placeholder="Enter organization or company"
                       value={formData.instansi}
                       onChange={handleInputChange}
                       maxLength={100}
@@ -417,14 +417,14 @@ const TambahKontakEksternal = () => {
 
                   <div className="form-group">
                     <label htmlFor="jabatan" className="form-label">
-                      Jabatan
+                      Job Title / Position
                     </label>
                     <input
                       type="text"
                       id="jabatan"
                       name="jabatan"
                       className={`form-input ${errors.jabatan ? 'input-error' : ''}`}
-                      placeholder="Silahkan isi jabatan"
+                      placeholder="Enter job title"
                       value={formData.jabatan}
                       onChange={handleInputChange}
                       maxLength={100}
@@ -439,7 +439,7 @@ const TambahKontakEksternal = () => {
                 <div className="form-row-two-cols">
                   <div className="form-group">
                     <label htmlFor="telepon" className="form-label">
-                      Telepon
+                      Phone Number
                     </label>
                     <div className="input-with-icon">
                       <span className="input-icon">
@@ -452,7 +452,7 @@ const TambahKontakEksternal = () => {
                         id="telepon"
                         name="telepon"
                         className={`form-input with-left-icon ${errors.telepon || errors.kontak_gabungan ? 'input-error' : ''}`}
-                        placeholder="Silahkan isi nomor telepon"
+                        placeholder="+62 812-xxxx-xxxx"
                         value={formData.telepon}
                         onChange={handleInputChange}
                         maxLength={20}
@@ -465,7 +465,7 @@ const TambahKontakEksternal = () => {
 
                   <div className="form-group">
                     <label htmlFor="email" className="form-label">
-                      Email
+                      Email Address
                     </label>
                     <div className="input-with-icon">
                       <span className="input-icon">
@@ -479,7 +479,7 @@ const TambahKontakEksternal = () => {
                         id="email"
                         name="email"
                         className={`form-input with-left-icon ${errors.email || errors.kontak_gabungan ? 'input-error' : ''}`}
-                        placeholder="Silahkan isi email"
+                        placeholder="name@domain.com"
                         value={formData.email}
                         onChange={handleInputChange}
                         maxLength={100}
@@ -494,7 +494,7 @@ const TambahKontakEksternal = () => {
                 {/* Helper text di bawah baris Telepon/Email */}
                 <div className="contact-helper-row">
                   <span className="helper-text-hint">
-                    💡 Isi minimal salah satu: Telepon atau Email.
+                    💡 Please provide at least one contact method: Phone or Email.
                   </span>
                   {errors.kontak_gabungan && (
                     <div className="field-error-msg" style={{ marginTop: '0.35rem' }}>
@@ -507,7 +507,7 @@ const TambahKontakEksternal = () => {
                 <div className="form-group full-width">
                   <div className="label-with-counter">
                     <label htmlFor="catatan_pertemuan" className="form-label">
-                      Catatan pertemuan <span className="label-optional">(opsional)</span>
+                      Meeting Notes <span className="label-optional">(optional)</span>
                     </label>
                     <span className="char-counter">
                       {formData.catatan_pertemuan.length}/500
@@ -518,7 +518,7 @@ const TambahKontakEksternal = () => {
                     name="catatan_pertemuan"
                     rows="4"
                     className={`form-textarea ${errors.catatan_pertemuan ? 'input-error' : ''}`}
-                    placeholder="Misalnya, bertemu di acara atau membahas kerja sama..."
+                    placeholder="E.g., Met at exhibition, discussed potential internship MoU..."
                     value={formData.catatan_pertemuan}
                     onChange={handleInputChange}
                     maxLength={500}
@@ -537,7 +537,7 @@ const TambahKontakEksternal = () => {
                   onClick={() => navigate('/kontak-relasi')}
                   disabled={isSubmitting}
                 >
-                  Batal
+                  Cancel
                 </button>
 
                 <button
@@ -548,10 +548,10 @@ const TambahKontakEksternal = () => {
                   {isSubmitting ? (
                     <>
                       <span className="spinner-icon"></span>
-                      <span>Menyimpan...</span>
+                      <span>Saving...</span>
                     </>
                   ) : (
-                    <span>Simpan Kontak</span>
+                    <span>Save Contact</span>
                   )}
                 </button>
               </div>
@@ -565,7 +565,7 @@ const TambahKontakEksternal = () => {
         <div className="image-zoom-overlay" onClick={() => setShowPhotoModal(false)}>
           <div className="image-zoom-card" onClick={(e) => e.stopPropagation()}>
             <div className="image-zoom-header">
-              <span className="image-zoom-title">Lampiran Kartu Nama Fisik</span>
+              <span className="image-zoom-title">Physical Business Card Attachment</span>
               <button
                 type="button"
                 className="image-zoom-close"
@@ -575,7 +575,7 @@ const TambahKontakEksternal = () => {
               </button>
             </div>
             <div className="image-zoom-body">
-              <img src={photoPreview} alt="Foto Kartu Nama Fisik" className="image-zoom-img" />
+              <img src={photoPreview} alt="Physical Business Card" className="image-zoom-img" />
             </div>
             <div className="image-zoom-footer">
               <button
@@ -583,7 +583,7 @@ const TambahKontakEksternal = () => {
                 className="btn-close-zoom"
                 onClick={() => setShowPhotoModal(false)}
               >
-                Tutup
+                Close
               </button>
             </div>
           </div>

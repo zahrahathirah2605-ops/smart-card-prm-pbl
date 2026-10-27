@@ -80,18 +80,16 @@ const KontakRelasi = () => {
 
   const handleDeleteContact = (id, nama, e) => {
     if (e) e.stopPropagation();
-    if (window.confirm(`Hapus kontak relasi "${nama}" dari daftar?`)) {
+    if (window.confirm(`Delete relationship contact "${nama}" from directory?`)) {
       const updated = kontakData.filter(c => c.id !== id);
       saveContactsToStorage(updated);
       if (selectedDetail && selectedDetail.id === id) {
         setIsDetailOpen(false);
       }
-      setAlertMsg({ type: 'success', text: `Kontak "${nama}" berhasil dihapus dari direktori relasi.` });
+      setAlertMsg({ type: 'success', text: `Contact "${nama}" was successfully removed from relationship directory.` });
       setTimeout(() => setAlertMsg(null), 3500);
     }
   };
-
-
 
   const filteredKontak = kontakData.filter(item => {
     const q = searchTerm.toLowerCase();
@@ -124,13 +122,13 @@ const KontakRelasi = () => {
       {/* Navbar Konsisten */}
       <Navbar active="kartu-nama" />
 
-      {/* Konten Utama Kontak Relasi */}
+      {/* Main Content */}
       <main className="prm-main-content">
         <div className="prm-header-row">
           <div>
-            <h1 className="prm-main-title">Kontak Relasi (Professional Contacts)</h1>
+            <h1 className="prm-main-title">Relationship Contacts (Professional Directory)</h1>
             <p className="prm-main-desc">
-              Hanya menampilkan daftar relasi profesional dan mitra eksternal yang sudah tersimpan secara eksplisit oleh Anda. Klik baris untuk melihat kartu rincian lengkap.
+              Displays your saved professional connections and external partners. Click any row to view full credentials and meeting notes.
             </p>
           </div>
         </div>
@@ -158,7 +156,7 @@ const KontakRelasi = () => {
           </div>
         )}
 
-        {/* Bar Pencarian Full Width dengan Filter */}
+        {/* Search Bar */}
         <div className="prm-filter-bar-full">
           <div className="prm-search-box-kelola">
             <span className="search-icon">
@@ -169,7 +167,7 @@ const KontakRelasi = () => {
             </span>
             <input
               type="text"
-              placeholder="Cari berdasarkan nama, perusahaan, nomor telepon, atau email..."
+              placeholder="Search by name, organization, phone number, or email..."
               value={searchTerm}
               onChange={handleSearchChange}
             />
@@ -178,7 +176,7 @@ const KontakRelasi = () => {
                 type="button"
                 className="search-clear-btn"
                 onClick={() => { setSearchTerm(''); setCurrentPage(1); }}
-                title="Hapus pencarian"
+                title="Clear search"
               >
                 ✕
               </button>
@@ -186,16 +184,16 @@ const KontakRelasi = () => {
           </div>
         </div>
 
-        {/* Tabel Kontak Relasi (Clickable Rows) */}
+        {/* Table of Relationship Contacts */}
         <div className="prm-table-wrapper">
           <table className="prm-table">
             <thead>
               <tr>
-                <th style={{ width: '28%' }}>Nama & Peran</th>
-                <th style={{ width: '24%' }}>Perusahaan / Instansi</th>
-                <th style={{ width: '26%' }}>Kontak & Email</th>
-                <th style={{ width: '12%' }}>Kategori</th>
-                <th style={{ width: '10%', textAlign: 'center' }}>Aksi</th>
+                <th style={{ width: '28%' }}>Name & Role</th>
+                <th style={{ width: '24%' }}>Organization / Campus</th>
+                <th style={{ width: '26%' }}>Contact & Email</th>
+                <th style={{ width: '12%' }}>Category</th>
+                <th style={{ width: '10%', textAlign: 'center' }}>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -205,14 +203,14 @@ const KontakRelasi = () => {
                     key={item.id}
                     className="prm-clickable-row"
                     onClick={() => handleRowClick(item)}
-                    title="Klik baris untuk melihat detail kontak relasi"
+                    title="Click row to view relationship contact details"
                   >
                     <td>
                       <div style={{ fontWeight: 600, color: '#0f172a', fontSize: '0.92rem' }}>
                         {item.nama}
                       </div>
                       <div style={{ fontSize: '0.76rem', color: '#64748b', marginTop: '2px' }}>
-                        {item.jabatan || 'Partner'} {item.asal === 'PRM History' && <span style={{ color: '#ff5733', fontWeight: 600 }}>• Dari PRM History</span>}
+                        {item.jabatan || 'Partner'} {item.asal === 'PRM History' && <span style={{ color: '#ff5733', fontWeight: 600 }}>• From PRM History</span>}
                       </div>
                       {item.catatan && (
                         <div style={{ fontSize: '0.72rem', color: '#94a3b8', marginTop: '2px', fontStyle: 'italic' }}>
@@ -243,14 +241,14 @@ const KontakRelasi = () => {
                         background: item.asal === 'PRM History' ? '#fff1ee' : '#f1f5f9',
                         color: item.asal === 'PRM History' ? '#c2410c' : '#475569'
                       }}>
-                        {item.kategori || 'Eksternal'}
+                        {item.kategori || 'External'}
                       </span>
                     </td>
                     <td style={{ textAlign: 'center' }} onClick={(e) => e.stopPropagation()}>
                       <button
                         type="button"
                         className="btn-delete-contact"
-                        title="Hapus kontak dari daftar relasi"
+                        title="Delete contact from relationship directory"
                         onClick={(e) => handleDeleteContact(item.id, item.nama, e)}
                       >
                         Delete Contact
@@ -261,7 +259,7 @@ const KontakRelasi = () => {
               ) : (
                 <tr>
                   <td colSpan="5" className="prm-empty-row">
-                    Belum ada kontak relasi yang cocok dengan pencarian Anda. Klik tombol <strong>+ Tambah Kontak Relasi</strong> atau simpan dari Riwayat PRM untuk menambahkan mitra ke sini.
+                    No relationship contacts match your search. Click <strong>+ Add External Contact</strong> or save from PRM History to add contacts here.
                   </td>
                 </tr>
               )}
@@ -278,12 +276,12 @@ const KontakRelasi = () => {
         </div>
       </main>
 
-      {/* Modal Detail Kontak Relasi */}
+      {/* Detail Modal: Relationship Contact */}
       <DetailModal
         isOpen={isDetailOpen}
         onClose={() => setIsDetailOpen(false)}
-        title={selectedDetail ? `Kartu Relasi: ${selectedDetail.nama}` : 'Detail Kontak Relasi'}
-        badgeText={selectedDetail?.kategori || 'Kontak Relasi'}
+        title={selectedDetail ? `Contact Profile: ${selectedDetail.nama}` : 'Contact Details'}
+        badgeText={selectedDetail?.kategori || 'Contact'}
         badgeType="info"
         actions={
           <>
@@ -301,17 +299,17 @@ const KontakRelasi = () => {
               className="detail-modal-btn-close"
               onClick={() => setIsDetailOpen(false)}
             >
-              Tutup
+              Close
             </button>
           </>
         }
       >
         {selectedDetail && (
           <div className="modal-detail-grid">
-            {/* Foto Kartu Nama Fisik (Jika Tersedia) */}
+            {/* Physical Card Photo */}
             {selectedDetail.foto_kartu ? (
               <div className="modal-field-box modal-detail-full" style={{ background: '#f8fafc', padding: '1rem' }}>
-                <span className="modal-field-label">📸 Foto Kartu Nama Fisik</span>
+                <span className="modal-field-label">📸 Physical Business Card Photo</span>
                 <div
                   className="modal-photo-preview-box"
                   style={{
@@ -328,11 +326,11 @@ const KontakRelasi = () => {
                     cursor: 'pointer'
                   }}
                   onClick={() => setPreviewZoomPhoto(selectedDetail.foto_kartu)}
-                  title="Klik untuk memperbesar foto kartu nama"
+                  title="Click to expand card photo"
                 >
                   <img
                     src={selectedDetail.foto_kartu}
-                    alt={`Foto Kartu ${selectedDetail.nama}`}
+                    alt={`Card Photo ${selectedDetail.nama}`}
                     style={{ maxHeight: '220px', width: '100%', objectFit: 'contain' }}
                   />
                   <div
@@ -348,33 +346,33 @@ const KontakRelasi = () => {
                       borderRadius: '6px'
                     }}
                   >
-                    🔍 Klik untuk perbesar
+                    🔍 Click to zoom
                   </div>
                 </div>
               </div>
             ) : selectedDetail.tipe === 'eksternal' ? (
               <div className="modal-field-box modal-detail-full" style={{ padding: '0.75rem 1rem' }}>
-                <span className="modal-field-label">📸 Foto Kartu Nama Fisik</span>
+                <span className="modal-field-label">📸 Physical Business Card Photo</span>
                 <div style={{ fontSize: '0.82rem', color: '#94a3b8', fontStyle: 'italic', marginTop: '0.25rem' }}>
-                  Tidak ada foto kartu nama
+                  No photo attached
                 </div>
               </div>
             ) : null}
 
             <div className="modal-field-box">
-              <span className="modal-field-label">👤 Nama Lengkap</span>
+              <span className="modal-field-label">👤 Full Name</span>
               <div className="modal-field-value">{selectedDetail.nama}</div>
               <div className="modal-field-sub">💼 {selectedDetail.jabatan || 'Partner'}</div>
             </div>
 
             <div className="modal-field-box">
-              <span className="modal-field-label">🏢 Instansi / Perusahaan</span>
+              <span className="modal-field-label">🏢 Organization / Company</span>
               <div className="modal-field-value">{selectedDetail.instansi || '-'}</div>
               <div className="modal-field-sub">🏷️ {selectedDetail.kategori}</div>
             </div>
 
             <div className="modal-field-box">
-              <span className="modal-field-label">✉️ Email Kontak</span>
+              <span className="modal-field-label">✉️ Email Address</span>
               <div className="modal-field-value">
                 {selectedDetail.email ? (
                   <a href={`mailto:${selectedDetail.email}`}>{selectedDetail.email}</a>
@@ -385,7 +383,7 @@ const KontakRelasi = () => {
             </div>
 
             <div className="modal-field-box">
-              <span className="modal-field-label">📱 Nomor Telepon / WA</span>
+              <span className="modal-field-label">📱 Phone / WhatsApp</span>
               <div className="modal-field-value">
                 {selectedDetail.kontak && selectedDetail.kontak !== '-' ? (
                   <a href={`tel:${selectedDetail.kontak}`}>{selectedDetail.kontak}</a>
@@ -396,19 +394,19 @@ const KontakRelasi = () => {
             </div>
 
             <div className="modal-field-box modal-detail-full">
-              <span className="modal-field-label">📥 Sumber Kontak</span>
+              <span className="modal-field-label">📥 Contact Source</span>
               <div className="modal-field-value">
                 {selectedDetail.asal === 'PRM History'
-                  ? 'Tersimpan otomatis dari Riwayat Janji Temu PRM'
+                  ? 'Saved automatically from PRM Appointment History'
                   : selectedDetail.tipe === 'eksternal'
-                  ? 'Tersimpan dari Kartu Nama Fisik Eksternal'
-                  : 'Ditambahkan secara manual oleh Pengguna'}
+                  ? 'Saved from External Physical Business Card'
+                  : 'Added manually by User'}
               </div>
             </div>
 
             {(selectedDetail.catatan || selectedDetail.catatan_pertemuan) && (
               <div className="modal-field-box modal-detail-full">
-                <span className="modal-field-label">📝 Catatan Pertemuan / Relasi</span>
+                <span className="modal-field-label">📝 Meeting / Relationship Notes</span>
                 <div className="modal-quote-box">{selectedDetail.catatan || selectedDetail.catatan_pertemuan}</div>
               </div>
             )}

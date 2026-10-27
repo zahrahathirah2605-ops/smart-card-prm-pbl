@@ -339,13 +339,13 @@ const RiwayatPRM = () => {
     return savedContactEmails.has(targetEmail) || (targetName && savedContactEmails.has(targetName));
   };
 
-  // Fitur "Simpan ke Kontak Relasi"
+  // Feature "Save to Relationship Contacts"
   const handleSaveToContacts = (item, e) => {
     if (e) e.stopPropagation();
 
     const loggedRole = localStorage.getItem('smart_card_logged_role');
     if (!loggedRole) {
-      alert('Silakan login terlebih dahulu untuk menyimpan kontak ke daftar relasi Anda.');
+      alert('Please log in first to save this contact to your relations directory.');
       return;
     }
 
@@ -353,13 +353,13 @@ const RiwayatPRM = () => {
       const raw = localStorage.getItem(STORAGE_KEY_RELATION_CONTACTS);
       const currentList = raw ? JSON.parse(raw) : [];
 
-      const candidateName = item.pemohon || item.tujuan || 'Mitra PRM';
+      const candidateName = item.pemohon || item.tujuan || 'PRM Partner';
       const candidateEmail = item.emailPemohon || '';
       const candidatePhone = item.teleponPemohon || '-';
-      const candidateOrg = item.instansiPemohon || item.perusahaanPemohon || 'Pihak Eksternal / Mitra';
-      const candidateRole = item.jabatanPemohon || 'Mitra Pertemuan PRM';
+      const candidateOrg = item.instansiPemohon || item.perusahaanPemohon || 'External Organization / Partner';
+      const candidateRole = item.jabatanPemohon || 'PRM Partner Contact';
 
-      // Cek duplikasi
+      // Check duplicate
       const duplicate = currentList.find(c => 
         (candidateEmail && c.email && c.email.toLowerCase() === candidateEmail.toLowerCase()) ||
         (c.nama && c.nama.toLowerCase() === candidateName.toLowerCase())
@@ -368,7 +368,7 @@ const RiwayatPRM = () => {
       if (duplicate) {
         setToastMessage({
           type: 'info',
-          text: `Kontak "${candidateName}" sudah ada di dalam Kontak Relasi Anda.`
+          text: `Contact "${candidateName}" already exists in your Relationship Contacts.`
         });
         setTimeout(() => setToastMessage(null), 3500);
         return;
@@ -381,8 +381,8 @@ const RiwayatPRM = () => {
         jabatan: candidateRole,
         email: candidateEmail,
         kontak: candidatePhone,
-        kategori: 'Mitra Janji Temu PRM',
-        catatan: `Tersimpan dari Riwayat PRM [${item.id}]: "${item.permintaan}"`,
+        kategori: 'PRM Meeting Partner',
+        catatan: `Saved from PRM History [${item.id}]: "${item.permintaan}"`,
         isSaved: true,
         asal: 'PRM History'
       };
@@ -395,12 +395,12 @@ const RiwayatPRM = () => {
 
       setToastMessage({
         type: 'success',
-        text: `✓ Kontak "${candidateName}" (${candidateOrg}) berhasil disimpan ke Kontak Relasi!`
+        text: `✓ Contact "${candidateName}" (${candidateOrg}) successfully saved to Relationship Contacts!`
       });
       setTimeout(() => setToastMessage(null), 4500);
     } catch (err) {
       console.error('Error saving contact:', err);
-      alert('Gagal menyimpan kontak ke direktori relasi.');
+      alert('Failed to save contact to directory.');
     }
   };
 
@@ -413,9 +413,9 @@ const RiwayatPRM = () => {
       <main className="prm-main-content">
         <div className="prm-header-row">
           <div>
-            <h1 className="prm-main-title">Riwayat Janji Temu & Pertemuan PRM</h1>
+            <h1 className="prm-main-title">PRM Appointments & Meeting History</h1>
             <p className="prm-main-desc">
-              Kelola, pantau seluruh riwayat interaksi kemitraan, klik baris untuk melihat rincian detail, dan simpan kontak langsung ke relasi Anda.
+              Manage, monitor partnership interaction history, click rows to view detailed notes, and save contacts directly to your relationship network.
             </p>
           </div>
         </div>
@@ -445,7 +445,7 @@ const RiwayatPRM = () => {
             </span>
             <input
               type="text"
-              placeholder="Cari berdasarkan topik, nama pemohon / mitra, atau No. Referensi..."
+              placeholder="Search by topic, partner name, or Ref No..."
               value={searchTerm}
               onChange={handleSearchChange}
             />
@@ -454,7 +454,7 @@ const RiwayatPRM = () => {
                 type="button"
                 className="search-clear-btn"
                 onClick={() => { setSearchTerm(''); setCurrentPage(1); }}
-                title="Hapus pencarian"
+                title="Clear search"
               >
                 ✕
               </button>
@@ -467,12 +467,12 @@ const RiwayatPRM = () => {
           <table className="prm-table">
             <thead>
               <tr>
-                <th style={{ width: '11%' }}>No. Ref</th>
-                <th style={{ width: '35%' }}>Agenda & Topik Pertemuan</th>
-                <th style={{ width: '22%' }}>Mitra / Pemohon</th>
-                <th style={{ width: '12%' }}>Jadwal</th>
+                <th style={{ width: '11%' }}>Ref No.</th>
+                <th style={{ width: '35%' }}>Agenda & Topic</th>
+                <th style={{ width: '22%' }}>Partner / Host</th>
+                <th style={{ width: '12%' }}>Schedule</th>
                 <th style={{ width: '10%' }}>Status</th>
-                <th style={{ width: '10%', textAlign: 'center' }}>Aksi Relasi</th>
+                <th style={{ width: '10%', textAlign: 'center' }}>Relations Action</th>
               </tr>
             </thead>
             <tbody>
@@ -486,7 +486,7 @@ const RiwayatPRM = () => {
                       key={item.id || index}
                       className="prm-clickable-row"
                       onClick={() => handleRowClick(item)}
-                      title="Klik baris untuk melihat rincian detail"
+                      title="Click row to view full details"
                     >
                       <td className="font-semibold text-gray-700">
                         <span className="prm-ref-badge">{item.id}</span>
@@ -494,7 +494,7 @@ const RiwayatPRM = () => {
                       <td>
                         <div className="prm-row-title">{item.permintaan}</div>
                         {item.jam && (
-                          <div className="prm-row-time">⏰ Pukul {item.jam}</div>
+                          <div className="prm-row-time">⏰ At {item.jam}</div>
                         )}
                         {item.alasanRespon && (
                           <div className="prm-row-note">
@@ -520,7 +520,7 @@ const RiwayatPRM = () => {
                         </span>
                         {item.emailNotifikasi && (
                           <div className="prm-email-notif-label">
-                            ✓ Email Notif
+                            ✓ Email Notified
                           </div>
                         )}
                       </td>
@@ -529,10 +529,10 @@ const RiwayatPRM = () => {
                           type="button"
                           className={`btn-save-contact-action ${isSaved ? 'already-saved' : ''}`}
                           onClick={(e) => handleSaveToContacts(item, e)}
-                          title={isSaved ? 'Sudah tersimpan di Kontak Relasi' : 'Simpan informasi kontak ke Kontak Relasi'}
+                          title={isSaved ? 'Already saved in Relationship Contacts' : 'Save contact information to Relationship Contacts'}
                           disabled={isSaved}
                         >
-                          {isSaved ? '✓ Tersimpan' : '+ Simpan Relasi'}
+                          {isSaved ? '✓ Saved' : '+ Save Contact'}
                         </button>
                       </td>
                     </tr>
@@ -541,7 +541,7 @@ const RiwayatPRM = () => {
               ) : (
                 <tr>
                   <td colSpan="6" className="prm-empty-row">
-                    Tidak ada riwayat janji temu PRM yang sesuai dengan kata kunci pencarian.
+                    No PRM appointment history found matching your search.
                   </td>
                 </tr>
               )}
@@ -562,7 +562,7 @@ const RiwayatPRM = () => {
       <DetailModal
         isOpen={isDetailOpen}
         onClose={() => setIsDetailOpen(false)}
-        title={selectedDetail ? `Rincian Pertemuan: ${selectedDetail.id}` : 'Rincian Pertemuan'}
+        title={selectedDetail ? `Meeting Details: ${selectedDetail.id}` : 'Meeting Details'}
         badgeText={selectedDetail?.status}
         badgeType={
           selectedDetail?.status === 'Completed' || selectedDetail?.status === 'Disetujui'
@@ -581,8 +581,8 @@ const RiwayatPRM = () => {
                 disabled={isItemSavedInContacts(selectedDetail)}
               >
                 {isItemSavedInContacts(selectedDetail)
-                  ? '✓ Sudah Ada di Kontak Relasi'
-                  : '💾 Simpan ke Kontak Relasi'}
+                  ? '✓ Saved in Relationship Contacts'
+                  : '💾 Save to Relationship Contacts'}
               </button>
             )}
             <button
@@ -590,7 +590,7 @@ const RiwayatPRM = () => {
               className="detail-modal-btn-close"
               onClick={() => setIsDetailOpen(false)}
             >
-              Tutup
+              Close
             </button>
           </>
         }
@@ -599,12 +599,12 @@ const RiwayatPRM = () => {
           <div>
             <div className="modal-detail-grid">
               <div className="modal-field-box modal-detail-full">
-                <span className="modal-field-label">📌 Topik / Agenda Pertemuan</span>
+                <span className="modal-field-label">📌 Meeting Topic / Agenda</span>
                 <div className="modal-field-value">{selectedDetail.permintaan}</div>
               </div>
 
               <div className="modal-field-box">
-                <span className="modal-field-label">👤 Nama Mitra / Pemohon</span>
+                <span className="modal-field-label">👤 Partner / Applicant</span>
                 <div className="modal-field-value">
                   {selectedDetail.pemohon || selectedDetail.tujuan}
                 </div>
@@ -614,15 +614,15 @@ const RiwayatPRM = () => {
               </div>
 
               <div className="modal-field-box">
-                <span className="modal-field-label">📅 Waktu & Tanggal</span>
+                <span className="modal-field-label">📅 Date & Time</span>
                 <div className="modal-field-value">{selectedDetail.date}</div>
                 {selectedDetail.jam && (
-                  <div className="modal-field-sub">⏰ Pukul {selectedDetail.jam}</div>
+                  <div className="modal-field-sub">⏰ At {selectedDetail.jam}</div>
                 )}
               </div>
 
               <div className="modal-field-box">
-                <span className="modal-field-label">✉️ Email Kontak</span>
+                <span className="modal-field-label">✉️ Contact Email</span>
                 <div className="modal-field-value">
                   {selectedDetail.emailPemohon ? (
                     <a href={`mailto:${selectedDetail.emailPemohon}`}>
@@ -635,7 +635,7 @@ const RiwayatPRM = () => {
               </div>
 
               <div className="modal-field-box">
-                <span className="modal-field-label">📱 Nomor Telepon / WA</span>
+                <span className="modal-field-label">📱 Phone / WhatsApp</span>
                 <div className="modal-field-value">
                   {selectedDetail.teleponPemohon || '-'}
                 </div>
@@ -643,21 +643,21 @@ const RiwayatPRM = () => {
 
               {selectedDetail.lokasi && (
                 <div className="modal-field-box modal-detail-full">
-                  <span className="modal-field-label">📍 Lokasi Pertemuan</span>
+                  <span className="modal-field-label">📍 Meeting Location</span>
                   <div className="modal-field-value">{selectedDetail.lokasi}</div>
                 </div>
               )}
 
               {selectedDetail.alasanLengkap && (
                 <div className="modal-field-box modal-detail-full">
-                  <span className="modal-field-label">📝 Catatan / Alasan Permohonan</span>
+                  <span className="modal-field-label">📝 Request Description / Agenda</span>
                   <div className="modal-quote-box">{selectedDetail.alasanLengkap}</div>
                 </div>
               )}
 
               {selectedDetail.alasanRespon && (
                 <div className="modal-field-box modal-detail-full">
-                  <span className="modal-field-label">💬 Catatan Keputusan / Alasan Status</span>
+                  <span className="modal-field-label">💬 Decision / Status Notes</span>
                   <div className="modal-quote-box">{selectedDetail.alasanRespon}</div>
                 </div>
               )}

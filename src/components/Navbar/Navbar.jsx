@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import logoImg from '../../assets/logo-poltek-putih.png';
 import './Navbar.css';
@@ -7,6 +7,28 @@ const Navbar = ({ active = 'home' }) => {
   const navigate = useNavigate();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isPrmOpen, setIsPrmOpen] = useState(false);
+
+  const prmDropdownRef = useRef(null);
+  const userDropdownRef = useRef(null);
+
+  // Close dropdowns when clicking anywhere outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (prmDropdownRef.current && !prmDropdownRef.current.contains(event.target)) {
+        setIsPrmOpen(false);
+      }
+      if (userDropdownRef.current && !userDropdownRef.current.contains(event.target)) {
+        setIsDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('touchstart', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('touchstart', handleClickOutside);
+    };
+  }, []);
 
   const handleLogout = () => {
     localStorage.removeItem('smart_card_logged_role');
@@ -33,7 +55,7 @@ const Navbar = ({ active = 'home' }) => {
           className={active === 'home' ? 'active' : ''}
           onClick={(e) => { e.preventDefault(); navigate('/home'); }}
         >
-          Beranda
+          Home
         </a>
 
         <a
@@ -41,11 +63,11 @@ const Navbar = ({ active = 'home' }) => {
           className={active === 'card' ? 'active' : ''}
           onClick={(e) => { e.preventDefault(); navigate('/kartu-nama'); }}
         >
-          Kartu Nama
+          Business Card
         </a>
 
         {/* PRM Dropdown */}
-        <div className="prm-dropdown-container">
+        <div className="prm-dropdown-container" ref={prmDropdownRef}>
           <a
             href="#"
             className={`prm-link ${active === 'prm' ? 'active' : ''}`}
@@ -62,7 +84,7 @@ const Navbar = ({ active = 'home' }) => {
                 className="prm-item"
                 onClick={() => { setIsPrmOpen(false); navigate('/jadwal-prm'); }}
               >
-                Jadwal Pertemuan
+                Meeting Schedule
               </button>
               <button
                 className="prm-item"
@@ -81,7 +103,7 @@ const Navbar = ({ active = 'home' }) => {
         </div>
 
         {/* Hamburger Menu Dropdown (3 horizontal lines) */}
-        <div className="dropdown-container">
+        <div className="dropdown-container" ref={userDropdownRef}>
           <button
             className="menu-icon-btn"
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}

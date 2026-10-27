@@ -68,17 +68,17 @@ const Profile = () => {
     setPasswordMsg({ type: '', text: '' });
 
     if (!passwordData.oldPassword) {
-      setPasswordMsg({ type: 'error', text: 'Masukkan kata sandi lama (NIM/NIK default atau password saat ini).' });
+      setPasswordMsg({ type: 'error', text: 'Enter your current password (default NIM/NIK or current password).' });
       return;
     }
 
     if (passwordData.newPassword.length < 6) {
-      setPasswordMsg({ type: 'error', text: 'Kata sandi baru minimal harus 6 karakter.' });
+      setPasswordMsg({ type: 'error', text: 'New password must be at least 6 characters long.' });
       return;
     }
 
     if (passwordData.newPassword !== passwordData.confirmPassword) {
-      setPasswordMsg({ type: 'error', text: 'Konfirmasi kata sandi baru tidak cocok.' });
+      setPasswordMsg({ type: 'error', text: 'New password confirmation does not match.' });
       return;
     }
 
@@ -290,9 +290,9 @@ const Profile = () => {
 
             {/* Security / Change Password Card */}
             <div className="profile-section-card">
-              <h3 className="sidebar-card-title">🔐 Keamanan Akun</h3>
+              <h3 className="sidebar-card-title">🔐 Account Security</h3>
               <p className="sidebar-card-desc">
-                Saat pertama kali didaftarkan oleh admin, kata sandi Anda adalah NIM/NIK. Anda dapat mengganti kata sandi mandiri di sini.
+                When initially registered by an admin, your default password is your NIM/NIK. You can update your personal password here.
               </p>
               <button
                 type="button"
@@ -303,20 +303,20 @@ const Profile = () => {
                   setIsPasswordModalOpen(true);
                 }}
               >
-                🔑 Ubah Kata Sandi
+                🔑 Change Password
               </button>
             </div>
           </div>
         </div>
 
-        {/* Modal Ubah Kata Sandi */}
+        {/* Modal Change Password */}
         {isPasswordModalOpen && (
           <div className="prm-modal-overlay" onClick={() => !isChangingPass && setIsPasswordModalOpen(false)}>
             <div className="prm-modal-container" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '480px' }}>
               <div className="prm-modal-header">
                 <div className="prm-modal-title-row">
-                  <span className="prm-modal-badge accept">Keamanan</span>
-                  <h3 className="prm-modal-heading">Ubah Kata Sandi Akun</h3>
+                  <span className="prm-modal-badge accept">Security</span>
+                  <h3 className="prm-modal-heading">Change Account Password</h3>
                 </div>
                 <button
                   className="prm-modal-close-btn"
@@ -330,7 +330,7 @@ const Profile = () => {
               <form onSubmit={handlePasswordSubmit}>
                 <div className="prm-modal-body">
                   <p style={{ fontSize: '0.85rem', color: '#64748b', margin: 0 }}>
-                    Akun: <strong>{profile.email}</strong> ({profile.namaLengkap})
+                    Account: <strong>{profile.email}</strong> ({profile.namaLengkap})
                   </p>
 
                   {passwordMsg.text && (
@@ -349,12 +349,12 @@ const Profile = () => {
 
                   <div className="prm-input-group">
                     <label className="prm-input-label">
-                      Kata Sandi Lama <span className="prm-required">* (NIM/NIK atau password saat ini)</span>
+                      Current Password <span className="prm-required">* (NIM/NIK or current password)</span>
                     </label>
                     <input
                       type="password"
                       className="prm-text-input"
-                      placeholder="Masukkan NIM/NIK atau kata sandi lama"
+                      placeholder="Enter NIM/NIK or current password"
                       value={passwordData.oldPassword}
                       onChange={(e) => setPasswordData({ ...passwordData, oldPassword: e.target.value })}
                       disabled={isChangingPass}
@@ -364,12 +364,12 @@ const Profile = () => {
 
                   <div className="prm-input-group">
                     <label className="prm-input-label">
-                      Kata Sandi Baru <span className="prm-required">* (Minimal 6 karakter)</span>
+                      New Password <span className="prm-required">* (Minimum 6 characters)</span>
                     </label>
                     <input
                       type="password"
                       className="prm-text-input"
-                      placeholder="Buat kata sandi baru yang aman"
+                      placeholder="Enter a secure new password"
                       value={passwordData.newPassword}
                       onChange={(e) => setPasswordData({ ...passwordData, newPassword: e.target.value })}
                       disabled={isChangingPass}
@@ -379,12 +379,12 @@ const Profile = () => {
 
                   <div className="prm-input-group">
                     <label className="prm-input-label">
-                      Konfirmasi Kata Sandi Baru <span className="prm-required">*</span>
+                      Confirm New Password <span className="prm-required">*</span>
                     </label>
                     <input
                       type="password"
                       className="prm-text-input"
-                      placeholder="Ulangi kata sandi baru"
+                      placeholder="Repeat new password"
                       value={passwordData.confirmPassword}
                       onChange={(e) => setPasswordData({ ...passwordData, confirmPassword: e.target.value })}
                       disabled={isChangingPass}
@@ -400,14 +400,14 @@ const Profile = () => {
                     onClick={() => setIsPasswordModalOpen(false)}
                     disabled={isChangingPass}
                   >
-                    Batal
+                    Cancel
                   </button>
                   <button
                     type="submit"
                     className="prm-modal-submit-btn accept"
                     disabled={isChangingPass}
                   >
-                    {isChangingPass ? 'Menyimpan...' : 'Simpan Kata Sandi Baru'}
+                    {isChangingPass ? 'Saving...' : 'Save New Password'}
                   </button>
                 </div>
               </form>
