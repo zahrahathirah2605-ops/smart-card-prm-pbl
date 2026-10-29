@@ -191,6 +191,7 @@ body {
 .highlight-text {
   background: linear-gradient(135deg, var(--primary, #12417D) 0%, var(--accent, #FF6347) 100%);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   display: inline-block;
 }

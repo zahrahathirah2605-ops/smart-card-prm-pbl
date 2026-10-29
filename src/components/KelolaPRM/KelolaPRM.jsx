@@ -11,6 +11,7 @@ import './KelolaPRM.css';
 const KelolaPRM = () => {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
+  const [statusFilter, setStatusFilter] = useState('ALL');
   const [kelolaData, setKelolaData] = useState([]);
   const [userProfile, setUserProfile] = useState(null);
 
@@ -177,13 +178,26 @@ const KelolaPRM = () => {
 
   const filteredData = kelolaData.filter(item => {
     const q = searchTerm.toLowerCase();
-    return (
+    const matchSearch =
       (item.permintaan && item.permintaan.toLowerCase().includes(q)) ||
       (item.pemohon && item.pemohon.toLowerCase().includes(q)) ||
       (item.pengaju && item.pengaju.toLowerCase().includes(q)) ||
-      (item.id && item.id.toLowerCase().includes(q))
-    );
+      (item.id && item.id.toLowerCase().includes(q));
+
+    const matchStatus =
+      statusFilter === 'ALL' ||
+      (statusFilter === 'Pending' && (item.status === 'Pending Confirmation' || item.status === 'Menunggu Konfirmasi')) ||
+      (statusFilter === 'Accepted' && (item.status === 'Accepted' || item.status === 'Disetujui')) ||
+      (statusFilter === 'Declined' && (item.status === 'Declined' || item.status === 'Ditolak')) ||
+      item.status === statusFilter;
+
+    return matchSearch && matchStatus;
   });
+
+  const countTotal = kelolaData.length;
+  const countPending = kelolaData.filter(d => d.status === 'Pending Confirmation' || d.status === 'Menunggu Konfirmasi').length;
+  const countAccepted = kelolaData.filter(d => d.status === 'Accepted' || d.status === 'Disetujui').length;
+  const countDeclined = kelolaData.filter(d => d.status === 'Declined' || d.status === 'Ditolak').length;
 
   const totalItems = filteredData.length;
   const startIndex = (currentPage - 1) * PAGE_SIZE;
@@ -232,7 +246,7 @@ const KelolaPRM = () => {
           </div>
         )}
 
-        {/* Search Bar */}
+        {/* Search Bar & Status Filter Pills */}
         <div className="prm-filter-bar-full">
           <div className="prm-search-box-kelola">
             <span className="search-icon">
@@ -257,6 +271,37 @@ const KelolaPRM = () => {
                 ✕
               </button>
             )}
+          </div>
+
+          <div className="status-filter-pills">
+            <button
+              type="button"
+              className={`pill-btn ${statusFilter === 'ALL' ? 'active' : ''}`}
+              onClick={() => { setStatusFilter('ALL'); setCurrentPage(1); }}
+            >
+              All ({countTotal})
+            </button>
+            <button
+              type="button"
+              className={`pill-btn ${statusFilter === 'Pending' ? 'active' : ''}`}
+              onClick={() => { setStatusFilter('Pending'); setCurrentPage(1); }}
+            >
+              Pending ({countPending})
+            </button>
+            <button
+              type="button"
+              className={`pill-btn ${statusFilter === 'Accepted' ? 'active' : ''}`}
+              onClick={() => { setStatusFilter('Accepted'); setCurrentPage(1); }}
+            >
+              Accepted ({countAccepted})
+            </button>
+            <button
+              type="button"
+              className={`pill-btn ${statusFilter === 'Declined' ? 'active' : ''}`}
+              onClick={() => { setStatusFilter('Declined'); setCurrentPage(1); }}
+            >
+              Declined ({countDeclined})
+            </button>
           </div>
         </div>
 

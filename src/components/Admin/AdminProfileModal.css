@@ -213,3 +213,26 @@
   transform: translateY(-1px);
   box-shadow: 0 6px 16px rgba(255, 99, 71, 0.35);
 }
+
+@media (max-width: 480px) {
+  .admin-modal-overlay {
+    padding: 0.8rem;
+  }
+
+  .admin-modal-card {
+    padding: 1.25rem 1rem;
+    max-height: 92vh;
+    overflow-y: auto;
+  }
+
+  .admin-modal-footer {
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .btn-modal-cancel,
+  .btn-modal-save {
+    width: 100%;
+    text-align: center;
+  }
+}

@@ -172,13 +172,24 @@
 }
 
 .menu-icon-btn:hover {
-  background: rgba(255, 255, 255, 0.25);
-  border-color: #ffffff;
+  background: rgba(255, 99, 71, 0.15);
+  border-color: var(--accent, #FF6347);
+  color: var(--accent, #FF6347);
   transform: scale(1.05);
 }
 
+.menu-icon-btn:active,
+.menu-icon-btn.open {
+  background: var(--accent, #FF6347);
+  border-color: var(--accent, #FF6347);
+  color: #ffffff;
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(255, 99, 71, 0.35);
+}
+
 .menu-icon-btn svg {
-  stroke: #ffffff;
+  stroke: currentColor;
+  transition: stroke 0.2s ease;
 }
 
 .dropdown-menu {
@@ -239,11 +250,112 @@
   background: #fff5f5;
 }
 
+.mobile-nav-section {
+  display: none;
+}
+
+.mobile-submenu-title {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: #94a3b8;
+  padding: 0.4rem 1.2rem 0.2rem;
+}
+
+.dropdown-item.mobile-sub-item {
+  padding: 0.65rem 1.2rem 0.65rem 1.6rem;
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+.dropdown-item.active-item {
+  background: rgba(255, 99, 71, 0.1);
+  color: var(--accent, #FF6347);
+}
+
+.dropdown-item.active-item svg {
+  stroke: var(--accent, #FF6347);
+}
+
+.mobile-divider {
+  height: 1px;
+  background: #f1f5f9;
+  margin: 0.35rem 0.5rem;
+}
+
+@media (max-width: 900px) {
+  .navbar-solid {
+    padding: 0 1.5rem;
+  }
+
+  .navbar-solid .nav-links {
+    gap: 1.25rem;
+  }
+}
+
 @media (max-width: 768px) {
   .navbar-solid {
-    padding: 1rem 1.5rem;
+    padding: 0.75rem 1.2rem;
+    height: 66px;
   }
-  .navbar-solid .nav-links {
-    gap: 1.5rem;
+
+  .navbar-brand-logo {
+    height: 42px;
+  }
+
+  .navbar-poltek-title {
+    font-size: 0.88rem;
+  }
+
+  .navbar-poltek-sub {
+    font-size: 0.65rem;
+  }
+
+  /* Hide desktop horizontal menu links on mobile/tablet */
+  .navbar-solid .nav-links > a,
+  .navbar-solid .prm-dropdown-container {
+    display: none;
+  }
+
+  /* Show mobile section inside hamburger dropdown */
+  .mobile-nav-section {
+    display: block;
+  }
+
+  .dropdown-menu {
+    position: fixed;
+    top: 66px;
+    right: 12px;
+    left: 12px;
+    width: auto;
+    max-width: 360px;
+    margin-left: auto;
+    max-height: calc(100vh - 85px);
+    overflow-y: auto;
+    box-shadow: 0 14px 40px rgba(0, 0, 0, 0.22);
+  }
+}
+
+@media (max-width: 420px) {
+  .navbar-solid {
+    padding: 0.5rem 0.9rem;
+  }
+
+  .navbar-brand-logo {
+    height: 38px;
+  }
+
+  .navbar-poltek-title {
+    font-size: 0.8rem;
+  }
+
+  .navbar-poltek-sub {
+    display: none;
+  }
+
+  .menu-icon-btn {
+    width: 38px;
+    height: 38px;
   }
 }

@@ -105,7 +105,7 @@ const Navbar = ({ active = 'home' }) => {
         {/* Hamburger Menu Dropdown (3 horizontal lines) */}
         <div className="dropdown-container" ref={userDropdownRef}>
           <button
-            className="menu-icon-btn"
+            className={`menu-icon-btn ${isDropdownOpen ? 'open' : ''}`}
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
             title="Account Menu"
           >
@@ -118,6 +118,69 @@ const Navbar = ({ active = 'home' }) => {
 
           {isDropdownOpen && (
             <div className="dropdown-menu">
+              {/* Mobile Only: Navigation Links */}
+              <div className="mobile-nav-section">
+                <button
+                  className={`dropdown-item ${active === 'home' ? 'active-item' : ''}`}
+                  onClick={() => { setIsDropdownOpen(false); navigate('/home'); }}
+                >
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                  </svg>
+                  <span>Home</span>
+                </button>
+
+                <button
+                  className={`dropdown-item ${active === 'card' ? 'active-item' : ''}`}
+                  onClick={() => { setIsDropdownOpen(false); navigate('/kartu-nama'); }}
+                >
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                    <rect x="2" y="5" width="20" height="14" rx="2"></rect>
+                    <line x1="2" y1="10" x2="22" y2="10"></line>
+                  </svg>
+                  <span>Business Card</span>
+                </button>
+
+                <div className="mobile-submenu-title">PRM Features</div>
+                <button
+                  className="dropdown-item mobile-sub-item"
+                  onClick={() => { setIsDropdownOpen(false); navigate('/jadwal-prm'); }}
+                >
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                  </svg>
+                  <span>Meeting Schedule</span>
+                </button>
+                <button
+                  className="dropdown-item mobile-sub-item"
+                  onClick={() => { setIsDropdownOpen(false); navigate('/kelola-prm'); }}
+                >
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="9" cy="7" r="4"></circle>
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                  </svg>
+                  <span>Manage PRM</span>
+                </button>
+                <button
+                  className="dropdown-item mobile-sub-item"
+                  onClick={() => { setIsDropdownOpen(false); navigate('/riwayat-prm'); }}
+                >
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <polyline points="12 6 12 12 16 14"></polyline>
+                  </svg>
+                  <span>PRM History</span>
+                </button>
+
+                <div className="mobile-divider" />
+              </div>
+
               {/* 1. Profile (Dedicated Profile Page) */}
               <button
                 className="dropdown-item"

@@ -321,3 +321,35 @@
     grid-template-columns: 1fr;
   }
 }
+
+@media (max-width: 640px) {
+  .admin-home-content {
+    padding: 2rem 1.2rem 3.5rem;
+  }
+
+  .admin-welcome-hero {
+    margin: 1rem auto 2.2rem;
+  }
+
+  .admin-welcome-title {
+    font-size: 1.75rem;
+  }
+
+  .admin-welcome-subtitle {
+    font-size: 1.35rem;
+  }
+
+  .admin-card-action {
+    padding: 1.4rem 1.25rem;
+  }
+
+  .live-log-top {
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .live-log-time {
+    margin-left: 0;
+    width: 100%;
+  }
+}

@@ -94,6 +94,47 @@ const AdminNavbar = ({ active = 'beranda' }) => {
             {/* Dropdown Menu matching exact mock-up */}
             {isDropdownOpen && (
               <div className="admin-dropdown-menu">
+                {/* Mobile Only: Admin Navigation Links */}
+                <div className="admin-mobile-nav-section">
+                  <button
+                    className={`admin-dropdown-item ${active === 'beranda' || location.pathname === '/admin' ? 'active-admin-item' : ''}`}
+                    onClick={() => { setIsDropdownOpen(false); navigate('/admin'); }}
+                  >
+                    <svg className="dropdown-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                      <rect x="3" y="3" width="7" height="7"></rect>
+                      <rect x="14" y="3" width="7" height="7"></rect>
+                      <rect x="14" y="14" width="7" height="7"></rect>
+                      <rect x="3" y="14" width="7" height="7"></rect>
+                    </svg>
+                    <span className="dropdown-label">Dashboard</span>
+                  </button>
+
+                  <button
+                    className={`admin-dropdown-item ${active === 'pengguna' || location.pathname === '/admin/pengguna' ? 'active-admin-item' : ''}`}
+                    onClick={() => { setIsDropdownOpen(false); navigate('/admin/pengguna'); }}
+                  >
+                    <svg className="dropdown-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                      <circle cx="9" cy="7" r="4"></circle>
+                      <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                      <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                    </svg>
+                    <span className="dropdown-label">Users</span>
+                  </button>
+
+                  <button
+                    className={`admin-dropdown-item ${active === 'aktivitas' || location.pathname === '/admin/aktivitas' ? 'active-admin-item' : ''}`}
+                    onClick={() => { setIsDropdownOpen(false); navigate('/admin/aktivitas'); }}
+                  >
+                    <svg className="dropdown-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                      <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                    </svg>
+                    <span className="dropdown-label">Activities</span>
+                  </button>
+
+                  <div className="admin-dropdown-divider" />
+                </div>
+
                 {/* 1. Profile */}
                 <button
                   className="admin-dropdown-item"

@@ -80,7 +80,7 @@ const AdminAktivitas = () => {
 
   // Export logs to CSV
   const handleExportCSV = () => {
-    const header = ['ID', 'Time', 'Actor', 'Email', 'Category', 'Activity', 'Status', 'IP'];
+    const header = ['ID', 'Time', 'Actor', 'Email', 'Category', 'Activity', 'Status'];
     const rows = logs.map(l => [
       `"${l.id}"`,
       `"${l.timestamp}"`,
@@ -88,8 +88,7 @@ const AdminAktivitas = () => {
       `"${l.email}"`,
       `"${l.kategori}"`,
       `"${l.aksi.replace(/"/g, '""')}"`,
-      `"${l.status}"`,
-      `"${l.ip || '-'}"`
+      `"${l.status}"`
     ]);
 
     const csvContent = 'data:text/csv;charset=utf-8,' + [header.join(','), ...rows.map(e => e.join(','))].join('\n');
@@ -305,14 +304,13 @@ const AdminAktivitas = () => {
                     <th>Actor / User</th>
                     <th>Category</th>
                     <th>Completed Action</th>
-                    <th>Device / IP</th>
                     <th>Status</th>
                   </tr>
                 </thead>
                 <tbody>
                   {filteredLogs.length === 0 ? (
                     <tr>
-                      <td colSpan="7" className="table-empty-state">
+                      <td colSpan="6" className="table-empty-state">
                         No activity found matching the filter.
                       </td>
                     </tr>
@@ -338,11 +336,15 @@ const AdminAktivitas = () => {
                           </span>
                         </td>
                         <td>
-                          <div className="log-action-text">{log.aksi}</div>
-                        </td>
-                        <td>
-                          <div className="log-ip-text">{log.ip || '192.168.1.x'}</div>
-                          <div className="log-device-text">{log.perangkat || 'Web'}</div>
+                          <div className="log-action-text">
+                            {log.aksi === 'Memperbarui data kartu nama digital & bio profil' ? 'Updated digital business card data and bio profile' :
+                             log.aksi === 'Mengonfirmasi janji temu PRM dengan mitra industri' ? 'Confirmed PRM appointment with industry partner' :
+                             log.aksi.startsWith('Menonaktifkan akses akun') ? log.aksi.replace('Menonaktifkan akses akun', 'Deactivated account access for') :
+                             log.aksi === 'Login berhasil ke platform SmartCard PRM' ? 'Successfully logged in to SmartCard PRM platform' :
+                             log.aksi === 'Mengunduh format PDF kartu nama digital untuk cetak' ? 'Downloaded digital business card PDF format for printing' :
+                             log.aksi.startsWith('Menambahkan akun pengguna baru') ? log.aksi.replace('Menambahkan akun pengguna baru', 'Added new user account') :
+                             log.aksi}
+                          </div>
                         </td>
                         <td>
                           <span className={`status-badge-pill ${log.status === 'Sukses' ? 'badge-aktif' : 'badge-nonaktif'}`}>

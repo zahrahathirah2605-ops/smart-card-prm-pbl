@@ -12,6 +12,7 @@ const STORAGE_KEY_RELATION_CONTACTS = 'smart_card_relation_contacts';
 const RiwayatPRM = () => {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
+  const [statusFilter, setStatusFilter] = useState('ALL');
   const [riwayatData, setRiwayatData] = useState([]);
   const [savedContactEmails, setSavedContactEmails] = useState(new Set());
   const [toastMessage, setToastMessage] = useState(null);
@@ -304,16 +305,31 @@ const RiwayatPRM = () => {
     loadSavedContacts();
   }, []);
 
-  // Filter pencarian
+  // Filter pencarian dan status
   const filteredData = riwayatData.filter(item => {
     const q = searchTerm.toLowerCase();
-    return (
+    const matchSearch =
       (item.permintaan && item.permintaan.toLowerCase().includes(q)) ||
       (item.id && item.id.toLowerCase().includes(q)) ||
       (item.tujuan && item.tujuan.toLowerCase().includes(q)) ||
-      (item.pemohon && item.pemohon.toLowerCase().includes(q))
-    );
+      (item.pemohon && item.pemohon.toLowerCase().includes(q));
+
+    const matchStatus =
+      statusFilter === 'ALL' ||
+      (statusFilter === 'Completed' && (item.status === 'Completed' || item.status === 'Disetujui' || item.status === 'Selesai')) ||
+      (statusFilter === 'Rescheduled' && (item.status === 'Rescheduled' || item.status === 'Dijadwalkan Ulang')) ||
+      (statusFilter === 'Declined' && (item.status === 'Declined' || item.status === 'Ditolak')) ||
+      (statusFilter === 'Cancelled' && (item.status === 'Cancelled' || item.status === 'Dibatalkan')) ||
+      item.status === statusFilter;
+
+    return matchSearch && matchStatus;
   });
+
+  const countTotal = riwayatData.length;
+  const countCompleted = riwayatData.filter(d => d.status === 'Completed' || d.status === 'Disetujui' || d.status === 'Selesai').length;
+  const countDeclined = riwayatData.filter(d => d.status === 'Declined' || d.status === 'Ditolak').length;
+  const countCancelled = riwayatData.filter(d => d.status === 'Cancelled' || d.status === 'Dibatalkan').length;
+  const countRescheduled = riwayatData.filter(d => d.status === 'Rescheduled' || d.status === 'Dijadwalkan Ulang').length;
 
   // Paginasi: hitung subset item untuk halaman aktif (maks 15)
   const totalItems = filteredData.length;
@@ -434,7 +450,7 @@ const RiwayatPRM = () => {
           </div>
         )}
 
-        {/* Search Bar */}
+        {/* Search Bar & Status Filter Pills */}
         <div className="prm-filter-bar-full">
           <div className="prm-search-box-kelola">
             <span className="search-icon">
@@ -459,6 +475,44 @@ const RiwayatPRM = () => {
                 ✕
               </button>
             )}
+          </div>
+
+          <div className="status-filter-pills">
+            <button
+              type="button"
+              className={`pill-btn ${statusFilter === 'ALL' ? 'active' : ''}`}
+              onClick={() => { setStatusFilter('ALL'); setCurrentPage(1); }}
+            >
+              All ({countTotal})
+            </button>
+            <button
+              type="button"
+              className={`pill-btn ${statusFilter === 'Completed' ? 'active' : ''}`}
+              onClick={() => { setStatusFilter('Completed'); setCurrentPage(1); }}
+            >
+              Completed ({countCompleted})
+            </button>
+            <button
+              type="button"
+              className={`pill-btn ${statusFilter === 'Rescheduled' ? 'active' : ''}`}
+              onClick={() => { setStatusFilter('Rescheduled'); setCurrentPage(1); }}
+            >
+              Rescheduled ({countRescheduled})
+            </button>
+            <button
+              type="button"
+              className={`pill-btn ${statusFilter === 'Declined' ? 'active' : ''}`}
+              onClick={() => { setStatusFilter('Declined'); setCurrentPage(1); }}
+            >
+              Declined ({countDeclined})
+            </button>
+            <button
+              type="button"
+              className={`pill-btn ${statusFilter === 'Cancelled' ? 'active' : ''}`}
+              onClick={() => { setStatusFilter('Cancelled'); setCurrentPage(1); }}
+            >
+              Cancelled ({countCancelled})
+            </button>
           </div>
         </div>
 

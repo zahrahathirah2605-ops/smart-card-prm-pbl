@@ -158,10 +158,24 @@ const AdminHome = () => {
                 <div className="live-log-info">
                   <div className="live-log-top">
                     <span className="live-log-actor">{log.aktor}</span>
-                    <span className="live-log-category">{log.kategori}</span>
+                    <span className="live-log-category">
+                      {log.kategori === 'Kartu Nama' ? 'Business Card' :
+                       log.kategori === 'Autentikasi' ? 'Authentication' :
+                       log.kategori === 'PRM Interaksi' ? 'PRM Interaction' :
+                       log.kategori === 'Akses Akun' ? 'Account Access' :
+                       log.kategori === 'Akun Pengguna' ? 'User Accounts' : log.kategori}
+                    </span>
                     <span className="live-log-time">{log.timestamp}</span>
                   </div>
-                  <div className="live-log-action">{log.aksi}</div>
+                  <div className="live-log-action">
+                    {log.aksi === 'Memperbarui data kartu nama digital & bio profil' ? 'Updated digital business card data and bio profile' :
+                     log.aksi === 'Mengonfirmasi janji temu PRM dengan mitra industri' ? 'Confirmed PRM appointment with industry partner' :
+                     log.aksi.startsWith('Menonaktifkan akses akun') ? log.aksi.replace('Menonaktifkan akses akun', 'Deactivated account access for') :
+                     log.aksi === 'Login berhasil ke platform SmartCard PRM' ? 'Successfully logged in to SmartCard PRM platform' :
+                     log.aksi === 'Mengunduh format PDF kartu nama digital untuk cetak' ? 'Downloaded digital business card PDF format for printing' :
+                     log.aksi.startsWith('Menambahkan akun pengguna baru') ? log.aksi.replace('Menambahkan akun pengguna baru', 'Added new user account') :
+                     log.aksi}
+                  </div>
                 </div>
               </div>
             ))}

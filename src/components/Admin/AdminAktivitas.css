@@ -375,11 +375,64 @@
   }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 768px) {
+  .header-action-group {
+    flex-wrap: wrap;
+    width: 100%;
+  }
+
+  .btn-secondary-audit,
+  .btn-primary-audit {
+    flex: 1;
+    min-width: 140px;
+    padding: 0.7rem 1rem;
+    font-size: 0.85rem;
+    text-align: center;
+  }
+
+  .admin-tab-nav {
+    overflow-x: auto;
+    white-space: nowrap;
+    padding-bottom: 0.75rem;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .admin-tab-btn {
+    padding: 0.65rem 1rem;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+  }
+
+  .kpi-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.9rem;
+  }
+
+  .kpi-card {
+    padding: 1.1rem;
+  }
+
+  .kpi-value {
+    font-size: 1.7rem;
+  }
+
+  .cards-monitoring-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 540px) {
   .kpi-stats-grid {
     grid-template-columns: 1fr;
   }
-  .cards-monitoring-grid {
-    grid-template-columns: 1fr;
+
+  .btn-secondary-audit,
+  .btn-primary-audit {
+    width: 100%;
+    flex: 1 1 100%;
+  }
+
+  .card-visual-preview {
+    padding: 1.2rem;
   }
 }

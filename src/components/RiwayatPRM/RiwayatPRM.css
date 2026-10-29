@@ -56,24 +56,32 @@
 }
 
 .prm-filter-bar-full {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.25rem;
+  background: #ffffff;
+  padding: 0.9rem 1.25rem;
+  border-radius: 14px;
+  border: 1px solid var(--stroke, #E2E8F0);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
   margin-bottom: 1.5rem;
+  flex-wrap: wrap;
 }
 
 .prm-search-box-kelola {
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  background: #ffffff;
-  border: 1px solid var(--stroke, #E2E8F0);
-  border-radius: 14px;
-  padding: 0.75rem 1.25rem;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
+  flex: 1;
+  min-width: 260px;
 }
 
 .prm-search-box-kelola input {
-  flex: 1;
+  width: 100%;
   border: none;
   outline: none;
+  background: transparent;
   font-size: 0.95rem;
   color: var(--text-strong, #0F172A);
   font-family: inherit;
@@ -85,16 +93,47 @@
   align-items: center;
 }
 
+.status-filter-pills {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.pill-btn {
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 0.5rem 0.95rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #475569;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+
+.pill-btn:hover {
+  background: #e2e8f0;
+}
+
+.pill-btn.active {
+  background: var(--primary, #12417D);
+  color: #ffffff;
+  border-color: var(--primary, #12417D);
+}
+
 .prm-table-wrapper {
   background: #ffffff;
   border: 1px solid var(--stroke, #E2E8F0);
-  border-radius: 20px;
-  overflow: hidden;
+  border-radius: 16px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
 }
 
 .prm-table {
   width: 100%;
+  min-width: 820px;
   border-collapse: collapse;
   text-align: left;
 }
@@ -331,4 +370,58 @@
 
 .search-clear-btn:hover {
   color: #0f172a;
+}
+
+@media (max-width: 900px) {
+  .prm-header-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .prm-filter-bar-full {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.85rem;
+  }
+
+  .prm-search-box-kelola {
+    width: 100%;
+  }
+
+  .status-filter-pills {
+    width: 100%;
+    overflow-x: auto;
+    padding-bottom: 0.35rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .prm-main-content {
+    padding: 1.5rem 1rem 3.5rem;
+  }
+
+  .prm-main-title {
+    font-size: 1.5rem;
+  }
+
+  .prm-main-desc {
+    font-size: 0.88rem;
+  }
+
+  .prm-table th {
+    padding: 0.85rem 1rem;
+    font-size: 0.78rem;
+  }
+
+  .prm-table td {
+    padding: 0.9rem 1rem;
+    font-size: 0.85rem;
+  }
+
+  .pill-btn {
+    padding: 0.45rem 0.75rem;
+    font-size: 0.8rem;
+    white-space: nowrap;
+  }
 }
