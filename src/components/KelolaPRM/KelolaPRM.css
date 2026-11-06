@@ -1,10 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600&display=swap');
 
 /* Menggunakan variabel warna & font yang sama persis seperti RiwayatPRM */
 .kelola-page-container {
   min-height: 100vh;
   background-color: var(--neutral, #F8FAFC);
-  font-family: 'Outfit', sans-serif;
+  font-family: 'Poppins', sans-serif;
   color: var(--text-strong, #0F172A);
 }
 
@@ -23,7 +23,7 @@
   border: none;
   padding: 0.45rem 1.1rem;
   border-radius: 10px; 
-  font-family: 'Outfit', sans-serif;
+  font-family: 'Poppins', sans-serif;
   font-weight: 600;
   font-size: 0.85rem;
   cursor: pointer;
@@ -47,7 +47,7 @@
   border: 1px solid var(--stroke, #E2E8F0);
   padding: 0.45rem 1.1rem;
   border-radius: 10px;
-  font-family: 'Outfit', sans-serif;
+  font-family: 'Poppins', sans-serif;
   font-weight: 600;
   font-size: 0.85rem;
   cursor: pointer;
@@ -66,7 +66,7 @@
 
 /* Teks Status Setelah Diproses */
 .text-processed {
-  font-family: 'Outfit', sans-serif;
+  font-family: 'Poppins', sans-serif;
   font-size: 0.85rem;
   font-weight: 500;
   color: #94a3b8;
@@ -415,7 +415,7 @@
   background: #12417D;
   color: #ffffff;
   border: 1px solid #12417D;
-  font-family: 'Outfit', sans-serif;
+  font-family: 'Poppins', sans-serif;
   font-size: 0.78rem;
   font-weight: 600;
   padding: 0.42rem 0.85rem;

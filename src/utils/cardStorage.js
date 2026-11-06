@@ -154,8 +154,12 @@ export const getCardById = (id) => {
 
 // Check if currently viewing own card
 export const isUserOwnCard = (cardId) => {
+  const loggedRole = localStorage.getItem('smart_card_logged_role');
+  if (loggedRole !== 'user') {
+    return false;
+  }
   const userCard = getUserCard();
-  return !cardId || cardId === 'default' || cardId === userCard.id;
+  return Boolean(cardId && (cardId === 'default' || cardId === userCard.id));
 };
 
 // Generate and trigger download of vCard (.vcf)

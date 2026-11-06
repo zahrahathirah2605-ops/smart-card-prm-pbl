@@ -10,7 +10,7 @@
   background: var(--primary, #12417D);
   border-bottom: 1px solid rgba(255, 255, 255, 0.12);
   box-shadow: 0 4px 18px rgba(18, 65, 125, 0.2);
-  font-family: 'Outfit', sans-serif;
+  font-family: 'Poppins', sans-serif;
 }
 
 .public-navbar-container {
@@ -72,7 +72,7 @@
 }
 
 .public-nav-btn {
-  font-family: 'Outfit', sans-serif;
+  font-family: 'Poppins', sans-serif;
   display: inline-flex;
   align-items: center;
   gap: 0.45rem;
@@ -98,12 +98,13 @@
 
 .public-nav-login {
   background: var(--accent, #FF6347);
-  color: #ffffff;
+  color: #000000;
   box-shadow: 0 4px 14px rgba(255, 99, 71, 0.35);
 }
 
 .public-nav-login:hover {
   background: #ff5233;
+  color: #000000;
   transform: translateY(-1px);
   box-shadow: 0 6px 18px rgba(255, 99, 71, 0.45);
 }
@@ -112,18 +113,23 @@
   .public-navbar {
     height: 66px;
   }
+
   .public-navbar-container {
     padding: 0 1rem;
   }
+
   .brand-poltek-sub {
     display: none;
   }
+
   .brand-poltek-title {
     font-size: 0.88rem;
   }
+
   .public-nav-logo-img {
     height: 40px;
   }
+
   .public-nav-btn {
     padding: 0.45rem 0.95rem;
     font-size: 0.85rem;
@@ -134,17 +140,21 @@
   .public-navbar-container {
     padding: 0 0.8rem;
   }
+
   .brand-poltek-title {
     font-size: 0.78rem;
     max-width: 130px;
     line-height: 1.15;
   }
+
   .public-nav-logo-img {
     height: 36px;
   }
+
   .public-nav-actions {
     gap: 0.5rem;
   }
+
   .public-nav-btn {
     padding: 0.4rem 0.8rem;
     font-size: 0.8rem;

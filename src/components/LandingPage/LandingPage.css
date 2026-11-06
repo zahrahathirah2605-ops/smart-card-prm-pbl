@@ -1,11 +1,11 @@
 /* Using central variables from App.css */
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600&display=swap');
 
 body {
   margin: 0;
   padding: 0;
   background-color: var(--neutral);
-  font-family: 'Outfit', sans-serif;
+  font-family: 'Poppins', sans-serif;
   color: var(--text-strong);
   overflow-x: hidden;
 }
@@ -70,7 +70,7 @@ body {
 }
 
 .nav-btn {
-  font-family: 'Outfit', sans-serif;
+  font-family: 'Poppins', sans-serif;
   padding: 0.6rem 1.5rem;
   font-size: 1rem;
   font-weight: 600;
@@ -94,7 +94,7 @@ body {
 
 .daftar-btn {
   background: var(--accent);
-  color: var(--text-strong);
+  color: #000000;
   border: 2px solid var(--accent);
 }
 
@@ -256,7 +256,7 @@ body {
   gap: 0.75rem;
   padding: 1rem 2.8rem;
   background: linear-gradient(135deg, var(--accent, #FF6347) 0%, #ff7b65 100%);
-  color: #ffffff;
+  color: #000000;
   border: none;
   border-radius: 999px;
   font-size: 1.05rem;
@@ -271,6 +271,7 @@ body {
   transform: translateY(-2px);
   box-shadow: 0 12px 30px rgba(255, 99, 71, 0.45);
   background: linear-gradient(135deg, #ff5031 0%, #ff6f57 100%);
+  color: #000000;
 }
 
 .landing-features-preview {
@@ -317,9 +318,11 @@ body {
   .hero-section {
     padding: 3.5rem 1rem 3rem;
   }
+
   .landing-scan-box {
     padding: 1.5rem 1rem;
   }
+
   .landing-features-preview {
     grid-template-columns: 1fr;
   }

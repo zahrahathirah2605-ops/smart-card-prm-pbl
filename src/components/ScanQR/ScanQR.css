@@ -3,7 +3,7 @@
   width: 100%;
   box-sizing: border-box;
   background-color: var(--neutral, #F8FAFC);
-  background-image: 
+  background-image:
     radial-gradient(circle at 15% 15%, rgba(18, 65, 125, 0.04) 0%, transparent 40%),
     radial-gradient(circle at 85% 85%, rgba(255, 99, 71, 0.04) 0%, transparent 40%),
     radial-gradient(rgba(18, 65, 125, 0.05) 1.2px, transparent 1.2px);
@@ -11,14 +11,14 @@
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  font-family: 'Outfit', sans-serif;
+  font-family: 'Poppins', sans-serif;
 }
 
 .scan-navbar {
   width: 100%;
   background-color: var(--primary);
   padding: 1rem 2rem;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .scan-navbar .navbar-content {
@@ -39,7 +39,7 @@
 .scan-navbar .login-link {
   background: transparent;
   border: none;
-  color: var(--secondary);
+  color: #ffffff;
   font-size: 1.1rem;
   font-weight: 600;
   cursor: pointer;
@@ -80,7 +80,7 @@
   background: #ffffff;
   border-radius: 20px;
   padding: 2.5rem;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
   width: 100%;
   max-width: 500px;
   display: flex;

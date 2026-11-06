@@ -1,14 +1,14 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600&display=swap');
 
 .home-container {
   min-height: 100vh;
   background-color: var(--neutral, #F8FAFC);
-  background-image: 
+  background-image:
     radial-gradient(circle at 10% 20%, rgba(18, 65, 125, 0.04) 0%, transparent 40%),
     radial-gradient(circle at 90% 80%, rgba(255, 99, 71, 0.04) 0%, transparent 40%),
     radial-gradient(rgba(18, 65, 125, 0.06) 1.2px, transparent 1.2px);
   background-size: 100% 100%, 100% 100%, 30px 30px;
-  font-family: 'Outfit', sans-serif;
+  font-family: 'Poppins', sans-serif;
   color: var(--text-strong, #0F172A);
   display: flex;
   flex-direction: column;
@@ -80,7 +80,7 @@
 
 .btn-edit-card-link:hover {
   background: var(--accent, #FF6347);
-  color: #ffffff;
+  color: #000000;
 }
 
 .digital-card-showcase-box {
@@ -102,7 +102,7 @@
   flex: 1.2;
   padding: 0.8rem 1.2rem;
   background: linear-gradient(135deg, var(--accent, #FF6347), #ff7a63);
-  color: #ffffff;
+  color: #000000;
   border: none;
   border-radius: 12px;
   font-weight: 700;
@@ -215,7 +215,7 @@
   gap: 0.75rem;
   padding: 0.95rem 2.8rem;
   background: var(--accent, #FF6347);
-  color: #ffffff;
+  color: #000000;
   border: none;
   border-radius: 999px;
   font-size: 1.1rem;

@@ -12,7 +12,7 @@
   position: sticky;
   top: 0;
   z-index: 100;
-  font-family: 'Outfit', sans-serif;
+  font-family: 'Poppins', sans-serif;
 }
 
 .navbar-solid .logo {
@@ -62,7 +62,7 @@
   gap: 2.5rem;
 }
 
-.navbar-solid .nav-links > a {
+.navbar-solid .nav-links>a {
   color: var(--neutral, #F8FAFC);
   text-decoration: none;
   font-weight: 500;
@@ -71,12 +71,12 @@
   cursor: pointer;
 }
 
-.navbar-solid .nav-links > a:hover,
-.navbar-solid .nav-links > a.active {
-  color: var(--accent, #FF6347);
+.navbar-solid .nav-links>a:hover,
+.navbar-solid .nav-links>a.active {
+  color: #ffffff;
 }
 
-.navbar-solid .nav-links > a.active {
+.navbar-solid .nav-links>a.active {
   font-weight: 700;
 }
 
@@ -99,7 +99,7 @@
 
 .prm-link:hover,
 .prm-link.active {
-  color: var(--accent, #FF6347);
+  color: #ffffff;
 }
 
 .prm-menu {
@@ -123,6 +123,7 @@
     opacity: 0;
     transform: translateY(-8px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -148,7 +149,7 @@
   color: var(--accent, #FF6347);
 }
 
-.prm-item + .prm-item {
+.prm-item+.prm-item {
   border-top: 1px solid #f1f5f9;
 }
 
@@ -172,9 +173,9 @@
 }
 
 .menu-icon-btn:hover {
-  background: rgba(255, 99, 71, 0.15);
-  border-color: var(--accent, #FF6347);
-  color: var(--accent, #FF6347);
+  background: rgba(255, 255, 255, 0.25);
+  border-color: #ffffff;
+  color: #ffffff;
   transform: scale(1.05);
 }
 
@@ -182,7 +183,7 @@
 .menu-icon-btn.open {
   background: var(--accent, #FF6347);
   border-color: var(--accent, #FF6347);
-  color: #ffffff;
+  color: #000000;
   transform: scale(1.05);
   box-shadow: 0 4px 12px rgba(255, 99, 71, 0.35);
 }
@@ -220,7 +221,8 @@
   text-align: left;
   font-size: 0.95rem;
   font-weight: 700;
-  color: #12417d; /* Deep blue text matching screenshot */
+  color: #12417d;
+  /* Deep blue text matching screenshot */
   cursor: pointer;
   transition: all 0.15s ease;
   font-family: inherit;
@@ -237,7 +239,8 @@
 }
 
 .dropdown-item.logout {
-  color: #ff6347; /* Red orange logout text matching screenshot */
+  color: #ff6347;
+  /* Red orange logout text matching screenshot */
   margin-top: 0.25rem;
   border-top: 1px solid #f1f5f9;
 }
@@ -313,7 +316,7 @@
   }
 
   /* Hide desktop horizontal menu links on mobile/tablet */
-  .navbar-solid .nav-links > a,
+  .navbar-solid .nav-links>a,
   .navbar-solid .prm-dropdown-container {
     display: none;
   }
