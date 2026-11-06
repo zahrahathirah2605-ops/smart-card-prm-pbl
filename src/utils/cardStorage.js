@@ -306,3 +306,49 @@ export const updateAppointmentStatus = (id, status, alasanRespon = '', catatanTa
     return null;
   }
 };
+// Export QR code image (.png) in high quality
+export const downloadQRCodeImage = (containerSelector = '.card-qr-frame', fileNamePrefix = 'smart-card-qr') => {
+  try {
+    const container = document.querySelector(containerSelector);
+    const svgElement = container ? container.querySelector('svg') : document.querySelector('.card-qr-frame svg');
+    if (!svgElement) {
+      console.warn('QR Code SVG not found for export');
+      return false;
+    }
+
+    const svgData = new XMLSerializer().serializeToString(svgElement);
+    const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
+    const DOMURL = window.URL || window.webkitURL || window;
+    const url = DOMURL.createObjectURL(svgBlob);
+
+    const canvas = document.createElement('canvas');
+    canvas.width = 600;
+    canvas.height = 600;
+    const ctx = canvas.getContext('2d');
+
+    const img = new Image();
+    img.onload = () => {
+      // White clean background
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      // Draw QR code with quiet zone padding
+      const padding = 40;
+      ctx.drawImage(img, padding, padding, canvas.width - padding * 2, canvas.height - padding * 2);
+      
+      const pngUrl = canvas.toDataURL('image/png');
+      const downloadLink = document.createElement('a');
+      downloadLink.href = pngUrl;
+      downloadLink.download = `${fileNamePrefix}-qrcode.png`;
+      document.body.appendChild(downloadLink);
+      downloadLink.click();
+      document.body.removeChild(downloadLink);
+      DOMURL.revokeObjectURL(url);
+    };
+
+    img.src = url;
+    return true;
+  } catch (err) {
+    console.error('Failed to export QR code image:', err);
+    return false;
+  }
+};

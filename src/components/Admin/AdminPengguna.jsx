@@ -65,8 +65,24 @@ const AdminPengguna = () => {
   // Handle Submit Add User
   const handleAddSubmit = (e) => {
     e.preventDefault();
-    if (!addFormData.email || !addFormData.namaLengkap || !addFormData.nimNik) {
+    const cleanEmail = addFormData.email ? addFormData.email.trim().toLowerCase() : '';
+    const cleanNimNik = addFormData.nimNik ? addFormData.nimNik.trim() : '';
+    const cleanNama = addFormData.namaLengkap ? addFormData.namaLengkap.trim() : '';
+
+    if (!cleanEmail || !cleanNama || !cleanNimNik) {
       showToast('Full Name, Email, and NIM/NIK are required (NIM/NIK is used to log in)!', 'error');
+      return;
+    }
+
+    if (cleanNimNik.length < 6) {
+      showToast('Password / NIM/NIK must be at least 6 characters long!', 'error');
+      return;
+    }
+
+    const existingUsers = getAdminUsers();
+    const isDuplicate = existingUsers.some(u => u.email && u.email.trim().toLowerCase() === cleanEmail);
+    if (isDuplicate) {
+      showToast(`Email ${cleanEmail} is already registered! Please use another email address.`, 'error');
       return;
     }
 

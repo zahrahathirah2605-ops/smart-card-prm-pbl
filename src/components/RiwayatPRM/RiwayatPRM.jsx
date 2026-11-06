@@ -594,7 +594,7 @@ const RiwayatPRM = () => {
                 })
               ) : (
                 <tr>
-                  <td colSpan="6" className="prm-empty-row">
+                  <td colSpan="7" className="prm-empty-row">
                     No PRM appointment history found matching your search.
                   </td>
                 </tr>

@@ -6,8 +6,8 @@ import './Auth.css';
 
 const Login = () => {
   const [role, setRole] = useState('user'); // 'user' | 'admin'
-  const [email, setEmail] = useState('smart.card@gmail.com');
-  const [password, setPassword] = useState('pbljaya');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
 

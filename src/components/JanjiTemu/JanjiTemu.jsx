@@ -13,6 +13,7 @@ const JanjiTemu = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [agreeTerms, setAgreeTerms] = useState(false);
   const [submittedData, setSubmittedData] = useState(null);
+  const [topToast, setTopToast] = useState(null);
   const [formData, setFormData] = useState({
     namaLengkap: '',
     perusahaan: '',
@@ -21,6 +22,7 @@ const JanjiTemu = () => {
     telepon: '',
     tanggal: '',
     jam: '',
+    tipePertemuan: 'Online',
     alasan: '',
   });
 
@@ -47,6 +49,14 @@ const JanjiTemu = () => {
 
     setSubmittedData(saved);
     setIsSubmitted(true);
+    setTopToast({
+      title: 'Appointment Request Submitted Successfully!',
+      message: `Your meeting proposal with ${card?.namaLengkap || 'the card owner'} has been sent. A confirmation notification was delivered to ${formData.email}.`
+    });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(() => {
+      setTopToast(null);
+    }, 4500);
   };
 
   return (
@@ -56,6 +66,19 @@ const JanjiTemu = () => {
 
       {/* Main Container */}
       <main className="jt-main">
+        {/* Top Success Notification Banner */}
+        {topToast && (
+          <div className="jt-top-toast-banner" role="alert">
+            <div className="jt-top-toast-content">
+              <span className="jt-top-toast-icon">✓</span>
+              <div>
+                <strong className="jt-top-toast-title">{topToast.title}</strong>
+                <p className="jt-top-toast-text">{topToast.message}</p>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Back Link */}
         <button className="jt-back-link" onClick={() => navigate(`/card/${id}`)}>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -119,6 +142,12 @@ const JanjiTemu = () => {
                   <span className="summary-val">{formData.tanggal} at {formData.jam}</span>
                 </div>
                 <div className="summary-row">
+                  <span className="summary-label">Meeting Format:</span>
+                  <span className="summary-val">
+                    {formData.tipePertemuan === 'Online' ? '🌐 Online (Virtual Meeting)' : '🏢 Offline (In-Person Meeting)'}
+                  </span>
+                </div>
+                <div className="summary-row">
                   <span className="summary-label">Discussion Agenda:</span>
                   <span className="summary-val">{formData.alasan}</span>
                 </div>
@@ -126,14 +155,11 @@ const JanjiTemu = () => {
             )}
 
             <div className="submitted-actions-row">
-              <button className="jt-success-btn" onClick={() => navigate('/riwayat-prm')}>
-                View PRM History
-              </button>
               <button
-                className="jt-success-btn outline"
+                className="jt-success-btn"
                 onClick={() => navigate(`/card/${id}`)}
               >
-                Return to Card Profile
+                ← Return to Card Profile
               </button>
             </div>
           </div>
@@ -281,6 +307,7 @@ const JanjiTemu = () => {
                         type="date"
                         name="tanggal"
                         className="jt-input"
+                        min={new Date().toISOString().split('T')[0]}
                         value={formData.tanggal}
                         onChange={handleChange}
                         required
@@ -297,6 +324,21 @@ const JanjiTemu = () => {
                         required
                       />
                     </div>
+                  </div>
+
+                  <div className="jt-field-full" style={{ marginTop: '0.85rem' }}>
+                    <label className="jt-label">Meeting Mode / Format <span className="jt-required">*</span></label>
+                    <select
+                      name="tipePertemuan"
+                      className="jt-input"
+                      value={formData.tipePertemuan}
+                      onChange={handleChange}
+                      required
+                      style={{ cursor: 'pointer', background: '#fff' }}
+                    >
+                      <option value="Online">🌐 Online (Google Meet / Zoom)</option>
+                      <option value="Offline">🏢 Offline (In-Person / On-Campus Meeting)</option>
+                    </select>
                   </div>
 
                   <div className="jt-field-full">

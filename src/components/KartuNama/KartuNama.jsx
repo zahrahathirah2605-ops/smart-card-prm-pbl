@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Navbar from '../Navbar/Navbar';
 import Footer from '../Footer/Footer';
 import DigitalCardBadge from './DigitalCardBadge';
-import { getUserCard, saveUserCard, exportCardToPDF } from '../../utils/cardStorage';
+import { getUserCard, saveUserCard, exportCardToPDF, downloadQRCodeImage } from '../../utils/cardStorage';
 import './KartuNama.css';
 
 const KartuNama = () => {

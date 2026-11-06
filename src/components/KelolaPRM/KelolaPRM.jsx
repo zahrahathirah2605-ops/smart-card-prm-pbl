@@ -411,7 +411,7 @@ const KelolaPRM = () => {
                 })
               ) : (
                 <tr>
-                  <td colSpan="4" className="prm-empty-row">
+                  <td colSpan="5" className="prm-empty-row">
                     No appointment requests match your search criteria.
                   </td>
                 </tr>

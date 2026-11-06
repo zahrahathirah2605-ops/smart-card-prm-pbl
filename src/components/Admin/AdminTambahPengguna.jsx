@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AdminNavbar from './AdminNavbar';
 import Footer from '../Footer/Footer';
-import { addAdminUser } from '../../utils/adminStorage';
+import { addAdminUser, getAdminUsers } from '../../utils/adminStorage';
 import './AdminPengguna.css';
 
 const AdminTambahPengguna = () => {
@@ -29,8 +29,24 @@ const AdminTambahPengguna = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!formData.email || !formData.namaLengkap || !formData.nimNik) {
+    const cleanEmail = formData.email ? formData.email.trim().toLowerCase() : '';
+    const cleanNimNik = formData.nimNik ? formData.nimNik.trim() : '';
+    const cleanNama = formData.namaLengkap ? formData.namaLengkap.trim() : '';
+
+    if (!cleanEmail || !cleanNama || !cleanNimNik) {
       showToast('Full Name, Email, and NIM/NIK are required (NIM/NIK is used as password)!', 'error');
+      return;
+    }
+
+    if (cleanNimNik.length < 6) {
+      showToast('Password / NIM/NIK must be at least 6 characters long!', 'error');
+      return;
+    }
+
+    const existingUsers = getAdminUsers();
+    const isDuplicate = existingUsers.some(u => u.email && u.email.trim().toLowerCase() === cleanEmail);
+    if (isDuplicate) {
+      showToast(`Email ${cleanEmail} is already registered! Please use another email address.`, 'error');
       return;
     }
 

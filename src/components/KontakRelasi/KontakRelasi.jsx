@@ -340,7 +340,7 @@ const KontakRelasi = () => {
                 })
               ) : (
                 <tr>
-                  <td colSpan="5" className="prm-empty-row">
+                  <td colSpan="6" className="prm-empty-row">
                     No relationship contacts match your current filter. Click <strong>+ Add External Contact</strong> or save from PRM History to add contacts here.
                   </td>
                 </tr>
