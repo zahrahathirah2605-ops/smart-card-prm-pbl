@@ -34,12 +34,65 @@ const JanjiTemu = () => {
   const isSelf = isUserOwnCard(id || card?.id);
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+    if (fieldErrors[name]) {
+      setFieldErrors(prev => {
+        const updated = { ...prev };
+        delete updated[name];
+        return updated;
+      });
+    }
+  };
+
+  const [fieldErrors, setFieldErrors] = useState({});
+
+  const validateForm = () => {
+    const errors = {};
+    if (!formData.namaLengkap.trim()) errors.namaLengkap = 'Full name is required.';
+    if (!formData.perusahaan.trim()) errors.perusahaan = 'Company / institution name is required.';
+    if (!formData.jabatan.trim()) errors.jabatan = 'Position / role is required.';
+    if (!formData.email.trim()) {
+      errors.email = 'Email address is required.';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email.trim())) {
+      errors.email = 'Please provide a valid email format.';
+    }
+    if (!formData.telepon.trim()) errors.telepon = 'Phone number is required.';
+    if (!formData.tanggal.trim()) errors.tanggal = 'Meeting date is required.';
+    if (!formData.jam.trim()) errors.jam = 'Meeting time is required.';
+    if (!formData.alasan.trim()) errors.alasan = 'Meeting purpose / agenda is required.';
+    return errors;
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!agreeTerms) return;
+
+    const errors = validateForm();
+    if (Object.keys(errors).length > 0) {
+      setFieldErrors(errors);
+      setTopToast({
+        type: 'error',
+        title: 'Form Submission Incomplete!',
+        message: 'Please fill in all required fields (*) marked in red before submitting your request.'
+      });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      setTimeout(() => {
+        setTopToast(null);
+      }, 5000);
+      return;
+    }
+
+    if (!agreeTerms) {
+      setTopToast({
+        type: 'error',
+        title: 'Terms Agreement Required',
+        message: 'Please check and agree to the PRM coordination terms before submitting.'
+      });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+
+    setFieldErrors({});
 
     const saved = saveAppointment({
       ...formData,
@@ -47,9 +100,19 @@ const JanjiTemu = () => {
       targetId: card?.id || id
     });
 
+    if (!saved) {
+      setTopToast({
+        type: 'error',
+        title: 'Submission Failed',
+        message: 'Failed to record your appointment. Please check your details and try again.'
+      });
+      return;
+    }
+
     setSubmittedData(saved);
     setIsSubmitted(true);
     setTopToast({
+      type: 'success',
       title: 'Appointment Request Submitted Successfully!',
       message: `Your meeting proposal with ${card?.namaLengkap || 'the card owner'} has been sent. A confirmation notification was delivered to ${formData.email}.`
     });
@@ -68,9 +131,9 @@ const JanjiTemu = () => {
       <main className="jt-main">
         {/* Top Success Notification Banner */}
         {topToast && (
-          <div className="jt-top-toast-banner" role="alert">
+          <div className={`jt-top-toast-banner ${topToast.type === 'error' ? 'error' : ''}`} role="alert">
             <div className="jt-top-toast-content">
-              <span className="jt-top-toast-icon">✓</span>
+              <span className="jt-top-toast-icon">{topToast.type === 'error' ? '✕' : '✓'}</span>
               <div>
                 <strong className="jt-top-toast-title">{topToast.title}</strong>
                 <p className="jt-top-toast-text">{topToast.message}</p>
@@ -232,7 +295,7 @@ const JanjiTemu = () => {
                     <input
                       type="text"
                       name="namaLengkap"
-                      className="jt-input"
+                      className={`jt-input ${fieldErrors.namaLengkap ? 'jt-input-error' : ''}`}
                       placeholder="Enter your full name"
                       value={formData.namaLengkap}
                       onChange={handleChange}
@@ -246,7 +309,7 @@ const JanjiTemu = () => {
                       <input
                         type="text"
                         name="perusahaan"
-                        className="jt-input"
+                        className={`jt-input ${fieldErrors.perusahaan ? 'jt-input-error' : ''}`}
                         placeholder="Company or institution name"
                         value={formData.perusahaan}
                         onChange={handleChange}
@@ -258,7 +321,7 @@ const JanjiTemu = () => {
                       <input
                         type="text"
                         name="jabatan"
-                        className="jt-input"
+                        className={`jt-input ${fieldErrors.jabatan ? 'jt-input-error' : ''}`}
                         placeholder="Your current role"
                         value={formData.jabatan}
                         onChange={handleChange}
@@ -273,7 +336,7 @@ const JanjiTemu = () => {
                       <input
                         type="email"
                         name="email"
-                        className="jt-input"
+                        className={`jt-input ${fieldErrors.email ? 'jt-input-error' : ''}`}
                         placeholder="name@company.com"
                         value={formData.email}
                         onChange={handleChange}
@@ -285,7 +348,7 @@ const JanjiTemu = () => {
                       <input
                         type="tel"
                         name="telepon"
-                        className="jt-input"
+                        className={`jt-input ${fieldErrors.telepon ? 'jt-input-error' : ''}`}
                         placeholder="+62 812-xxxx-xxxx"
                         value={formData.telepon}
                         onChange={handleChange}
@@ -306,7 +369,7 @@ const JanjiTemu = () => {
                       <input
                         type="date"
                         name="tanggal"
-                        className="jt-input"
+                        className={`jt-input ${fieldErrors.tanggal ? 'jt-input-error' : ''}`}
                         min={new Date().toISOString().split('T')[0]}
                         value={formData.tanggal}
                         onChange={handleChange}
@@ -318,7 +381,7 @@ const JanjiTemu = () => {
                       <input
                         type="time"
                         name="jam"
-                        className="jt-input"
+                        className={`jt-input ${fieldErrors.jam ? 'jt-input-error' : ''}`}
                         value={formData.jam}
                         onChange={handleChange}
                         required
@@ -345,7 +408,7 @@ const JanjiTemu = () => {
                     <label className="jt-label">Meeting Purpose / Discussion Agenda <span className="jt-required">*</span></label>
                     <textarea
                       name="alasan"
-                      className="jt-textarea"
+                      className={`jt-textarea ${fieldErrors.alasan ? 'jt-input-error' : ''}`}
                       placeholder="Explain what topics or opportunities you would like to discuss..."
                       rows="4"
                       value={formData.alasan}

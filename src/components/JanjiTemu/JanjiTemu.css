@@ -722,3 +722,29 @@
   font-weight: 600;
   text-align: right;
 }
+.jt-top-toast-banner.error {
+  background: #fef2f2;
+  border-color: #fca5a5;
+  color: #991b1b;
+  box-shadow: 0 10px 25px -5px rgba(153, 27, 27, 0.15);
+}
+
+.jt-top-toast-banner.error .jt-top-toast-icon {
+  background: #ef4444;
+  color: #ffffff;
+}
+
+.jt-input-error {
+  border-color: #ef4444 !important;
+  background-color: #fff5f5 !important;
+}
+
+.jt-field-error-msg {
+  color: #dc2626;
+  font-size: 0.78rem;
+  font-weight: 500;
+  margin-top: 0.35rem;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}

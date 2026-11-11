@@ -193,36 +193,28 @@ const PublicCard = () => {
 
               {/* Action Buttons */}
               <div className="bottom-action-buttons">
-                {/* PDF Card Download: ONLY accessible to logged-in internal users */}
-                {loggedRole ? (
-                  <button
-                    className="btn-primary-action"
-                    onClick={handleDownloadPDF}
-                    disabled={isExporting}
-                    title="Unduh kartu nama resmi sebagai dokumen PDF (Akses Internal)"
-                  >
-                    {isExporting ? '⏳ Exporting...' : '📄 Download PDF Card'}
-                  </button>
-                ) : null}
-
-                {/* Save Contact (vCard): Standard public action for saving contact to phone/PC */}
+                {/* Always provide PDF Download format for digital card profile */}
                 <button
-                  className="btn-outline-action"
-                  onClick={handleDownloadContact}
-                  title="Simpan kontak langsung (.vcf) ke kontak telepon atau komputer"
+                  className="btn-primary-action"
+                  onClick={handleDownloadPDF}
+                  disabled={isExporting}
+                  title="Unduh kartu nama digital dalam format dokumen PDF"
                 >
-                  📥 Save Contact (vCard)
+                  {isExporting ? '⏳ Exporting PDF...' : '📄 Download PDF Card'}
                 </button>
 
-                {/* CRITICAL: "Schedule Appointment" ONLY shown for external visitors / NOT own card */}
-                {!isSelf ? (
+                {/* Save Contact: ONLY shown for visitors / external guests, NOT for self registered user */}
+                {!isSelf && (
                   <button
                     className="btn-accent-appointment"
                     onClick={() => navigate(`/janji-temu/${card.id || id}`)}
                   >
                     📅 Schedule Appointment (PRM)
                   </button>
-                ) : (
+                )}
+
+                {/* Shortcut to edit card details for card owner */}
+                {isSelf && (
                   <button
                     className="btn-outline-action edit-shortcut"
                     onClick={() => navigate('/kartu-nama')}

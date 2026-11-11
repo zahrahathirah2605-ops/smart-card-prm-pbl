@@ -272,6 +272,22 @@ export const exportCardToPDF = async (elementId, card) => {
 export const saveAppointment = (appointmentData) => {
   initCardStorage();
   try {
+    // Backend validation: Ensure all required fields are present and not empty
+    if (
+      !appointmentData ||
+      !appointmentData.namaLengkap?.trim() ||
+      !appointmentData.perusahaan?.trim() ||
+      !appointmentData.jabatan?.trim() ||
+      !appointmentData.email?.trim() ||
+      !appointmentData.telepon?.trim() ||
+      !appointmentData.tanggal?.trim() ||
+      !appointmentData.jam?.trim() ||
+      !appointmentData.alasan?.trim()
+    ) {
+      console.error('Validation Error: Missing required appointment fields');
+      return null;
+    }
+
     const currentList = getStoredAppointments();
     const newAppointment = {
       id: `PRM-${Date.now().toString().slice(-4)}`,
