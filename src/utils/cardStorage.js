@@ -53,7 +53,23 @@ export const getUserCard = () => {
   initCardStorage();
   try {
     const data = localStorage.getItem(STORAGE_KEY_USER_CARD);
-    return data ? JSON.parse(data) : DEFAULT_CARD;
+    if (data) {
+      const parsed = JSON.parse(data);
+      // Double check if all_cards has a newer version of this card
+      try {
+        const allCardsRaw = localStorage.getItem(STORAGE_KEY_ALL_CARDS);
+        if (allCardsRaw) {
+          const allCards = JSON.parse(allCardsRaw);
+          if (parsed.id && allCards[parsed.id]) {
+            return allCards[parsed.id];
+          }
+        }
+      } catch (err) {
+        // ignore
+      }
+      return parsed;
+    }
+    return DEFAULT_CARD;
   } catch (e) {
     console.error('Error getting user card:', e);
     return DEFAULT_CARD;
@@ -87,6 +103,35 @@ export const saveUserCard = (cardData) => {
     const allCards = getAllCards();
     allCards[updated.id] = updated;
     localStorage.setItem(STORAGE_KEY_ALL_CARDS, JSON.stringify(allCards));
+
+    // Persist into user profile storage in adminStorage
+    try {
+      const rawUsers = localStorage.getItem('smart_card_admin_registered_users');
+      if (rawUsers) {
+        const users = JSON.parse(rawUsers);
+        const userEmail = (updated.email || existing.email || '').toLowerCase().trim();
+        const updatedUsers = users.map(u => {
+          if (
+            (userEmail && u.email && u.email.toLowerCase().trim() === userEmail) ||
+            (u.cardId && (u.cardId === existing.id || u.cardId === resolvedId))
+          ) {
+            return {
+              ...u,
+              namaLengkap: updated.namaLengkap || u.namaLengkap,
+              instansi: updated.instansi || u.instansi,
+              jabatan: updated.jabatan || u.jabatan,
+              telepon: updated.telepon || u.telepon,
+              cardId: resolvedId,
+              cardProfile: updated
+            };
+          }
+          return u;
+        });
+        localStorage.setItem('smart_card_admin_registered_users', JSON.stringify(updatedUsers));
+      }
+    } catch (syncErr) {
+      console.warn('Could not sync user card into admin users database:', syncErr);
+    }
 
     return updated;
   } catch (e) {

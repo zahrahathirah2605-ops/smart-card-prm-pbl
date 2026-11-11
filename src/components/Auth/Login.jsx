@@ -83,24 +83,42 @@ const Login = () => {
       if (cleanInputPassword === expectedPassword || cleanInputPassword === 'pbljaya') {
         localStorage.setItem('smart_card_logged_role', 'user');
 
-        // Automatically populate / sync user card details so user doesn't need to re-enter
-        const userCardProfile = {
-          id: foundUser.cardId || foundUser.namaLengkap.toLowerCase().replace(/[^a-z0-9]/g, '-'),
-          namaLengkap: foundUser.namaLengkap,
-          nimNik: foundUser.nimNik || '',
-          instansi: foundUser.instansi || 'Politeknik Negeri Batam',
-          jabatan: foundUser.jabatan || 'Campus Member',
-          telepon: foundUser.telepon && foundUser.telepon !== '-' ? foundUser.telepon : '+62 812-3478-010',
-          email: foundUser.email,
-          instagram: '',
-          linkedin: '',
-          portofolio: '',
-          bio: `${foundUser.namaLengkap} is a member of ${foundUser.instansi || 'Politeknik Negeri Batam'}. Verified Smart Business Card profile.`,
-          photoUrl: ''
-        };
+        // Retrieve existing card profile if available in card directory or user object
+        let userCardProfile = null;
+        try {
+          const allCardsRaw = localStorage.getItem('smart_card_all_cards');
+          const allCards = allCardsRaw ? JSON.parse(allCardsRaw) : {};
+          const existingCard = (foundUser.cardId && allCards[foundUser.cardId]) || foundUser.cardProfile;
+          if (existingCard) {
+            userCardProfile = { ...existingCard };
+          }
+        } catch (e) {
+          console.warn('Error reading existing card directory on login:', e);
+        }
+
+        if (!userCardProfile) {
+          userCardProfile = {
+            id: foundUser.cardId || foundUser.namaLengkap.toLowerCase().replace(/[^a-z0-9]/g, '-'),
+            namaLengkap: foundUser.namaLengkap,
+            nimNik: foundUser.nimNik || '',
+            instansi: foundUser.instansi || 'Politeknik Negeri Batam',
+            jabatan: foundUser.jabatan || 'Campus Member',
+            telepon: foundUser.telepon && foundUser.telepon !== '-' ? foundUser.telepon : '+62 812-3478-010',
+            email: foundUser.email,
+            instagram: '',
+            twitterX: '',
+            facebook: '',
+            linkedin: '',
+            portofolio: '',
+            bio: `${foundUser.namaLengkap} is a member of ${foundUser.instansi || 'Politeknik Negeri Batam'}. Verified Smart Business Card profile.`,
+            photoUrl: ''
+          };
+        }
+
+        // Save active session user card
         localStorage.setItem('smart_card_user_profile', JSON.stringify(userCardProfile));
 
-        // Update smart_card_all_cards as well
+        // Ensure smart_card_all_cards has the active card
         try {
           const allCardsRaw = localStorage.getItem('smart_card_all_cards');
           const allCards = allCardsRaw ? JSON.parse(allCardsRaw) : {};
@@ -122,7 +140,7 @@ const Login = () => {
         navigate('/home');
         return;
       } else {
-        setError(`Invalid password. Please ensure your email and password are entered correctly.`);
+        setError(`Invalid password. For registered campus users, please enter your NIM or NIK as your password.`);
         return;
       }
     }
@@ -134,6 +152,19 @@ const Login = () => {
       (cleanEmail === 'siti.rahma@polibatam.ac.id' && (password === '199008222015042001' || password === 'pbljaya'))
     ) {
       localStorage.setItem('smart_card_logged_role', 'user');
+      
+      // Ensure we preserve existing card for demo accounts as well!
+      try {
+        const allCardsRaw = localStorage.getItem('smart_card_all_cards');
+        const allCards = allCardsRaw ? JSON.parse(allCardsRaw) : {};
+        const demoCardId = cleanEmail === 'budi.santoso@inovasidigital.id' ? 'budi-santoso' : (cleanEmail === 'siti.rahma@polibatam.ac.id' ? 'siti-rahma' : 'aprillia-bunga');
+        if (allCards[demoCardId]) {
+          localStorage.setItem('smart_card_user_profile', JSON.stringify(allCards[demoCardId]));
+        }
+      } catch (err) {
+        console.warn('Error reading demo card:', err);
+      }
+
       addActivityLog({
         aktor: cleanEmail === 'smart.card@gmail.com' ? 'Aprillia Bunga Lestari' : cleanEmail,
         email: cleanEmail,
@@ -211,12 +242,12 @@ const Login = () => {
 
             <div className="form-group">
               <label htmlFor="password">
-                {role === 'admin' ? 'Admin Password' : 'Password'}
+                {role === 'admin' ? 'Admin Password' : 'Password (NIM / NIK Number)'}
               </label>
               <input
                 type="password"
                 id="password"
-                placeholder={role === 'admin' ? '••••••••' : 'Enter your account password'}
+                placeholder={role === 'admin' ? '••••••••' : 'Enter your NIM or NIK'}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
