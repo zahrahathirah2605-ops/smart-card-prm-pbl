@@ -122,7 +122,7 @@ const Login = () => {
         navigate('/home');
         return;
       } else {
-        setError(`Invalid password. For registered campus users, please enter your NIM or NIK as your password.`);
+        setError(`Invalid password. Please ensure your email and password are entered correctly.`);
         return;
       }
     }
@@ -211,12 +211,12 @@ const Login = () => {
 
             <div className="form-group">
               <label htmlFor="password">
-                {role === 'admin' ? 'Admin Password' : 'Password (NIM / NIK Number)'}
+                {role === 'admin' ? 'Admin Password' : 'Password'}
               </label>
               <input
                 type="password"
                 id="password"
-                placeholder={role === 'admin' ? '••••••••' : 'Enter your NIM or NIK'}
+                placeholder={role === 'admin' ? '••••••••' : 'Enter your account password'}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required

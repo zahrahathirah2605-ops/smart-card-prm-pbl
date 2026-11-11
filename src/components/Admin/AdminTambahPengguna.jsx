@@ -19,7 +19,11 @@ const AdminTambahPengguna = () => {
   });
 
   const [notification, setNotification] = useState(null);
+  const [alertModal, setAlertModal] = useState(null);
 
+    const showAlertModal = (title, message, type = 'error') => {
+    setAlertModal({ title, message, type });
+  };
   const showToast = (message, type = 'success') => {
     setNotification({ message, type });
     setTimeout(() => {
@@ -34,19 +38,25 @@ const AdminTambahPengguna = () => {
     const cleanNama = formData.namaLengkap ? formData.namaLengkap.trim() : '';
 
     if (!cleanEmail || !cleanNama || !cleanNimNik) {
-      showToast('Full Name, Email, and NIM/NIK are required (NIM/NIK is used as password)!', 'error');
+      showAlertModal('Data Incomplete', 'Full Name, Email, and NIM/NIK are required!', 'error');
       return;
     }
 
     if (cleanNimNik.length < 6) {
-      showToast('Password / NIM/NIK must be at least 6 characters long!', 'error');
+      showAlertModal('Invalid NIK/NIM Length', 'NIM/NIK identity number must be at least 6 characters long!', 'warning');
       return;
     }
 
     const existingUsers = getAdminUsers();
     const isDuplicate = existingUsers.some(u => u.email && u.email.trim().toLowerCase() === cleanEmail);
     if (isDuplicate) {
-      showToast(`Email ${cleanEmail} is already registered! Please use another email address.`, 'error');
+      showAlertModal('Duplicate Email Detected', `The email "${cleanEmail}" is already registered in the system! Please use a different email address.`, 'error');
+      return;
+    }
+
+    const isNimDuplicate = existingUsers.some(u => u.nimNik && u.nimNik.trim().toLowerCase() === cleanNimNik.toLowerCase());
+    if (isNimDuplicate) {
+      showAlertModal('Duplicate NIK/NIM Detected', `The NIK/NIM "${cleanNimNik}" is already registered in the system! Each user must have a unique campus identity number.`, 'error');
       return;
     }
 
@@ -71,6 +81,27 @@ const AdminTambahPengguna = () => {
   return (
     <div className="admin-page-container">
       <AdminNavbar active="pengguna" />
+      {/* Interactive Alert Modal Pop-up (Centered) */}
+      {alertModal && (
+        <div className="admin-alert-modal-overlay" onClick={() => setAlertModal(null)} role="dialog" aria-modal="true">
+          <div className="admin-alert-modal-card" onClick={(e) => e.stopPropagation()}>
+            <div className={`admin-alert-icon-wrapper ${alertModal.type}`}>
+              {alertModal.type === 'error' ? '✕' : alertModal.type === 'warning' ? '⚠️' : '✓'}
+            </div>
+            <h3 className="admin-alert-title">{alertModal.title}</h3>
+            <p className="admin-alert-message">{alertModal.message}</p>
+            <button
+              type="button"
+              className={`admin-alert-btn-action ${alertModal.type}`}
+              onClick={() => setAlertModal(null)}
+              autoFocus
+            >
+              OK, Understood
+            </button>
+          </div>
+        </div>
+      )}
+
 
       <main className="admin-main-wrap">
         {/* Toast Notification */}
@@ -140,7 +171,7 @@ const AdminTambahPengguna = () => {
               {/* NIM/NIK */}
               <div className="form-group-modal" style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                 <label style={{ fontWeight: 600, fontSize: '0.9rem', color: '#1e293b' }}>
-                  NIM / NIK <span style={{ color: '#ff5733' }}>* (Used as Login Password)</span>
+                  NIM / NIK <span style={{ color: '#ff5733' }}>*</span> <span style={{ color: '#64748b', fontSize: '0.8rem', fontWeight: 400 }}>(Nomor Induk Mahasiswa / Karyawan)</span>
                 </label>
                 <input
                   type="text"
@@ -151,7 +182,7 @@ const AdminTambahPengguna = () => {
                   style={{ padding: '0.85rem 1rem', borderRadius: '10px', border: '1.5px solid #0284c7', outline: 'none', fontSize: '0.95rem', fontFamily: 'inherit', background: '#f0f9ff' }}
                 />
                 <span style={{ fontSize: '0.78rem', color: '#0369a1' }}>
-                  🔒 Users will use this NIM/NIK number as their initial password when logging in.
+                  🆔 Official campus identity number. Must be unique for each user.
                 </span>
               </div>
 

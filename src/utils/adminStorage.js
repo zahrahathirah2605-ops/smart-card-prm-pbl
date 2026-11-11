@@ -189,6 +189,18 @@ export const addAdminUser = (userData) => {
     const cleanTelepon = (userData.telepon && userData.telepon.trim()) ? userData.telepon.trim() : '-';
     const cleanEmail = userData.email ? userData.email.trim().toLowerCase() : '';
     const cleanNimNik = userData.nimNik ? userData.nimNik.trim() : '';
+
+    // Enforce Unique NIK/NIM check (ADM-03)
+    if (cleanNimNik) {
+      const isNimDuplicate = users.some(
+        (u) => u.nimNik && u.nimNik.trim().toLowerCase() === cleanNimNik.toLowerCase()
+      );
+      if (isNimDuplicate) {
+        console.warn(`Unique validation failed: NIK/NIM ${cleanNimNik} is already registered.`);
+        return null;
+      }
+    }
+
     const generatedCardId = cleanName.toLowerCase().trim()
       .replace(/[^a-z0-9]+/g, '-')
       .replace(/^-+|-+$/g, '') || `user-${Date.now()}`;
