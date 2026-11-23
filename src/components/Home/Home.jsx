@@ -3,7 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import Navbar from '../Navbar/Navbar';
 import Footer from '../Footer/Footer';
 import DigitalCardBadge from '../KartuNama/DigitalCardBadge';
-import { getUserCard, exportCardToPDF, downloadQRCodeImage } from '../../utils/cardStorage';
+import { getUserCard, exportCardToImage, downloadQRCodeImage } from '../../utils/cardStorage';
+import ImageOutlinedIcon from '@mui/icons-material/ImageOutlined';
+import LaunchIcon from '@mui/icons-material/Launch';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';
 import './Home.css';
 
 const Home = () => {
@@ -18,10 +22,10 @@ const Home = () => {
   const resolvedCardId = card.id || (card.namaLengkap ? card.namaLengkap.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') : 'aprillia-bunga');
   const cardUrl = `${window.location.origin}/card/${resolvedCardId}`;
 
-  const handleDownloadPDF = async () => {
+  const handleDownloadImage = async () => {
     setIsExporting(true);
     try {
-      await exportCardToPDF('home-business-card', card);
+      await exportCardToImage('home-business-card', card, 'png');
     } catch (e) {
       console.error(e);
     } finally {
@@ -64,18 +68,30 @@ const Home = () => {
             <div className="card-quick-actions">
               <button
                 className="btn-pdf-download"
-                onClick={handleDownloadPDF}
+                onClick={handleDownloadImage}
                 disabled={isExporting}
-                title="Download digital business card in PDF format"
+                title="Download digital business card as high resolution PNG image"
               >
-                {isExporting ? '⏳ Exporting PDF...' : '📄 Download PDF Card'}
+                {isExporting ? (
+                  <>
+                    <HourglassEmptyIcon sx={{ fontSize: 18 }} />
+                    <span>Exporting Image...</span>
+                  </>
+                ) : (
+                  <>
+                    <ImageOutlinedIcon sx={{ fontSize: 18 }} />
+                    <span>Download Card Image</span>
+                  </>
+                )}
               </button>
 
               <button
                 className="btn-preview-link"
                 onClick={() => navigate(`/card/${card.id}`)}
+                style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '0.4rem' }}
               >
-                Preview Digital Card ↗
+                <span>Preview Digital Card</span>
+                <LaunchIcon sx={{ fontSize: 16 }} />
               </button>
             </div>
           </div>
@@ -128,7 +144,8 @@ const Home = () => {
                   gap: '0.5rem'
                 }}
               >
-                📅 View PRM Schedule Calendar →
+                <CalendarMonthIcon sx={{ fontSize: 18 }} />
+                <span>View PRM Schedule Calendar →</span>
               </button>
               <button
                 type="button"

@@ -9,6 +9,12 @@ import {
   getAdminUsers
 } from '../../utils/adminStorage';
 import { QRCodeSVG } from 'qrcode.react';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutlined';
+import CloseIcon from '@mui/icons-material/Close';
+import FlashOnIcon from '@mui/icons-material/FlashOn';
+import FileDownloadIcon from '@mui/icons-material/FileDownload';
+import EmailIcon from '@mui/icons-material/Email';
+import PhoneIcon from '@mui/icons-material/Phone';
 import './AdminAktivitas.css';
 
 const AdminAktivitas = () => {
@@ -129,8 +135,8 @@ const AdminAktivitas = () => {
         {/* Toast */}
         {toastMessage && (
           <div className="admin-toast-banner success">
-            <span>✓ {toastMessage}</span>
-            <button onClick={() => setToastMessage('')}>✕</button>
+            <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }}><CheckCircleOutlineIcon sx={{ fontSize: 16 }} /> {toastMessage}</span>
+            <button onClick={() => setToastMessage('')} style={{ display: 'inline-flex', alignItems: 'center' }}><CloseIcon sx={{ fontSize: 14 }} /></button>
           </div>
         )}
 
@@ -146,10 +152,10 @@ const AdminAktivitas = () => {
 
           <div className="header-action-group">
             <button className="btn-secondary-audit" onClick={handleSimulateActivity}>
-              ⚡ Simulate Activity
+              Simulate Activity
             </button>
             <button className="btn-primary-audit" onClick={handleExportCSV}>
-              📥 Export CSV Log
+              Export CSV Log
             </button>
           </div>
         </div>
@@ -389,8 +395,8 @@ const AdminAktivitas = () => {
                         <p className="preview-org">{u.instansi}</p>
 
                         <div className="preview-contacts">
-                          <span>📧 {u.email}</span>
-                          <span>📞 {u.telepon}</span>
+                          <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.3rem' }}><EmailIcon sx={{ fontSize: 13 }} /> {u.email}</span>
+                          <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.3rem' }}><PhoneIcon sx={{ fontSize: 13 }} /> {u.telepon}</span>
                         </div>
                       </div>
 

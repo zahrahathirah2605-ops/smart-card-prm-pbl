@@ -80,7 +80,9 @@
 
 .btn-edit-card-link:hover {
   background: var(--accent, #FF6347);
-  color: #000000;
+  color: #FFFFFF;
+  font-size: 0.8rem;
+  font-weight: 500;
 }
 
 .digital-card-showcase-box {
@@ -100,23 +102,30 @@
 
 .btn-pdf-download {
   flex: 1.2;
-  padding: 0.8rem 1.2rem;
-  background: linear-gradient(135deg, var(--accent, #FF6347), #ff7a63);
-  color: #000000;
-  border: none;
-  border-radius: 12px;
-  font-weight: 700;
-  font-size: 0.9rem;
+  padding: 0.75rem 1.2rem;
+  background: #ffffff;
+  color: #008631;
+  border: 1.5px solid #008631;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 0.85rem;
   cursor: pointer;
-  box-shadow: 0 4px 12px rgba(255, 99, 71, 0.3);
-  transition: all 0.2s;
+  box-shadow: 0 2px 8px rgba(0, 134, 49, 0.12);
+  transition: all 0.2s ease;
   font-family: inherit;
   text-align: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
 }
 
 .btn-pdf-download:hover:not(:disabled) {
+  background: #008631;
+  color: #ffffff;
+  border-color: #008631;
   transform: translateY(-2px);
-  box-shadow: 0 6px 18px rgba(255, 99, 71, 0.4);
+  box-shadow: 0 4px 14px rgba(0, 134, 49, 0.28);
 }
 
 .btn-pdf-download:disabled {
@@ -126,13 +135,13 @@
 
 .btn-preview-link {
   flex: 1;
-  padding: 0.8rem 1rem;
+  padding: 0.75rem 1.1rem;
   background: #f1f5f9;
   color: var(--primary, #12417D);
-  border: 1px solid #cbd5e1;
-  border-radius: 12px;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 999px;
   font-weight: 600;
-  font-size: 0.88rem;
+  font-size: 0.85rem;
   cursor: pointer;
   transition: all 0.2s;
   font-family: inherit;
@@ -212,14 +221,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.75rem;
-  padding: 0.95rem 2.8rem;
+  gap: 0.6rem;
+  padding: 0.85rem 2.2rem;
   background: var(--accent, #FF6347);
-  color: #000000;
+  color: #FFFFFF;
   border: none;
   border-radius: 999px;
-  font-size: 1.1rem;
-  font-weight: 700;
+  font-size: 0.92rem;
+  font-weight: 600;
   cursor: pointer;
   font-family: inherit;
   box-shadow: 0 6px 20px rgba(255, 99, 71, 0.35);

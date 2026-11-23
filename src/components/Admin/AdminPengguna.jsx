@@ -8,6 +8,9 @@ import {
   updateAdminUser,
   deleteAdminUser
 } from '../../utils/adminStorage';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutlined';
+import WarningAmberIcon from '@mui/icons-material/WarningAmber';
+import CloseIcon from '@mui/icons-material/Close';
 import './AdminPengguna.css';
 
 const AdminPengguna = () => {
@@ -178,7 +181,7 @@ const AdminPengguna = () => {
         <div className="admin-alert-modal-overlay" onClick={() => setAlertModal(null)} role="dialog" aria-modal="true">
           <div className="admin-alert-modal-card" onClick={(e) => e.stopPropagation()}>
             <div className={`admin-alert-icon-wrapper ${alertModal.type}`}>
-              {alertModal.type === 'error' ? '✕' : alertModal.type === 'warning' ? '⚠️' : '✓'}
+              {alertModal.type === 'error' ? <CloseIcon sx={{ fontSize: 28 }} /> : alertModal.type === 'warning' ? <WarningAmberIcon sx={{ fontSize: 28 }} /> : <CheckCircleOutlineIcon sx={{ fontSize: 28 }} />}
             </div>
             <h3 className="admin-alert-title">{alertModal.title}</h3>
             <p className="admin-alert-message">{alertModal.message}</p>
@@ -199,8 +202,8 @@ const AdminPengguna = () => {
         {/* Toast Notification */}
         {notification && (
           <div className={`admin-toast-banner ${notification.type}`}>
-            <span>{notification.type === 'success' ? '✓' : '⚠️'} {notification.message}</span>
-            <button onClick={() => setNotification(null)}>✕</button>
+            <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}>{notification.type === 'success' ? <CheckCircleOutlineIcon sx={{ fontSize: 18 }} /> : <WarningAmberIcon sx={{ fontSize: 18 }} />} {notification.message}</span>
+            <button onClick={() => setNotification(null)} style={{ display: 'inline-flex', alignItems: 'center' }}><CloseIcon sx={{ fontSize: 16 }} /></button>
           </div>
         )}
 
@@ -587,7 +590,7 @@ const AdminPengguna = () => {
                   <h3 className="admin-modal-title">Edit User Data ({editingUser.id})</h3>
                   <p className="admin-modal-sub">Update profile information or status of registered user</p>
                 </div>
-                <button className="admin-modal-close" onClick={() => setIsEditModalOpen(false)}>✕</button>
+                <button className="admin-modal-close" onClick={() => setIsEditModalOpen(false)} aria-label="Close">×</button>
               </div>
 
               <form onSubmit={handleEditSubmit} className="admin-profile-form">

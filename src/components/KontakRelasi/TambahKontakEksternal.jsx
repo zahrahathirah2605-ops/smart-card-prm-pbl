@@ -248,7 +248,7 @@ const TambahKontakEksternal = () => {
             Manually enter details from a physical business card to save acquaintances into Relationship Contacts.
           </p>
           <div className="external-note-badge">
-            <span className="note-icon">ℹ️</span>
+            <span className="note-icon" style={{ fontWeight: 700 }}>i</span>
             <span>External contacts do not need an account. This entry does not create an internal campus profile.</span>
           </div>
         </div>
@@ -256,7 +256,7 @@ const TambahKontakEksternal = () => {
         {errors.general && (
           <div className="external-alert-error">
             <span>{errors.general}</span>
-            <button type="button" onClick={() => setErrors((prev) => ({ ...prev, general: null }))}>✕</button>
+            <button type="button" onClick={() => setErrors((prev) => ({ ...prev, general: null }))} aria-label="Close">×</button>
           </div>
         )}
 
@@ -293,7 +293,7 @@ const TambahKontakEksternal = () => {
                       }}
                       title="Click to zoom image"
                     >
-                      <span>🔍 Click to Zoom</span>
+                      <span>Click to Zoom</span>
                     </div>
                   </div>
                 ) : (
@@ -348,7 +348,7 @@ const TambahKontakEksternal = () => {
 
               {photoError && (
                 <div className="field-error-msg">
-                  ⚠️ {photoError}
+                  {photoError}
                 </div>
               )}
 
@@ -390,7 +390,7 @@ const TambahKontakEksternal = () => {
                     maxLength={100}
                   />
                   {errors.nama_lengkap && (
-                    <div className="field-error-msg">⚠️ {errors.nama_lengkap}</div>
+                    <div className="field-error-msg">{errors.nama_lengkap}</div>
                   )}
                 </div>
 
@@ -411,7 +411,7 @@ const TambahKontakEksternal = () => {
                       maxLength={100}
                     />
                     {errors.instansi && (
-                      <div className="field-error-msg">⚠️ {errors.instansi}</div>
+                      <div className="field-error-msg">{errors.instansi}</div>
                     )}
                   </div>
 
@@ -430,7 +430,7 @@ const TambahKontakEksternal = () => {
                       maxLength={100}
                     />
                     {errors.jabatan && (
-                      <div className="field-error-msg">⚠️ {errors.jabatan}</div>
+                      <div className="field-error-msg">{errors.jabatan}</div>
                     )}
                   </div>
                 </div>
@@ -459,7 +459,7 @@ const TambahKontakEksternal = () => {
                       />
                     </div>
                     {errors.telepon && (
-                      <div className="field-error-msg">⚠️ {errors.telepon}</div>
+                      <div className="field-error-msg">{errors.telepon}</div>
                     )}
                   </div>
 
@@ -486,7 +486,7 @@ const TambahKontakEksternal = () => {
                       />
                     </div>
                     {errors.email && (
-                      <div className="field-error-msg">⚠️ {errors.email}</div>
+                      <div className="field-error-msg">{errors.email}</div>
                     )}
                   </div>
                 </div>
@@ -494,11 +494,11 @@ const TambahKontakEksternal = () => {
                 {/* Helper text di bawah baris Telepon/Email */}
                 <div className="contact-helper-row">
                   <span className="helper-text-hint">
-                    💡 Please provide at least one contact method: Phone or Email.
+                    Please provide at least one contact method: Phone or Email.
                   </span>
                   {errors.kontak_gabungan && (
                     <div className="field-error-msg" style={{ marginTop: '0.35rem' }}>
-                      ⚠️ {errors.kontak_gabungan}
+                      {errors.kontak_gabungan}
                     </div>
                   )}
                 </div>
@@ -524,7 +524,7 @@ const TambahKontakEksternal = () => {
                     maxLength={500}
                   />
                   {errors.catatan_pertemuan && (
-                    <div className="field-error-msg">⚠️ {errors.catatan_pertemuan}</div>
+                    <div className="field-error-msg">{errors.catatan_pertemuan}</div>
                   )}
                 </div>
               </div>
@@ -571,7 +571,7 @@ const TambahKontakEksternal = () => {
                 className="image-zoom-close"
                 onClick={() => setShowPhotoModal(false)}
               >
-                ✕
+                ×
               </button>
             </div>
             <div className="image-zoom-body">

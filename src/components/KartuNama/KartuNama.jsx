@@ -3,7 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import Navbar from '../Navbar/Navbar';
 import Footer from '../Footer/Footer';
 import DigitalCardBadge from './DigitalCardBadge';
-import { getUserCard, saveUserCard, exportCardToPDF, downloadQRCodeImage } from '../../utils/cardStorage';
+import { getUserCard, saveUserCard, exportCardToImage, downloadQRCodeImage } from '../../utils/cardStorage';
+import ImageOutlinedIcon from '@mui/icons-material/ImageOutlined';
+import SaveIcon from '@mui/icons-material/Save';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutlined';
+import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';
 import './KartuNama.css';
 
 const KartuNama = () => {
@@ -99,10 +103,10 @@ const KartuNama = () => {
 
   const cardUrl = `${window.location.origin}/card/${computedCardId}`;
 
-  const handleDownloadPDF = async () => {
+  const handleDownloadImage = async () => {
     setIsExporting(true);
     try {
-      await exportCardToPDF('edit-card-preview-target', currentPreviewCard);
+      await exportCardToImage('edit-card-preview-target', currentPreviewCard, 'png');
     } catch (e) {
       console.error(e);
     } finally {
@@ -127,11 +131,21 @@ const KartuNama = () => {
             <div className="preview-top-actions">
               <button
                 className="btn-download-pdf-top"
-                onClick={handleDownloadPDF}
+                onClick={handleDownloadImage}
                 disabled={isExporting}
-                title="Download this business card as standard PDF"
+                title="Download this business card as high resolution PNG image"
               >
-                {isExporting ? '⏳ Exporting...' : '📄 Download PDF Card'}
+                {isExporting ? (
+                  <>
+                    <HourglassEmptyIcon sx={{ fontSize: 18 }} />
+                    <span>Exporting...</span>
+                  </>
+                ) : (
+                  <>
+                    <ImageOutlinedIcon sx={{ fontSize: 18 }} />
+                    <span>Download Card Image</span>
+                  </>
+                )}
               </button>
             </div>
           </div>
@@ -336,14 +350,16 @@ const KartuNama = () => {
               </div>
 
               {saveSuccess && (
-                <div className="save-success-banner">
-                  ✓ Business card updated successfully! Changes are live on your QR Code and Digital Badge.
+                <div className="save-success-banner" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  <CheckCircleOutlineIcon sx={{ fontSize: 20 }} />
+                  <span>Business card updated successfully! Changes are live on your QR Code and Digital Badge.</span>
                 </div>
               )}
 
               <div className="kn-submit-wrapper">
-                <button type="submit" className="kn-submit-btn">
-                   💾 Save Card Changes
+                <button type="submit" className="kn-submit-btn" style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
+                  <SaveIcon sx={{ fontSize: 18 }} />
+                  <span>Save Card Changes</span>
                 </button>
               </div>
             </form>

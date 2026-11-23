@@ -209,7 +209,7 @@ const KontakRelasi = () => {
               onClick={() => setAlertMsg(null)} 
               style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'inherit' }}
             >
-              ✕
+              ×
             </button>
           </div>
         )}
@@ -236,7 +236,7 @@ const KontakRelasi = () => {
                 onClick={() => { setSearchTerm(''); setCurrentPage(1); }}
                 title="Clear search"
               >
-                ✕
+                ×
               </button>
             )}
           </div>
@@ -255,14 +255,14 @@ const KontakRelasi = () => {
               className={`rel-pill-btn pill-prm ${sourceFilter === 'PRM_HISTORY' ? 'active' : ''}`}
               onClick={() => handleSourceFilterChange('PRM_HISTORY')}
             >
-              📅 From PRM History <span className="pill-count">{countPRM}</span>
+              From PRM History <span className="pill-count">{countPRM}</span>
             </button>
             <button
               type="button"
               className={`rel-pill-btn pill-ext ${sourceFilter === 'EXTERNAL_CONTACT' ? 'active' : ''}`}
               onClick={() => handleSourceFilterChange('EXTERNAL_CONTACT')}
             >
-              📇 External Card Contacts <span className="pill-count">{countExt}</span>
+              External Card Contacts <span className="pill-count">{countExt}</span>
             </button>
           </div>
         </div>
@@ -308,11 +308,11 @@ const KontakRelasi = () => {
                       </td>
                       <td>
                         <div style={{ fontSize: '0.84rem', color: '#334155' }}>
-                          📱 {item.kontak}
+                          {item.kontak}
                         </div>
                         {item.email && (
                           <div style={{ fontSize: '0.76rem', color: '#0284c7', marginTop: '2px' }}>
-                            ✉️ <a href={`mailto:${item.email}`} style={{ color: 'inherit', textDecoration: 'none' }} onClick={(e) => e.stopPropagation()}>{item.email}</a>
+                            <a href={`mailto:${item.email}`} style={{ color: 'inherit', textDecoration: 'none' }} onClick={(e) => e.stopPropagation()}>{item.email}</a>
                           </div>
                         )}
                       </td>
@@ -391,7 +391,7 @@ const KontakRelasi = () => {
             {/* Physical Card Photo */}
             {selectedDetail.foto_kartu ? (
               <div className="modal-field-box modal-detail-full" style={{ background: '#f8fafc', padding: '1rem' }}>
-                <span className="modal-field-label">📸 Physical Business Card Photo</span>
+                <span className="modal-field-label">Physical Business Card Photo</span>
                 <div
                   className="modal-photo-preview-box"
                   style={{
@@ -428,13 +428,13 @@ const KontakRelasi = () => {
                       borderRadius: '6px'
                     }}
                   >
-                    🔍 Click to zoom
+                    Click to zoom
                   </div>
                 </div>
               </div>
             ) : selectedDetail.tipe === 'eksternal' ? (
               <div className="modal-field-box modal-detail-full" style={{ padding: '0.75rem 1rem' }}>
-                <span className="modal-field-label">📸 Physical Business Card Photo</span>
+                <span className="modal-field-label">Physical Business Card Photo</span>
                 <div style={{ fontSize: '0.82rem', color: '#94a3b8', fontStyle: 'italic', marginTop: '0.25rem' }}>
                   No photo attached
                 </div>
@@ -442,19 +442,19 @@ const KontakRelasi = () => {
             ) : null}
 
             <div className="modal-field-box">
-              <span className="modal-field-label">👤 Full Name</span>
+              <span className="modal-field-label">Full Name</span>
               <div className="modal-field-value">{selectedDetail.nama}</div>
-              <div className="modal-field-sub">💼 {selectedDetail.jabatan || 'Partner'}</div>
+              <div className="modal-field-sub">{selectedDetail.jabatan || 'Partner'}</div>
             </div>
 
             <div className="modal-field-box">
-              <span className="modal-field-label">🏢 Organization / Company</span>
+              <span className="modal-field-label">Organization / Company</span>
               <div className="modal-field-value">{selectedDetail.instansi || '-'}</div>
-              <div className="modal-field-sub">🏷️ {selectedDetail.kategori}</div>
+              <div className="modal-field-sub">{selectedDetail.kategori}</div>
             </div>
 
             <div className="modal-field-box">
-              <span className="modal-field-label">✉️ Email Address</span>
+              <span className="modal-field-label">Email Address</span>
               <div className="modal-field-value">
                 {selectedDetail.email ? (
                   <a href={`mailto:${selectedDetail.email}`}>{selectedDetail.email}</a>
@@ -465,7 +465,7 @@ const KontakRelasi = () => {
             </div>
 
             <div className="modal-field-box">
-              <span className="modal-field-label">📱 Phone / WhatsApp</span>
+              <span className="modal-field-label">Phone / WhatsApp</span>
               <div className="modal-field-value">
                 {selectedDetail.kontak && selectedDetail.kontak !== '-' ? (
                   <a href={`tel:${selectedDetail.kontak}`}>{selectedDetail.kontak}</a>
@@ -476,7 +476,7 @@ const KontakRelasi = () => {
             </div>
 
             <div className="modal-field-box modal-detail-full">
-              <span className="modal-field-label">📥 Contact Source</span>
+              <span className="modal-field-label">Contact Source</span>
               <div className="modal-field-value">
                 {selectedDetail.asal === 'PRM History'
                   ? 'Saved automatically from PRM Appointment History'
@@ -488,7 +488,7 @@ const KontakRelasi = () => {
 
             {(selectedDetail.catatan || selectedDetail.catatan_pertemuan) && (
               <div className="modal-field-box modal-detail-full">
-                <span className="modal-field-label">📝 Meeting / Relationship Notes</span>
+                <span className="modal-field-label">Meeting / Relationship Notes</span>
                 <div className="modal-quote-box">{selectedDetail.catatan || selectedDetail.catatan_pertemuan}</div>
               </div>
             )}
@@ -555,7 +555,7 @@ const KontakRelasi = () => {
                 }}
                 onClick={() => setPreviewZoomPhoto(null)}
               >
-                ✕
+                ×
               </button>
             </div>
             <div

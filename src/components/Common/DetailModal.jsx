@@ -32,7 +32,7 @@ const DetailModal = ({
             aria-label="Tutup Popup"
             title="Tutup (Esc)"
           >
-            ✕
+            ×
           </button>
         </div>
 

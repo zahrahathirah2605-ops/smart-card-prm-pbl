@@ -31,12 +31,12 @@ const AdminProfileModal = ({ onClose }) => {
               <p className="admin-modal-sub">Manage account credentials and system authorization</p>
             </div>
           </div>
-          <button className="admin-modal-close" onClick={onClose}>✕</button>
+          <button className="admin-modal-close" onClick={onClose} aria-label="Close">×</button>
         </div>
 
         {savedSuccess && (
           <div className="admin-modal-alert">
-            ✓ Administrator profile changes saved successfully!
+            Administrator profile changes saved successfully!
           </div>
         )}
 

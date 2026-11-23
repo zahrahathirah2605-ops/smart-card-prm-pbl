@@ -183,7 +183,7 @@
 .menu-icon-btn.open {
   background: var(--accent, #FF6347);
   border-color: var(--accent, #FF6347);
-  color: #000000;
+  color: #FFFFFF;
   transform: scale(1.05);
   box-shadow: 0 4px 12px rgba(255, 99, 71, 0.35);
 }

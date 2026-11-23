@@ -98,14 +98,15 @@
 
 .public-nav-login {
   background: var(--accent, #FF6347);
-  color: #000000;
+  color: #FFFFFF;
   box-shadow: 0 4px 14px rgba(255, 99, 71, 0.35);
+  font-size: 0.85rem;
+  font-weight: 600;
 }
 
 .public-nav-login:hover {
-  background: #ff5233;
-  color: #000000;
-  transform: translateY(-1px);
+  background: #ff4d2e;
+  color: #FFFFFF;
   box-shadow: 0 6px 18px rgba(255, 99, 71, 0.45);
 }
 
