@@ -115,7 +115,7 @@ const ScanQR = () => {
                 zIndex: 10
               }}>
                 <div style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '0.4rem' }}>
-                  QR Code Detected! ✓
+                  QR Code Detected Successfully!
                 </div>
                 <div style={{ fontSize: '0.85rem' }}>Opening digital business card...</div>
               </div>

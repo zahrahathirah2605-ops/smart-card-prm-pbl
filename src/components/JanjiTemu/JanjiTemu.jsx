@@ -4,6 +4,11 @@ import Navbar from '../Navbar/Navbar';
 import PublicNavbar from '../Navbar/PublicNavbar';
 import Footer from '../Footer/Footer';
 import { getCardById, saveAppointment, isUserOwnCard } from '../../utils/cardStorage';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutlined';
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import LanguageIcon from '@mui/icons-material/Language';
+import BusinessIcon from '@mui/icons-material/Business';
 import './JanjiTemu.css';
 
 const JanjiTemu = () => {
@@ -133,7 +138,7 @@ const JanjiTemu = () => {
         {topToast && (
           <div className={`jt-top-toast-banner ${topToast.type === 'error' ? 'error' : ''}`} role="alert">
             <div className="jt-top-toast-content">
-              <span className="jt-top-toast-icon">{topToast.type === 'error' ? '✕' : '✓'}</span>
+              <span className="jt-top-toast-icon" style={{ display: 'inline-flex', alignItems: 'center' }}>{topToast.type === 'error' ? <HighlightOffIcon sx={{ fontSize: 22 }} /> : <CheckCircleOutlineIcon sx={{ fontSize: 22 }} />}</span>
               <div>
                 <strong className="jt-top-toast-title">{topToast.title}</strong>
                 <p className="jt-top-toast-text">{topToast.message}</p>
@@ -163,7 +168,7 @@ const JanjiTemu = () => {
             alignItems: 'center',
             gap: '0.75rem'
           }}>
-            <span style={{ fontSize: '1.25rem' }}>ℹ️</span>
+            <InfoOutlinedIcon sx={{ fontSize: 22, color: '#1e40af' }} />
             <div>
               <strong>Notice:</strong> This appointment form is intended for external partners scanning your card.
               You are currently previewing how others request appointments with you.
@@ -207,7 +212,7 @@ const JanjiTemu = () => {
                 <div className="summary-row">
                   <span className="summary-label">Meeting Format:</span>
                   <span className="summary-val">
-                    {formData.tipePertemuan === 'Online' ? '🌐 Online (Virtual Meeting)' : '🏢 Offline (In-Person Meeting)'}
+                    {formData.tipePertemuan === 'Online' ? 'Online (Virtual Meeting)' : 'Offline (In-Person Meeting)'}
                   </span>
                 </div>
                 <div className="summary-row">
@@ -399,8 +404,8 @@ const JanjiTemu = () => {
                       required
                       style={{ cursor: 'pointer', background: '#fff' }}
                     >
-                      <option value="Online">🌐 Online (Google Meet / Zoom)</option>
-                      <option value="Offline">🏢 Offline (In-Person / On-Campus Meeting)</option>
+                      <option value="Online">Online (Google Meet / Zoom)</option>
+                      <option value="Offline">Offline (In-Person / On-Campus Meeting)</option>
                     </select>
                   </div>
 

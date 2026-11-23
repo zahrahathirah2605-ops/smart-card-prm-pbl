@@ -1,6 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import logoImg from '../../assets/logo-poltek-putih.png';
+import EmailIcon from '@mui/icons-material/Email';
+import LanguageIcon from '@mui/icons-material/Language';
 import './Footer.css';
 
 const Footer = () => {
@@ -54,8 +56,14 @@ const Footer = () => {
             <p><strong>Politeknik Negeri Batam</strong></p>
             <p>Jl. Ahmad Yani, Batam Kota, Kota Batam, Kepulauan Riau 29461</p>
             <p className="footer-contact-row">
-              <span>📧 prm@polibatam.ac.id</span>
-              <span>🌐 www.polibatam.ac.id</span>
+              <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }}>
+                <EmailIcon sx={{ fontSize: 16 }} />
+                <span>prm@polibatam.ac.id</span>
+              </span>
+              <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }}>
+                <LanguageIcon sx={{ fontSize: 16 }} />
+                <span>www.polibatam.ac.id</span>
+              </span>
             </p>
           </div>
         </div>

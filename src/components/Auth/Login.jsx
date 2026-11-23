@@ -56,7 +56,7 @@ const Login = () => {
     // 2. Validate Registered Internal User
     // Check account active status (FR-13)
     if (!isUserAccountActive(cleanEmail)) {
-      setError('⚠️ Your account access has been deactivated by the Administrator. Please contact system support for reactivation.');
+      setError('Your account access has been deactivated by the Administrator. Please contact system support for reactivation.');
       addActivityLog({
         aktor: cleanEmail,
         email: cleanEmail,

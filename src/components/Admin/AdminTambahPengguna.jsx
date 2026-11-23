@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AdminNavbar from './AdminNavbar';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutlined';
+import WarningAmberIcon from '@mui/icons-material/WarningAmber';
+import CloseIcon from '@mui/icons-material/Close';
 import Footer from '../Footer/Footer';
 import { addAdminUser, getAdminUsers } from '../../utils/adminStorage';
 import './AdminPengguna.css';
@@ -86,7 +89,7 @@ const AdminTambahPengguna = () => {
         <div className="admin-alert-modal-overlay" onClick={() => setAlertModal(null)} role="dialog" aria-modal="true">
           <div className="admin-alert-modal-card" onClick={(e) => e.stopPropagation()}>
             <div className={`admin-alert-icon-wrapper ${alertModal.type}`}>
-              {alertModal.type === 'error' ? '✕' : alertModal.type === 'warning' ? '⚠️' : '✓'}
+              {alertModal.type === 'error' ? <CloseIcon sx={{ fontSize: 28 }} /> : alertModal.type === 'warning' ? <WarningAmberIcon sx={{ fontSize: 28 }} /> : <CheckCircleOutlineIcon sx={{ fontSize: 28 }} />}
             </div>
             <h3 className="admin-alert-title">{alertModal.title}</h3>
             <p className="admin-alert-message">{alertModal.message}</p>
@@ -107,7 +110,7 @@ const AdminTambahPengguna = () => {
         {/* Toast Notification */}
         {notification && (
           <div className={`admin-toast-banner ${notification.type}`}>
-            <span>{notification.type === 'success' ? '✓' : '⚠️'} {notification.message}</span>
+            <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}>{notification.type === 'success' ? <CheckCircleOutlineIcon sx={{ fontSize: 18 }} /> : <WarningAmberIcon sx={{ fontSize: 18 }} />} {notification.message}</span>
           </div>
         )}
 

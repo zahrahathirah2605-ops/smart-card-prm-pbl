@@ -120,7 +120,7 @@ const Profile = () => {
                 className="btn-primary-profile"
                 onClick={() => setIsEditing(true)}
               >
-                ✏️ Edit Profile Info
+                Edit Profile Info
               </button>
             ) : (
               <button
@@ -136,14 +136,14 @@ const Profile = () => {
               className="btn-outline-profile"
               onClick={() => navigate('/kartu-nama')}
             >
-              💼 Manage Business Card →
+              Manage Business Card →
             </button>
           </div>
         </div>
 
         {saveSuccess && (
           <div className="profile-alert-toast">
-            ✓ Your profile details have been successfully updated!
+            Your profile details have been successfully updated!
           </div>
         )}
 
@@ -268,7 +268,7 @@ const Profile = () => {
                 className="btn-full-action"
                 onClick={() => navigate(`/card/${profile.id}`)}
               >
-                View Public Digital Card ↗
+                View Public Digital Card →
               </button>
             </div>
 
@@ -277,20 +277,20 @@ const Profile = () => {
               <p className="sidebar-card-desc">Manage appointment requests and verified connections.</p>
               <div className="profile-quick-links">
                 <button type="button" onClick={() => navigate('/kelola-prm')}>
-                  📅 Manage PRM Appointments →
+                  Manage PRM Appointments →
                 </button>
                 <button type="button" onClick={() => navigate('/kontak-relasi')}>
-                  👥 View Relationship Contacts →
+                  View Relationship Contacts →
                 </button>
                 <button type="button" onClick={() => navigate('/riwayat-prm')}>
-                  📜 Appointment History →
+                  Appointment History →
                 </button>
               </div>
             </div>
 
             {/* Security / Change Password Card */}
             <div className="profile-section-card">
-              <h3 className="sidebar-card-title">🔐 Account Security</h3>
+              <h3 className="sidebar-card-title">Account Security</h3>
               <p className="sidebar-card-desc">
                 When initially registered by an admin, your default password is your NIM/NIK. You can update your personal password here.
               </p>
@@ -303,7 +303,7 @@ const Profile = () => {
                   setIsPasswordModalOpen(true);
                 }}
               >
-                🔑 Change Password
+                Change Password
               </button>
             </div>
           </div>
@@ -323,7 +323,7 @@ const Profile = () => {
                   onClick={() => setIsPasswordModalOpen(false)}
                   disabled={isChangingPass}
                 >
-                  ✕
+                  ×
                 </button>
               </div>
 
@@ -342,7 +342,7 @@ const Profile = () => {
                       color: passwordMsg.type === 'success' ? '#166534' : '#991b1b',
                       border: `1px solid ${passwordMsg.type === 'success' ? '#bbf7d0' : '#fecaca'}`
                     }}>
-                      {passwordMsg.type === 'success' ? '✓ ' : '⚠️ '}
+                      
                       {passwordMsg.text}
                     </div>
                   )}

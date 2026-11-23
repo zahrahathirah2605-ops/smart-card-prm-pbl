@@ -3,6 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import Navbar from '../Navbar/Navbar';
 import Footer from '../Footer/Footer';
 import { getStoredAppointments } from '../../utils/cardStorage';
+import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import PlaceOutlinedIcon from '@mui/icons-material/PlaceOutlined';
+import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import './JadwalPertemuan.css';
 
 const MONTH_NAMES_EN = [
@@ -474,7 +479,7 @@ const JadwalPertemuan = () => {
 
                   <div className="detail-meta-list">
                     <div className="meta-item">
-                      <span className="meta-icon">👤</span>
+                      <span className="meta-icon" style={{ display: 'inline-flex', alignItems: 'center' }}><PersonOutlinedIcon sx={{ fontSize: 16 }} /></span>
                       <div>
                         <div className="meta-label">Partner / Contact</div>
                         <div className="meta-value">{selectedMeetingDetail.partner}</div>
@@ -482,7 +487,7 @@ const JadwalPertemuan = () => {
                     </div>
 
                     <div className="meta-item">
-                      <span className="meta-icon">🕒</span>
+                      <span className="meta-icon" style={{ display: 'inline-flex', alignItems: 'center' }}><AccessTimeIcon sx={{ fontSize: 16 }} /></span>
                       <div>
                         <div className="meta-label">Meeting Time</div>
                         <div className="meta-value">{selectedMeetingDetail.waktu}</div>
@@ -490,7 +495,7 @@ const JadwalPertemuan = () => {
                     </div>
 
                     <div className="meta-item">
-                      <span className="meta-icon">📍</span>
+                      <span className="meta-icon" style={{ display: 'inline-flex', alignItems: 'center' }}><PlaceOutlinedIcon sx={{ fontSize: 16 }} /></span>
                       <div>
                         <div className="meta-label">Location / Room</div>
                         <div className="meta-value">{selectedMeetingDetail.lokasi}</div>
@@ -498,7 +503,7 @@ const JadwalPertemuan = () => {
                     </div>
 
                     <div className="meta-item">
-                      <span className="meta-icon">🔔</span>
+                      <span className="meta-icon" style={{ display: 'inline-flex', alignItems: 'center' }}><NotificationsNoneIcon sx={{ fontSize: 16 }} /></span>
                       <div>
                         <div className="meta-label">Automated Reminder</div>
                         <div className="meta-value">{selectedMeetingDetail.pengingat}</div>
@@ -508,7 +513,7 @@ const JadwalPertemuan = () => {
                 </div>
               ) : (
                 <div className="meeting-empty-state">
-                  <span className="empty-icon">📅</span>
+                  <span className="empty-icon" style={{ display: 'inline-flex', alignItems: 'center' }}><CalendarTodayIcon sx={{ fontSize: 44, color: "#94a3b8" }} /></span>
                   <p className="empty-text">
                     No scheduled meetings on {MONTH_NAMES_EN[viewMonth]} {selectedDay}, {viewYear}.
                   </p>

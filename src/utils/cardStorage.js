@@ -233,11 +233,11 @@ export const downloadVCard = (card) => {
   URL.revokeObjectURL(url);
 };
 
-// Export digital business card as high quality PDF (Standard 3.5 x 2 inch card or A4 printable)
-export const exportCardToPDF = async (elementId, card) => {
+// Export digital business card as high quality image (PNG HD format)
+export const exportCardToImage = async (elementId, card, format = 'png') => {
   const element = document.getElementById(elementId);
   if (!element) {
-    console.error('Element not found for PDF export:', elementId);
+    console.error('Element not found for image export:', elementId);
     return false;
   }
 
@@ -250,23 +250,26 @@ export const exportCardToPDF = async (elementId, card) => {
       logging: false
     });
 
-    const imgData = canvas.toDataURL('image/png');
-    // Standard business card aspect ratio 85mm x 55mm
-    const pdf = new jsPDF({
-      orientation: 'landscape',
-      unit: 'mm',
-      format: [85, 55]
-    });
+    const mimeType = format === 'jpg' || format === 'jpeg' ? 'image/jpeg' : 'image/png';
+    const extension = format === 'jpg' || format === 'jpeg' ? 'jpg' : 'png';
+    const imgData = canvas.toDataURL(mimeType, 1.0);
+    const fileName = `${(card?.namaLengkap || 'Smart_Business_Card').replace(/\s+/g, '_')}_Card.${extension}`;
 
-    pdf.addImage(imgData, 'PNG', 0, 0, 85, 55, undefined, 'FAST');
-    const fileName = `${(card?.namaLengkap || 'Smart_Business_Card').replace(/\s+/g, '_')}_Card.pdf`;
-    pdf.save(fileName);
+    const downloadLink = document.createElement('a');
+    downloadLink.href = imgData;
+    downloadLink.download = fileName;
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
     return true;
   } catch (error) {
-    console.error('Failed to generate PDF:', error);
+    console.error('Failed to generate card image:', error);
     return false;
   }
 };
+
+// Backwards-compatible alias for legacy calls
+export const exportCardToPDF = exportCardToImage;
 
 // PRM Appointment Management
 export const saveAppointment = (appointmentData) => {

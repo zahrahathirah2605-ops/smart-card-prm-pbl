@@ -2,6 +2,8 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import PublicNavbar from '../Navbar/PublicNavbar';
 import Footer from '../Footer/Footer';
+import FlashOnIcon from '@mui/icons-material/FlashOn';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import './LandingPage.css';
 const LandingPage = () => {
   const navigate = useNavigate();
@@ -46,14 +48,18 @@ const LandingPage = () => {
 
             <div className="landing-features-preview">
               <div className="feature-mini-pill">
-                <span className="feat-icon">⚡</span>
+                <span className="feat-icon" style={{ display: 'inline-flex', alignItems: 'center' }}>
+                  <FlashOnIcon sx={{ fontSize: 20 }} />
+                </span>
                 <div>
                   <strong>Quick Visitor Access</strong>
                   <p>No registration required to view cards & vCard</p>
                 </div>
               </div>
               <div className="feature-mini-pill">
-                <span className="feat-icon">📅</span>
+                <span className="feat-icon" style={{ display: 'inline-flex', alignItems: 'center' }}>
+                  <CalendarMonthIcon sx={{ fontSize: 20 }} />
+                </span>
                 <div>
                   <strong>Schedule Meetings (PRM)</strong>
                   <p>Request formal appointments directly with the cardholder</p>

@@ -1,5 +1,9 @@
 import React from 'react';
 import { QRCodeSVG } from 'qrcode.react';
+import PhoneIcon from '@mui/icons-material/Phone';
+import EmailIcon from '@mui/icons-material/Email';
+import LanguageIcon from '@mui/icons-material/Language';
+import WorkIcon from '@mui/icons-material/Work';
 import './DigitalCardBadge.css';
 
 const DigitalCardBadge = ({ card, qrUrl, elementId = 'printable-card' }) => {
@@ -67,37 +71,47 @@ const DigitalCardBadge = ({ card, qrUrl, elementId = 'printable-card' }) => {
           <div className="card-contacts-grid">
             {card?.telepon && (
               <div className="contact-row">
-                <span className="icon-badge">📞</span>
+                <span className="icon-badge" style={{ display: 'inline-flex', alignItems: 'center' }}>
+                  <PhoneIcon sx={{ fontSize: 13 }} />
+                </span>
                 <span className="contact-text">{card.telepon}</span>
               </div>
             )}
             {card?.email && (
               <div className="contact-row">
-                <span className="icon-badge">✉️</span>
+                <span className="icon-badge" style={{ display: 'inline-flex', alignItems: 'center' }}>
+                  <EmailIcon sx={{ fontSize: 13 }} />
+                </span>
                 <span className="contact-text">{card.email}</span>
               </div>
             )}
             {card?.twitterX && (
               <div className="contact-row">
-                <span className="icon-badge">𝕏</span>
+                <span className="icon-badge" style={{ fontWeight: 800, fontSize: '0.75rem', lineHeight: 1 }}>𝕏</span>
                 <span className="contact-text">{card.twitterX.startsWith('@') ? card.twitterX : `@${card.twitterX}`}</span>
               </div>
             )}
             {card?.facebook && (
               <div className="contact-row">
-                <span className="icon-badge">🌐</span>
+                <span className="icon-badge" style={{ display: 'inline-flex', alignItems: 'center' }}>
+                  <LanguageIcon sx={{ fontSize: 13 }} />
+                </span>
                 <span className="contact-text">fb/{card.facebook.replace(/^https?:\/\/(www\.)?facebook\.com\//, '')}</span>
               </div>
             )}
             {card?.linkedin && (
               <div className="contact-row">
-                <span className="icon-badge">💼</span>
+                <span className="icon-badge" style={{ display: 'inline-flex', alignItems: 'center' }}>
+                  <WorkIcon sx={{ fontSize: 13 }} />
+                </span>
                 <span className="contact-text">in/{card.linkedin}</span>
               </div>
             )}
             {card?.portofolio && (
               <div className="contact-row">
-                <span className="icon-badge">🌐</span>
+                <span className="icon-badge" style={{ display: 'inline-flex', alignItems: 'center' }}>
+                  <LanguageIcon sx={{ fontSize: 13 }} />
+                </span>
                 <span className="contact-text">{card.portofolio.replace(/^https?:\/\//, '')}</span>
               </div>
             )}

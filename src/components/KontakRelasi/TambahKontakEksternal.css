@@ -512,13 +512,13 @@
 }
 
 .btn-submit-external {
-  padding: 0.75rem 2.2rem;
+  padding: 0.7rem 2rem;
   border-radius: 999px;
   background: var(--accent, #FF6347);
   border: none;
-  color: #000000;
-  font-size: 0.95rem;
-  font-weight: 700;
+  color: #FFFFFF;
+  font-size: 0.88rem;
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
   font-family: inherit;

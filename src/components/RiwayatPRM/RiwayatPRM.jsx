@@ -411,7 +411,7 @@ const RiwayatPRM = () => {
 
       setToastMessage({
         type: 'success',
-        text: `✓ Contact "${candidateName}" (${candidateOrg}) successfully saved to Relationship Contacts!`
+        text: `Contact "${candidateName}" (${candidateOrg}) successfully saved to Relationship Contacts!`
       });
       setTimeout(() => setToastMessage(null), 4500);
     } catch (err) {
@@ -445,7 +445,7 @@ const RiwayatPRM = () => {
               className="prm-toast-close"
               onClick={() => setToastMessage(null)}
             >
-              ✕
+              ×
             </button>
           </div>
         )}
@@ -472,7 +472,7 @@ const RiwayatPRM = () => {
                 onClick={() => { setSearchTerm(''); setCurrentPage(1); }}
                 title="Clear search"
               >
-                ✕
+                ×
               </button>
             )}
           </div>
@@ -548,11 +548,11 @@ const RiwayatPRM = () => {
                       <td>
                         <div className="prm-row-title">{item.permintaan}</div>
                         {item.jam && (
-                          <div className="prm-row-time">⏰ At {item.jam}</div>
+                          <div className="prm-row-time">At {item.jam}</div>
                         )}
                         {item.alasanRespon && (
                           <div className="prm-row-note">
-                            💬 "{item.alasanRespon}"
+                            "{item.alasanRespon}"
                           </div>
                         )}
                       </td>
@@ -562,11 +562,11 @@ const RiwayatPRM = () => {
                           <div className="prm-partner-org">{item.instansiPemohon}</div>
                         )}
                         {item.emailPemohon && (
-                          <div className="prm-partner-email">✉️ {item.emailPemohon}</div>
+                          <div className="prm-partner-email">{item.emailPemohon}</div>
                         )}
                       </td>
                       <td>
-                        <div className="prm-date-cell">📅 {item.date}</div>
+                        <div className="prm-date-cell">{item.date}</div>
                       </td>
                       <td>
                         <span className={`prm-status-badge ${item.statusClass || 'status-selesai'}`}>
@@ -574,7 +574,7 @@ const RiwayatPRM = () => {
                         </span>
                         {item.emailNotifikasi && (
                           <div className="prm-email-notif-label">
-                            ✓ Email Notified
+                            Email Notified
                           </div>
                         )}
                       </td>
@@ -586,7 +586,7 @@ const RiwayatPRM = () => {
                           title={isSaved ? 'Already saved in Relationship Contacts' : 'Save contact information to Relationship Contacts'}
                           disabled={isSaved}
                         >
-                          {isSaved ? '✓ Saved' : '+ Save Contact'}
+                          {isSaved ? 'Saved' : '+ Save Contact'}
                         </button>
                       </td>
                     </tr>
@@ -635,8 +635,8 @@ const RiwayatPRM = () => {
                 disabled={isItemSavedInContacts(selectedDetail)}
               >
                 {isItemSavedInContacts(selectedDetail)
-                  ? '✓ Saved in Relationship Contacts'
-                  : '💾 Save to Relationship Contacts'}
+                  ? 'Saved in Relationship Contacts'
+                  : 'Save to Relationship Contacts'}
               </button>
             )}
             <button
@@ -653,30 +653,30 @@ const RiwayatPRM = () => {
           <div>
             <div className="modal-detail-grid">
               <div className="modal-field-box modal-detail-full">
-                <span className="modal-field-label">📌 Meeting Topic / Agenda</span>
+                <span className="modal-field-label">Meeting Topic / Agenda</span>
                 <div className="modal-field-value">{selectedDetail.permintaan}</div>
               </div>
 
               <div className="modal-field-box">
-                <span className="modal-field-label">👤 Partner / Applicant</span>
+                <span className="modal-field-label">Partner / Applicant</span>
                 <div className="modal-field-value">
                   {selectedDetail.pemohon || selectedDetail.tujuan}
                 </div>
                 {selectedDetail.instansiPemohon && (
-                  <div className="modal-field-sub">🏢 {selectedDetail.instansiPemohon}</div>
+                  <div className="modal-field-sub">{selectedDetail.instansiPemohon}</div>
                 )}
               </div>
 
               <div className="modal-field-box">
-                <span className="modal-field-label">📅 Date & Time</span>
+                <span className="modal-field-label">Date & Time</span>
                 <div className="modal-field-value">{selectedDetail.date}</div>
                 {selectedDetail.jam && (
-                  <div className="modal-field-sub">⏰ At {selectedDetail.jam}</div>
+                  <div className="modal-field-sub">At {selectedDetail.jam}</div>
                 )}
               </div>
 
               <div className="modal-field-box">
-                <span className="modal-field-label">✉️ Contact Email</span>
+                <span className="modal-field-label">Contact Email</span>
                 <div className="modal-field-value">
                   {selectedDetail.emailPemohon ? (
                     <a href={`mailto:${selectedDetail.emailPemohon}`}>
@@ -689,7 +689,7 @@ const RiwayatPRM = () => {
               </div>
 
               <div className="modal-field-box">
-                <span className="modal-field-label">📱 Phone / WhatsApp</span>
+                <span className="modal-field-label">Phone / WhatsApp</span>
                 <div className="modal-field-value">
                   {selectedDetail.teleponPemohon || '-'}
                 </div>
@@ -697,21 +697,21 @@ const RiwayatPRM = () => {
 
               {selectedDetail.lokasi && (
                 <div className="modal-field-box modal-detail-full">
-                  <span className="modal-field-label">📍 Meeting Location</span>
+                  <span className="modal-field-label">Meeting Location</span>
                   <div className="modal-field-value">{selectedDetail.lokasi}</div>
                 </div>
               )}
 
               {selectedDetail.alasanLengkap && (
                 <div className="modal-field-box modal-detail-full">
-                  <span className="modal-field-label">📝 Request Description / Agenda</span>
+                  <span className="modal-field-label">Request Description / Agenda</span>
                   <div className="modal-quote-box">{selectedDetail.alasanLengkap}</div>
                 </div>
               )}
 
               {selectedDetail.alasanRespon && (
                 <div className="modal-field-box modal-detail-full">
-                  <span className="modal-field-label">💬 Decision / Status Notes</span>
+                  <span className="modal-field-label">Decision / Status Notes</span>
                   <div className="modal-quote-box">{selectedDetail.alasanRespon}</div>
                 </div>
               )}

@@ -233,7 +233,7 @@ const KelolaPRM = () => {
         {notificationBanner && (
           <div className={`prm-email-alert-banner ${notificationBanner.type === 'accept' ? 'success' : 'warning'}`}>
             <div className="prm-email-alert-icon">
-              {notificationBanner.type === 'accept' ? '📧 ✅' : '📧 ⚠️'}
+              {notificationBanner.type === 'accept' ? 'OK' : 'Notice'}
             </div>
             <div className="prm-email-alert-text">
               <strong>Automated Email Notification Sent!</strong>
@@ -242,7 +242,7 @@ const KelolaPRM = () => {
               </p>
               <div className="prm-email-alert-quote">"{notificationBanner.alasan}"</div>
             </div>
-            <button className="prm-alert-close" onClick={() => setNotificationBanner(null)}>✕</button>
+            <button className="prm-alert-close" onClick={() => setNotificationBanner(null)} aria-label="Close">×</button>
           </div>
         )}
 
@@ -268,7 +268,7 @@ const KelolaPRM = () => {
                 onClick={() => { setSearchTerm(''); setCurrentPage(1); }}
                 title="Clear search"
               >
-                ✕
+                ×
               </button>
             )}
           </div>
@@ -335,10 +335,10 @@ const KelolaPRM = () => {
                           {item.permintaan}
                         </div>
                         <div style={{ fontSize: '0.78rem', color: '#64748b', marginTop: '3px' }}>
-                          👤 <b>{namaPemohon}</b> {item.perusahaanPemohon ? `(${item.perusahaanPemohon})` : ''}
+                          <b>{namaPemohon}</b> {item.perusahaanPemohon ? `(${item.perusahaanPemohon})` : ''}
                         </div>
                         <div style={{ fontSize: '0.74rem', color: '#0284c7', marginTop: '2px' }}>
-                          ✉️ {emailTujuan}
+                          {emailTujuan}
                         </div>
                         {item.alasanRespon && (
                           <div style={{ 
@@ -356,11 +356,11 @@ const KelolaPRM = () => {
                       </td>
                       <td>
                         <div style={{ fontWeight: 500, color: '#334155', fontSize: '0.85rem' }}>
-                          📅 {item.date || 'TBD'}
+                          {item.date || 'TBD'}
                         </div>
                         {item.jam && (
                           <div style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '2px' }}>
-                            ⏰ {item.jam}
+                            {item.jam}
                           </div>
                         )}
                       </td>
@@ -370,7 +370,7 @@ const KelolaPRM = () => {
                         </span>
                         {item.emailNotifikasi && (
                           <div style={{ fontSize: '0.7rem', color: '#16a34a', marginTop: '4px', fontWeight: 500 }}>
-                            ✓ Automated email delivered
+                            Automated email delivered
                           </div>
                         )}
                       </td>
@@ -382,14 +382,14 @@ const KelolaPRM = () => {
                               title="Accept and transmit confirmation email to partner"
                               onClick={() => openActionModal(item, 'accept')}
                             >
-                              ✓ Accept
+                              Accept
                             </button>
                             <button 
                               className="btn-reject"
                               title="Decline and send reason note via email"
                               onClick={() => openActionModal(item, 'reject')}
                             >
-                              ✕ Decline
+                              Decline
                             </button>
                           </div>
                         ) : (
@@ -401,7 +401,7 @@ const KelolaPRM = () => {
                               title="Click to view or edit response reason"
                               onClick={() => openActionModal(item, item.status === 'Accepted' || item.status === 'Disetujui' ? 'accept' : 'reject')}
                             >
-                              ✏️ View / Edit Reason
+                              View / Edit Reason
                             </button>
                           </div>
                         )}
@@ -455,7 +455,7 @@ const KelolaPRM = () => {
                     openActionModal(detailItem, 'accept');
                   }}
                 >
-                  ✓ Accept Request
+                  Accept Request
                 </button>
                 <button
                   type="button"
@@ -466,7 +466,7 @@ const KelolaPRM = () => {
                     openActionModal(detailItem, 'reject');
                   }}
                 >
-                  ✕ Decline Request
+                  Decline Request
                 </button>
               </>
             )}
@@ -483,31 +483,31 @@ const KelolaPRM = () => {
         {detailItem && (
           <div className="modal-detail-grid">
             <div className="modal-field-box modal-detail-full">
-              <span className="modal-field-label">📌 Meeting Request / Topic</span>
+              <span className="modal-field-label">Meeting Request / Topic</span>
               <div className="modal-field-value">{detailItem.permintaan}</div>
             </div>
 
             <div className="modal-field-box">
-              <span className="modal-field-label">👤 Partner Name</span>
+              <span className="modal-field-label">Partner Name</span>
               <div className="modal-field-value">{detailItem.pemohon || detailItem.pengaju}</div>
               {detailItem.perusahaanPemohon && (
-                <div className="modal-field-sub">🏢 {detailItem.perusahaanPemohon}</div>
+                <div className="modal-field-sub">{detailItem.perusahaanPemohon}</div>
               )}
               {detailItem.jabatanPemohon && (
-                <div className="modal-field-sub">💼 {detailItem.jabatanPemohon}</div>
+                <div className="modal-field-sub">{detailItem.jabatanPemohon}</div>
               )}
             </div>
 
             <div className="modal-field-box">
-              <span className="modal-field-label">📅 Proposed Schedule</span>
+              <span className="modal-field-label">Proposed Schedule</span>
               <div className="modal-field-value">{detailItem.date || 'TBD'}</div>
               {detailItem.jam && (
-                <div className="modal-field-sub">⏰ At {detailItem.jam}</div>
+                <div className="modal-field-sub">At {detailItem.jam}</div>
               )}
             </div>
 
             <div className="modal-field-box">
-              <span className="modal-field-label">✉️ Partner Email</span>
+              <span className="modal-field-label">Partner Email</span>
               <div className="modal-field-value">
                 {detailItem.emailPemohon ? (
                   <a href={`mailto:${detailItem.emailPemohon}`}>
@@ -520,20 +520,20 @@ const KelolaPRM = () => {
             </div>
 
             <div className="modal-field-box">
-              <span className="modal-field-label">📱 Phone / WhatsApp</span>
+              <span className="modal-field-label">Phone / WhatsApp</span>
               <div className="modal-field-value">{detailItem.teleponPemohon || '-'}</div>
             </div>
 
             {detailItem.alasanLengkap && (
               <div className="modal-field-box modal-detail-full">
-                <span className="modal-field-label">📝 Meeting Agenda Description</span>
+                <span className="modal-field-label">Meeting Agenda Description</span>
                 <div className="modal-quote-box">{detailItem.alasanLengkap}</div>
               </div>
             )}
 
             {detailItem.alasanRespon && (
               <div className="modal-field-box modal-detail-full">
-                <span className="modal-field-label">💬 Decision Note / Reason</span>
+                <span className="modal-field-label">Decision Note / Reason</span>
                 <div className="modal-quote-box">{detailItem.alasanRespon}</div>
               </div>
             )}
@@ -554,13 +554,13 @@ const KelolaPRM = () => {
                   {actionType === 'accept' ? 'Confirm Appointment Approval' : 'Confirm Appointment Decline'}
                 </h3>
               </div>
-              <button className="prm-modal-close-btn" onClick={closeModal} disabled={isSendingEmail}>✕</button>
+              <button className="prm-modal-close-btn" onClick={closeModal} disabled={isSendingEmail} aria-label="Close">×</button>
             </div>
 
             <div className="prm-modal-body">
               {/* Partner Overview */}
               <div className="prm-recipient-card">
-                <div className="prm-recipient-icon">✉️</div>
+                <div className="prm-recipient-icon" style={{ fontWeight: 700 }}>@</div>
                 <div className="prm-recipient-info">
                   <div className="prm-recipient-name">
                     Email Recipient: <strong>{selectedItem.pemohon || selectedItem.pengaju}</strong>
@@ -614,7 +614,7 @@ const KelolaPRM = () => {
               {/* Live Preview Email Notification */}
               <div className="prm-email-preview-box">
                 <div className="prm-preview-header">
-                  <span>📄 Automated Email Preview:</span>
+                  <span>Automated Email Preview:</span>
                   <span className="prm-preview-to">To: {selectedItem.emailPemohon || 'external@partner.com'}</span>
                 </div>
                 <div className="prm-preview-content">
@@ -684,7 +684,7 @@ Smart Business Card & PRM System`
                     window.open(`https://mail.google.com/mail/?view=cm&fs=1&to=${recipientEmail}&su=${subject}&body=${bodyText}`, '_blank');
                   }}
                 >
-                  ✉️ Open Draft in Gmail
+                  Open Draft in Gmail
                 </button>
               </div>
 

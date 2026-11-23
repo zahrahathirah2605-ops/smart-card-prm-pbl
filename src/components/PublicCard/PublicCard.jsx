@@ -4,7 +4,18 @@ import Navbar from '../Navbar/Navbar';
 import PublicNavbar from '../Navbar/PublicNavbar';
 import Footer from '../Footer/Footer';
 import DigitalCardBadge from '../KartuNama/DigitalCardBadge';
-import { getCardById, getUserCard, downloadVCard, isUserOwnCard, exportCardToPDF } from '../../utils/cardStorage';
+import { getCardById, getUserCard, downloadVCard, isUserOwnCard, exportCardToImage } from '../../utils/cardStorage';
+import VerifiedIcon from '@mui/icons-material/Verified';
+import BusinessIcon from '@mui/icons-material/Business';
+import PhoneIcon from '@mui/icons-material/Phone';
+import EmailIcon from '@mui/icons-material/Email';
+import LanguageIcon from '@mui/icons-material/Language';
+import WorkIcon from '@mui/icons-material/Work';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import EditIcon from '@mui/icons-material/Edit';
+import ImageOutlinedIcon from '@mui/icons-material/ImageOutlined';
+import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutlined';
 import './PublicCard.css';
 
 const PublicCard = () => {
@@ -41,10 +52,10 @@ const PublicCard = () => {
     setTimeout(() => setSavedSuccess(false), 3000);
   };
 
-  const handleDownloadPDF = async () => {
+  const handleDownloadImage = async () => {
     setIsExporting(true);
     try {
-      await exportCardToPDF('public-card-badge-target', card);
+      await exportCardToImage('public-card-badge-target', card, 'png');
     } catch (e) {
       console.error(e);
     } finally {
@@ -62,8 +73,9 @@ const PublicCard = () => {
       {/* Main Content */}
       <div className="card-main-content">
         <div className="page-header-container">
-          <span className="verification-badge">
-            ✓ Verified Digital Smart Card
+          <span className="verification-badge" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }}>
+            <VerifiedIcon sx={{ fontSize: 16 }} />
+            <span>Verified Digital Smart Card</span>
           </span>
           <h1 className="page-title">Digital Business Card</h1>
           <p className="page-subtitle">
@@ -91,7 +103,9 @@ const PublicCard = () => {
               </p>
 
               <div className="company-badge-box">
-                <div className="company-icon">🏢</div>
+                <div className="company-icon" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <BusinessIcon sx={{ fontSize: 24 }} />
+                </div>
                 <div>
                   <h4 className="company-name">{card.instansi || 'Independent'}</h4>
                   <p className="company-role">{card.jabatan || 'Member'}</p>
@@ -106,23 +120,27 @@ const PublicCard = () => {
               <div className="contact-actions-list">
                 {card.telepon && (
                   <a href={`tel:${card.telepon}`} className="action-contact-card">
-                    <span className="contact-icon">📞</span>
+                    <span className="contact-icon" style={{ display: 'inline-flex', alignItems: 'center' }}>
+                      <PhoneIcon sx={{ fontSize: 20 }} />
+                    </span>
                     <div className="contact-info-col">
                       <span className="contact-type">Phone / WhatsApp</span>
                       <span className="contact-val">{card.telepon}</span>
                     </div>
-                    <span className="contact-arrow">Call ↗</span>
+                    <span className="contact-arrow">Call</span>
                   </a>
                 )}
 
                 {card.email && (
                   <a href={`mailto:${card.email}`} className="action-contact-card">
-                    <span className="contact-icon">✉️</span>
+                    <span className="contact-icon" style={{ display: 'inline-flex', alignItems: 'center' }}>
+                      <EmailIcon sx={{ fontSize: 20 }} />
+                    </span>
                     <div className="contact-info-col">
                       <span className="contact-type">Email Address</span>
                       <span className="contact-val">{card.email}</span>
                     </div>
-                    <span className="contact-arrow">Email ↗</span>
+                    <span className="contact-arrow">Email</span>
                   </a>
                 )}
 
@@ -133,12 +151,14 @@ const PublicCard = () => {
                     rel="noopener noreferrer"
                     className="action-contact-card"
                   >
-                    <span className="contact-icon">𝕏</span>
+                    <span className="contact-icon" style={{ display: 'inline-flex', alignItems: 'center', fontWeight: 800 }}>
+                      𝕏
+                    </span>
                     <div className="contact-info-col">
                       <span className="contact-type">X / Twitter</span>
                       <span className="contact-val">{card.twitterX.startsWith('@') ? card.twitterX : `@${card.twitterX}`}</span>
                     </div>
-                    <span className="contact-arrow">Follow ↗</span>
+                    <span className="contact-arrow">Follow</span>
                   </a>
                 )}
 
@@ -149,12 +169,14 @@ const PublicCard = () => {
                     rel="noopener noreferrer"
                     className="action-contact-card"
                   >
-                    <span className="contact-icon">🌐</span>
+                    <span className="contact-icon" style={{ display: 'inline-flex', alignItems: 'center' }}>
+                      <LanguageIcon sx={{ fontSize: 20 }} />
+                    </span>
                     <div className="contact-info-col">
                       <span className="contact-type">Facebook</span>
                       <span className="contact-val">{card.facebook.replace(/^https?:\/\/(www\.)?facebook\.com\//, '')}</span>
                     </div>
-                    <span className="contact-arrow">View ↗</span>
+                    <span className="contact-arrow">View</span>
                   </a>
                 )}
 
@@ -165,12 +187,14 @@ const PublicCard = () => {
                     rel="noopener noreferrer"
                     className="action-contact-card"
                   >
-                    <span className="contact-icon">💼</span>
+                    <span className="contact-icon" style={{ display: 'inline-flex', alignItems: 'center' }}>
+                      <WorkIcon sx={{ fontSize: 20 }} />
+                    </span>
                     <div className="contact-info-col">
                       <span className="contact-type">LinkedIn Profile</span>
                       <span className="contact-val">{card.linkedin}</span>
                     </div>
-                    <span className="contact-arrow">Visit ↗</span>
+                    <span className="contact-arrow">Visit</span>
                   </a>
                 )}
 
@@ -181,26 +205,39 @@ const PublicCard = () => {
                     rel="noopener noreferrer"
                     className="action-contact-card"
                   >
-                    <span className="contact-icon">🌐</span>
+                    <span className="contact-icon" style={{ display: 'inline-flex', alignItems: 'center' }}>
+                      <LanguageIcon sx={{ fontSize: 20 }} />
+                    </span>
                     <div className="contact-info-col">
                       <span className="contact-type">Portfolio / Website</span>
                       <span className="contact-val">{card.portofolio.replace(/^https?:\/\//, '')}</span>
                     </div>
-                    <span className="contact-arrow">Explore ↗</span>
+                    <span className="contact-arrow">Explore</span>
                   </a>
                 )}
               </div>
 
               {/* Action Buttons */}
               <div className="bottom-action-buttons">
-                {/* Always provide PDF Download format for digital card profile */}
+                {/* Download Card as Image (PNG HD) */}
                 <button
-                  className="btn-primary-action"
-                  onClick={handleDownloadPDF}
+                  className="btn-download-card-action"
+                  onClick={handleDownloadImage}
                   disabled={isExporting}
-                  title="Unduh kartu nama digital dalam format dokumen PDF"
+                  title="Unduh kartu nama digital dalam format gambar PNG HD"
+                  style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '0.45rem' }}
                 >
-                  {isExporting ? '⏳ Exporting PDF...' : '📄 Download PDF Card'}
+                  {isExporting ? (
+                    <>
+                      <HourglassEmptyIcon sx={{ fontSize: 18 }} />
+                      <span>Exporting Image...</span>
+                    </>
+                  ) : (
+                    <>
+                      <ImageOutlinedIcon sx={{ fontSize: 18 }} />
+                      <span>Download Card Image</span>
+                    </>
+                  )}
                 </button>
 
                 {/* Save Contact: ONLY shown for visitors / external guests, NOT for self registered user */}
@@ -209,7 +246,8 @@ const PublicCard = () => {
                     className="btn-accent-appointment"
                     onClick={() => navigate(`/janji-temu/${card.id || id}`)}
                   >
-                    📅 Schedule Appointment (PRM)
+                    <CalendarMonthIcon sx={{ fontSize: 18 }} />
+                    <span>Schedule Appointment (PRM)</span>
                   </button>
                 )}
 
@@ -218,15 +256,18 @@ const PublicCard = () => {
                   <button
                     className="btn-outline-action edit-shortcut"
                     onClick={() => navigate('/kartu-nama')}
+                    style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '0.45rem' }}
                   >
-                    ✏️ Edit My Card Details
+                    <EditIcon sx={{ fontSize: 18 }} />
+                    <span>Edit My Card Details</span>
                   </button>
                 )}
               </div>
 
               {savedSuccess && (
-                <div className="success-toast">
-                  ✓ Contact file ({card.namaLengkap}.vcf) downloaded successfully!
+                <div className="success-toast" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  <CheckCircleOutlineIcon sx={{ fontSize: 18 }} />
+                  <span>Contact file ({card.namaLengkap}.vcf) downloaded successfully!</span>
                 </div>
               )}
             </div>
