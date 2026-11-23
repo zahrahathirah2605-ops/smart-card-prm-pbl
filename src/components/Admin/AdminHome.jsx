@@ -48,7 +48,7 @@ const AdminHome = () => {
                   <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
                 </svg>
               </div>
-              <span className="card-fr-tag">FR-13</span>
+              <span className="card-fr-tag"></span>
             </div>
 
             <h3 className="card-title">Manage Registered Users</h3>
@@ -83,7 +83,7 @@ const AdminHome = () => {
                   <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
                 </svg>
               </div>
-              <span className="card-fr-tag">FR-14</span>
+              <span className="card-fr-tag"></span>
             </div>
 
             <h3 className="card-title">Activity Logs & Security Audit</h3>
@@ -115,7 +115,7 @@ const AdminHome = () => {
                   <line x1="2" y1="10" x2="22" y2="10"></line>
                 </svg>
               </div>
-              <span className="card-fr-tag">FR-14</span>
+              <span className="card-fr-tag"></span>
             </div>
 
             <h3 className="card-title">Digital Business Cards Data</h3>
